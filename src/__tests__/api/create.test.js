@@ -1,4 +1,4 @@
-import { handler } from "../../pages/api/create/[param]"
+import handler from "../../pages/api/create/[param]"
 import { createMocks } from 'node-mocks-http';
 
 describe("/api/create/[param]", () => {

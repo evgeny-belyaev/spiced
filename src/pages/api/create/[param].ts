@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 
-export type Data = {
+type Data = {
     name: String
 }
 
@@ -15,7 +15,7 @@ function ensureMethod(httpMethod: HttpMethod, req: NextApiRequest, res: NextApiR
     return true
 }
 
-export const handler = (req: NextApiRequest, res: NextApiResponse<Data>) => {
+export default (req: NextApiRequest, res: NextApiResponse<Data>) => {
     if (ensureMethod("POST", req, res)) {
         const {
             query: { param },
@@ -24,5 +24,3 @@ export const handler = (req: NextApiRequest, res: NextApiResponse<Data>) => {
         res.status(200).json({ name: "World " + param })
     }
 }
-
-export default handler
