@@ -1,7 +1,7 @@
 import firebase from 'firebase'
 
 function getFirebaseConfig() {
-    if (location.hostname === "localhost") {
+    if (process.env["NODE_ENV"]  == "development" ) {
         return {
             databaseURL: "http://localhost:9000/?ns=spiced-f9677"
         }

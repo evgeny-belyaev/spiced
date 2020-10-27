@@ -1,4 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
+import { getDatabase } from '../../../components/dataProvider'
 
 type Data = {
     name: String
@@ -15,11 +16,13 @@ function ensureMethod(httpMethod: HttpMethod, req: NextApiRequest, res: NextApiR
     return true
 }
 
-export default (req: NextApiRequest, res: NextApiResponse<Data>) => {
-    if (ensureMethod("POST", req, res)) {
+export default async (req: NextApiRequest, res: NextApiResponse<Data>) => {
+    if (ensureMethod("GET", req, res)) {
         const {
             query: { param },
         } = req
+
+        await getDatabase().ref("test/data").set({ hello: param })
 
         res.status(200).json({ name: "World " + param })
     }
