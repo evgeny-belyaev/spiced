@@ -20,14 +20,16 @@ function ensureMethod(httpMethod: HttpMethod, req: NextApiRequest, res: NextApiR
     return true
 }
 
-export const handler = async (req: NextApiRequest, res: NextApiResponse<ResponseType>): Promise<void> => {
+const handler = async (req: NextApiRequest, res: NextApiResponse<ResponseType>): Promise<void> => {
     if (ensureMethod("POST", req, res)) {
         const {
             query: { param },
         } = req
 
-        await getDatabase().ref("test/data").set({ hello: param })
+        await getDatabase().ref("test/data").set(req.body)
 
         res.status(200).json({ name: "World " + param })
     }
 }
+
+export default handler

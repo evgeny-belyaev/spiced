@@ -21,6 +21,13 @@ export const FacebookLogin = ({ onLoggedIn }: Props) => {
     })
 
     return (<>
-        <div className="fb-login-button" data-size="large" data-button-type="continue_with" data-layout="default" data-auto-logout-link="true" data-use-continue-as="true" data-width=""></div>
+        <div
+            className="fb-login-button"
+            data-size="large"
+            data-button-type="continue_with"
+            data-layout="default"
+            data-auto-logout-link="true"
+            data-use-continue-as="true"
+            data-width=""/>
     </>)
 }
