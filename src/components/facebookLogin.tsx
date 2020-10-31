@@ -6,6 +6,13 @@ type Props = {
 
 export const FacebookLogin = ({ onLoggedIn }: Props) => {
     useEffect(() => {
+        FB.init({
+            appId: "383163236378113",
+            autoLogAppEvents: true,
+            xfbml: true,
+            version: 'v8.0'
+        })
+
         window.FB.getLoginStatus(function (response) {
             if (response.status === "connected") {
                 onLoggedIn(response.status)

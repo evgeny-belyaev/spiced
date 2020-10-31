@@ -19,7 +19,7 @@ export default function Home() {
         <App>
             <Head>
                 {/* <script src="init.js"/> */}
-                <script src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&autoLogAppEvents=1&version=v8.0&appId=383163236378113" nonce="KMGyQ6eG" />
+                <script src="https://connect.facebook.net/en_US/sdk.js" nonce="KMGyQ6eG" />
             </Head>
 
             <FacebookLogin onLoggedIn={handleChange} />
