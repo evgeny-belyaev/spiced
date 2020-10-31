@@ -9,7 +9,11 @@
     "serve": "npm run build && firebase emulators:start",
     "shell": "npm run build && firebase functions:shell",
     "deploy": "firebase deploy --only functions,hosting",
-    "logs": "firebase functions:log"
+    "logs": "firebase functions:log",
+    "test": "jest --silent",
+    "testdebug": "jest",
+    "test coverage": "jest --coverage",
+    "testwatch": "npm test -- --watch --maxWorkers 4"
   },
   "dependencies": {
     "bootstrap": "^4.5.3",

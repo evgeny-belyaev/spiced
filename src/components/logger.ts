@@ -1,9 +1,10 @@
 export class Logger {
-    #area: string;
-    #applicationPrefix = 'logger';
+    _area: string
+    _applicationPrefix: string
 
     constructor(area: string) {
-        this.#area = area;
+        this._area = area;
+        this._applicationPrefix = "logger"
     }
 
     info(...message: Array<string | any>) {
@@ -40,11 +41,11 @@ export class Logger {
     }
 
     _format(message: any): string {
-        return `${this.#applicationPrefix} ${new Date().toISOString()} ${this.#area}: ${message}`;
+        return `${this._applicationPrefix} ${new Date().toISOString()} ${this._area}: ${message}`;
     }
 
     _formatAssert(message: any): string {
-        return `ASSERT ${this.#applicationPrefix} ${new Date().toISOString()} ${this.#area}: ${message}`;
+        return `ASSERT ${this._applicationPrefix} ${new Date().toISOString()} ${this._area}: ${message}`;
     }
 }
 
