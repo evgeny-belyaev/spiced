@@ -25,6 +25,8 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 ui-debug.log
+database-debug.log
+firebase-debug.log
 
 # local env files
 .env.local
@@ -34,3 +36,6 @@ ui-debug.log
 
 # vercel
 .vercel
+
+# vscode
+.vscode
