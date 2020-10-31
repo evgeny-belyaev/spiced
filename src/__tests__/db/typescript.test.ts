@@ -1,5 +1,5 @@
-import { getDatabase } from '../components/dataProvider'
 import firebase from 'firebase'
+import { getDatabase } from '../../components/dataProvider'
 
 export default describe("/api/create/[param]", () => {
     test("responds 200 to GET", async () => {

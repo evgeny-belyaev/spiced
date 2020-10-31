@@ -1,10 +1,29 @@
 import App from '../components/App'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
+import Head from 'next/head'
+import { FacebookLogin } from "../components/facebookLogin"
+import React, { useState } from 'react'
+import { Logger } from '../components/logger'
+
+const log = new Logger("index")
 
 export default function Home() {
+    const [value, setValue] = useState("")
+
+    const handleChange = (s: fb.LoginStatus) => {
+        log.debug("logged in")
+    }
+
     return (
         <App>
+            <Head>
+                {/* <script src="init.js"/> */}
+                <script src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&autoLogAppEvents=1&version=v8.0&appId=383163236378113" nonce="KMGyQ6eG" />
+            </Head>
+
+            <FacebookLogin onLoggedIn={handleChange} />
+
             <Form>
                 <Form.Group controlId="formBasicEmail">
                     <Form.Label>Email address</Form.Label>
@@ -18,11 +37,11 @@ export default function Home() {
                     <Form.Label>Password</Form.Label>
                     <Form.Control type="password" placeholder="Password" />
                 </Form.Group>
-                
+
                 <Form.Group controlId="formBasicCheckbox">
                     <Form.Check type="checkbox" label="Check me out" />
                 </Form.Group>
-                
+
                 <Button variant="primary" type="submit">
                     Submit
                 </Button>
