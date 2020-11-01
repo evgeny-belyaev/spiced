@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "main": "build/functions/functions/index.js",
   "scripts": {
-    
     "build-functions": "tsc -p functions",
     "build-site": "next build site/",
     "start-site": "yarn run build-site && next start site/",
