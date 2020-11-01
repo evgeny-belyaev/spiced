@@ -21,7 +21,6 @@ function ensureMethod(httpMethod: HttpMethod, req: express.Request, res: express
     return true
 }
 
-
 export const helloWorld = functions.https.onRequest(async (request, response) => {
     if (ensureMethod("POST", request, response)) {
         const {
