@@ -1,8 +1,27 @@
 import { useEffect } from "react"
+import Button from 'react-bootstrap/Button'
+import React, { useState } from 'react'
 
 type Props = {
     onLoggedIn: (s: fb.LoginStatus) => void
 }
+
+export const FakeLogin = ({ onLoggedIn }: Props) => {
+    const [isLoggedIn, setLoggedIn] = useState(false)
+    
+    function handleClick() {
+        setLoggedIn(!isLoggedIn)
+        onLoggedIn(isLoggedIn ? "connected" : "not_authorized")    
+    }
+
+    
+
+    return (<Button variant="primary" type="submit" onClick={handleClick}>
+        {isLoggedIn ? "Fake Logout" : "Fake Login"}
+    </Button>)
+}
+
+
 
 export const FacebookLogin = ({ onLoggedIn }: Props) => {
     useEffect(() => {
@@ -14,9 +33,7 @@ export const FacebookLogin = ({ onLoggedIn }: Props) => {
         })
 
         window.FB.getLoginStatus(function (response) {
-            if (response.status === "connected") {
-                onLoggedIn(response.status)
-            }
+            onLoggedIn(response.status)
         })
     })
 
@@ -28,6 +45,6 @@ export const FacebookLogin = ({ onLoggedIn }: Props) => {
             data-layout="default"
             data-auto-logout-link="true"
             data-use-continue-as="true"
-            data-width=""/>
+            data-width="" />
     </>)
 }

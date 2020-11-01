@@ -1,10 +1,10 @@
 import firebase from 'firebase';
-import { Logger } from './logger';
+import { Logger } from '../logger';
 
 const log = new Logger("dataProvider")
 
 function getFirebaseConfig() {
-    if (process.env["NODE_ENV"] == "development") {
+    if (process.env["NODE_ENV"] == "development" || process.env["NODE_ENV"] == "test") {
         return {
             databaseURL: "http://localhost:9000/?ns=spiced-f9677"
         }
@@ -21,7 +21,7 @@ export const getDatabase = (): firebase.database.Database => {
         firebase.initializeApp(getFirebaseConfig())
 
         log.debug("Firebase app created")
-    } 
-    
+    }
+
     return firebase.database()
 }

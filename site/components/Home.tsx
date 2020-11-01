@@ -2,18 +2,22 @@ import App from '../components/App'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 import Head from 'next/head'
-import { FacebookLogin } from "../components/facebookLogin"
+import { FacebookLogin, FakeLogin } from "../components/facebookLogin"
 import React, { useState } from 'react'
 import { Logger } from '../components/logger'
 
 const log = new Logger("index")
 
 export function Home() {
-    const [value, setValue] = useState("")
+    const [isLoggedIn, setLoggedIn] = useState(false)
 
-    const handleChange = (s: fb.LoginStatus) => {
-        log.debug("logged in")
+    const handleChange = (loginStatus: fb.LoginStatus) => {
+        if (loginStatus === "connected") {
+            setLoggedIn(true)
+        }
     }
+
+    log.debug(isLoggedIn)
 
     return (
         <App>
@@ -22,9 +26,10 @@ export function Home() {
                 <script src="https://connect.facebook.net/en_US/sdk.js" nonce="KMGyQ6eG" />
             </Head>
 
+            <FakeLogin onLoggedIn={handleChange}/>
             <FacebookLogin onLoggedIn={handleChange} />
 
-            <Form>
+            {isLoggedIn && <Form>
                 <Form.Group controlId="formBasicEmail">
                     <Form.Label>Email address</Form.Label>
                     <Form.Control type="email" placeholder="Enter email" />
@@ -45,7 +50,9 @@ export function Home() {
                 <Button variant="primary" type="submit">
                     Submit
                 </Button>
-            </Form>
+            </Form>}
+
+
         </App>
     )
 }

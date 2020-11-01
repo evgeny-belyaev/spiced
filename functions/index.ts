@@ -1,6 +1,7 @@
 import * as functions from 'firebase-functions';
 import * as express from 'express';
-import { getDatabase } from "../site/components/dataProvider"
+const { default: next } = require('next') // sic!
+import { getDatabase } from "../site/components/database/dataProvider"
 
 export type RequestType = {
     param: String
@@ -21,7 +22,7 @@ function ensureMethod(httpMethod: HttpMethod, req: express.Request, res: express
     return true
 }
 
-export const helloWorld = functions.https.onRequest(async (request, response) => {
+export const api = functions.https.onRequest(async (request, response) => {
     if (ensureMethod("POST", request, response)) {
         const {
             query: { param },
@@ -32,3 +33,16 @@ export const helloWorld = functions.https.onRequest(async (request, response) =>
         response.status(200).json({ name: "World " + param })
     }
 });
+
+const nextjsServer = next({
+    dev: false,
+    conf: {
+        distDir: "build/site",
+    },
+})
+const nextjsHandle = nextjsServer.getRequestHandler()
+
+export const site = functions.https.onRequest(async (request, response) => {
+    return nextjsServer.prepare().then(() => nextjsHandle(request, response))
+});
+
