@@ -7,7 +7,7 @@ const dev = process.env.NODE_ENV !== 'production';
 
 const app = next({
     dev: true,
-    dir: 'src'
+    dir: 'site'
 });
 
 const handle = app.getRequestHandler();

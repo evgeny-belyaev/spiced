@@ -1,15 +1,15 @@
 {
   "name": "spiced",
   "version": "1.0.0",
-  "main": "firebaseFunctions.js",
+  "main": "build/functions/functions/index.js",
   "scripts": {
-    "dev": "NODE_OPTIONS='--inspect' node src/server",
-    "build": "next build src/",
-    "start": "next start src/",
-    "serve": "npm run build && firebase emulators:start",
-    "shell": "npm run build && firebase functions:shell",
-    "deploy": "firebase deploy --only functions,hosting",
-    "logs": "firebase functions:log",
+    "build-functions": "tsc -p functions",
+    "build-site": "next build site/",   
+    "start-site": "next start site/",
+    "start-site-https": "NODE_OPTIONS='--inspect' node site/server",
+    "start-emulator": "firebase emulators:start",
+    "build": "yarn run build-site && yarn run build-functions",
+    "deploy-firebase": "firebase deploy --only functions,hosting",
     "test": "jest --silent",
     "testdebug": "jest",
     "test coverage": "jest --coverage",
@@ -23,7 +23,12 @@
     "next": "^9.5.3",
     "react": "^16.13.1",
     "react-bootstrap": "^1.4.0",
-    "react-dom": "^16.13.1"
+    "react-dom": "^16.13.1",
+    "body-parser": "^1.18.3",
+    "compression": "^1.7.3",
+    "cors": "^2.8.4",
+    "express": "^4.16.3",
+    "helmet": "^3.13.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.3",
