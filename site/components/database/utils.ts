@@ -1,15 +1,18 @@
-import { getDatabase } from "./dataProvider";
-import { Community } from "./types";
+import { getDatabase } from "./dataProvider"
+import { Community } from "./types"
 
-export async function createCommunity(title: string, ownerId: String): Promise<string> {
-    const newCommunityRef = await getDatabase().ref("communities/list").push({
-        title, ownerId
-    });
+export class SpicedDatabase {
+    static async createCommunity(title: string, ownerId: string): Promise<string> {
+        const newCommunityRef = await getDatabase().ref("communities/list").push({
+            title, ownerId
+        })
 
-    return newCommunityRef.key!;
+        return newCommunityRef.key!
+    }
+
+    static async getCommunityById (communityId: string): Promise<Community> {
+        const s = await getDatabase().ref(`communities/list/${communityId}`).once("value")
+        return <Community>s.val()
+    }
 }
 
-export const getCommunityById = async (communityId: String): Promise<Community> => {
-    const s = await getDatabase().ref(`communities/list/${communityId}`).once("value")
-    return s.val()
-}

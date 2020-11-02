@@ -1,58 +1,26 @@
-import App from '../components/App'
-import Button from 'react-bootstrap/Button'
-import Form from 'react-bootstrap/Form'
-import Head from 'next/head'
-import { FacebookLogin, FakeLogin } from "../components/facebookLogin"
-import React, { useState } from 'react'
-import { Logger } from '../components/logger'
+import App from "../components/App"
+import { FacebookLogin, FakeLogin } from "./FacebookLogin"
+import React, { useEffect, useState } from "react"
+import { Logger } from "../components/logger"
+import { CreateCommunityForm } from "./CreateCommunityForm"
 
 const log = new Logger("index")
 
-export function Home() {
+export const Home : React.FC<unknown> = () => {
     const [isLoggedIn, setLoggedIn] = useState(false)
 
-    const handleChange = (loginStatus: fb.LoginStatus) => {
-        if (loginStatus === "connected") {
-            setLoggedIn(true)
-        }
+    const handleChange = (r: boolean) => {
+        useEffect(() => {
+            setLoggedIn(r)
+        })
     }
-
-    log.debug(isLoggedIn)
 
     return (
         <App>
-            <Head>
-                {/* <script src="init.js"/> */}
-                <script src="https://connect.facebook.net/en_US/sdk.js" nonce="KMGyQ6eG" />
-            </Head>
+            <FakeLogin onLoggedIn={handleChange} />
+            {/* <FacebookLogin onLoggedIn={handleChange} /> */}
 
-            <FakeLogin onLoggedIn={handleChange}/>
-            <FacebookLogin onLoggedIn={handleChange} />
-
-            {isLoggedIn && <Form>
-                <Form.Group controlId="formBasicEmail">
-                    <Form.Label>Email address</Form.Label>
-                    <Form.Control type="email" placeholder="Enter email" />
-                    <Form.Text className="text-muted">
-                        We'll never share your email with anyone else.
-                    </Form.Text>
-                </Form.Group>
-
-                <Form.Group controlId="formBasicPassword">
-                    <Form.Label>Password</Form.Label>
-                    <Form.Control type="password" placeholder="Password" />
-                </Form.Group>
-
-                <Form.Group controlId="formBasicCheckbox">
-                    <Form.Check type="checkbox" label="Check me out" />
-                </Form.Group>
-
-                <Button variant="primary" type="submit">
-                    Submit
-                </Button>
-            </Form>}
-
-
+            {isLoggedIn && <CreateCommunityForm/>}
         </App>
     )
 }

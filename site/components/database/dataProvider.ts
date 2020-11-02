@@ -1,5 +1,5 @@
-import firebase from 'firebase';
-import { Logger } from '../logger';
+import firebase from "firebase"
+import { Logger } from "../logger"
 
 const log = new Logger("dataProvider")
 

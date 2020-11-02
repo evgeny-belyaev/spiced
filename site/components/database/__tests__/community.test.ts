@@ -1,9 +1,9 @@
-import { createCommunity, getCommunityById } from "../utils"
+import { SpicedDatabase } from "../utils"
 
 export default describe("community", () => {
     test("should create community", async () => {
         // Act
-        const communityId = await createCommunity("title", "ownerId")
+        const communityId = await SpicedDatabase.createCommunity("title", "ownerId")
 
         // Assert
         expect(communityId).not.toBeNull()
@@ -12,10 +12,10 @@ export default describe("community", () => {
 
     test("getCommunityById", async () => {
         // Arrange
-        const communityId = await createCommunity("title", "ownerId")
+        const communityId = await SpicedDatabase.createCommunity("title", "ownerId")
 
         // Act
-        const community = await getCommunityById(communityId)
+        const community = await SpicedDatabase.getCommunityById(communityId)
 
         // Assert
         expect(community).toEqual({
