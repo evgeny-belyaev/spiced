@@ -41,23 +41,23 @@ export const FacebookLogin: React.FC<Props> = ({ onLoggedIn }: Props) => {
 
             setFacebookSdkReady(true)
         } else {
-            FB.getLoginStatus(function (response) {
+            FB.getLoginStatus((response) => {
                 log.info("response.status!!!:" + response.status)
                 setLoggedIn(response.status === "connected")
             })
         }
     })
-    
+
     onLoggedIn(isLoggedIn)
 
     function onClick() {
         FB.getLoginStatus(function (response) {
             if (response && response.status === "connected") {
-                FB.logout(function (response) {
+                FB.logout(() => {
                     setLoggedIn(false)
                 })
             } else {
-                FB.login(function (response) {
+                FB.login(() => {
                     setLoggedIn(true)
                 })
             }

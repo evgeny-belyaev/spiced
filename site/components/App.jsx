@@ -8,7 +8,7 @@ const App = ({ children }) => (
     <Head>
     </Head>
     <div id="fb-root"/>
-    <script crossOrigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js" nonce="GZo6bQSn"/>
+    <script async defer crossOrigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js" nonce="GZo6bQSn"/>
     {children}
   </>
 )
