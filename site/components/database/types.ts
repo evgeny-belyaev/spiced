@@ -1,8 +1,7 @@
-export const communities = "communities"
-
 export type Community = {
     title: string
-    ownerId: string
+    description: string
+    creatorId: string
 }
 
 export type Db = {

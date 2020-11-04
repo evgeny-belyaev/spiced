@@ -10,7 +10,7 @@ export interface IApiEndpoint<TParams, TResponse> {
     connect: (app: express.Application) => void
 }
 
-export async function post(url: string, params: unknown): Promise<unknown> {
+export async function post(url: string, params: unknown): Promise<Response> {
     return await fetch(url, {
         method: "post",
         headers: {

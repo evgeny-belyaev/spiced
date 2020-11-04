@@ -16,7 +16,7 @@ function getFirebaseConfig() {
     }
 }
 
-export const getDatabase = (): firebase.database.Database => {
+export const getFirebaseDatabase = (): firebase.database.Database => {
     if (firebase.apps.length === 0) {
         firebase.initializeApp(getFirebaseConfig())
 

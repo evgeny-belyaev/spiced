@@ -1,30 +1,50 @@
 import * as express from "express"
 import { ParamsDictionary } from "express-serve-static-core"
-import { SpicedDatabase } from "../components/database/utils"
+import { spicedDatabase } from "../components/database"
+import { Logger } from "../components/logger"
 import { IApiEndpoint, safe, post } from "./utils"
 
-type CreateCommunityApiResponse = void
-
-type CreateCommunityApiParams = {
-    title: string,
-    description: string
+export type CreateCommunityApiResponse = {
+    url: string
 }
+
+export type CreateCommunityApiParams = {
+    title: string,
+    description: string,
+    userId: string
+}
+
+const log = new Logger("api")
 
 export class CreateCommunityApi implements IApiEndpoint<CreateCommunityApiParams, CreateCommunityApiResponse> {
     path = "/api/community/create"
+
+    private getCommunityUrl(request: express.Request<ParamsDictionary>, communityKey: string) {
+        // FIXME: Add some encryption here  
+        return request.baseUrl + "/community/" + communityKey
+    }
 
     async handler(request: express.Request<ParamsDictionary>, response: express.Response<unknown>): Promise<void> {
         return safe(response, async () => {
             const params = <CreateCommunityApiParams>(request.body)
 
-            await SpicedDatabase.createCommunity(params.title, params.description)
+            log.debug("createCommunity", params)
 
-            response.status(200).json(params)
+            const communityKey = await spicedDatabase().createCommunity({
+                title: params.description,
+                description: params.description,
+                creatorId: params.userId
+            })
+
+            response.status(200).json({
+                url: this.getCommunityUrl(request, communityKey)
+            })
         })
     }
 
     async client(params: CreateCommunityApiParams): Promise<CreateCommunityApiResponse> {
-        return <CreateCommunityApiResponse>(await post(this.path, params))
+        const response = await post(this.path, params)
+        return <CreateCommunityApiResponse>(await response.json())
     }
 
     connect(app: express.Application): void {

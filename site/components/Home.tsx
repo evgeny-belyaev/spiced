@@ -1,24 +1,24 @@
 import App from "../components/App"
-import { FacebookLogin, FakeLogin } from "./FacebookLogin"
-import React, { useEffect, useState } from "react"
+import { FacebookLogin } from "./FacebookLogin"
+import React, { useState } from "react"
 import { Logger } from "../components/logger"
 import { CreateCommunityForm } from "./CreateCommunityForm"
 
 const log = new Logger("index")
 
 export const Home: React.FC<unknown> = () => {
-    const [isLoggedIn, setLoggedIn] = useState(false)
+    const [userId, setUserId] = useState("")
 
-    const handleChange = (r: boolean) => {
-        setLoggedIn(r)
+    const handleLoggedIn = (userId: string) => {
+        setUserId(userId)
     }
 
     return (
         <App>
             {/* <FakeLogin onLoggedIn={handleChange} /> */}
-            <FacebookLogin onLoggedIn={handleChange} />
+            <FacebookLogin onLoggedIn={handleLoggedIn} />
 
-            {isLoggedIn && <CreateCommunityForm />}
+            {userId && <CreateCommunityForm userId={userId} />}
         </App>
     )
 }

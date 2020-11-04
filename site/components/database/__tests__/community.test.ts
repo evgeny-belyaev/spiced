@@ -1,4 +1,4 @@
-import { SpicedDatabase } from "../utils"
+import { SpicedDatabase } from ".."
 
 export default describe("community", () => {
     test("should create community", async () => {

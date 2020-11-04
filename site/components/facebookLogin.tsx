@@ -2,18 +2,19 @@ import { useEffect } from "react"
 import Button from "react-bootstrap/Button"
 import React, { useState } from "react"
 import { Logger } from "./logger"
+import { fbGetLoginStatus, fbLogin, fbLogout } from "./facebook"
 
-const log = new Logger("fakelogin")
+const log = new Logger("Facebooklogin")
 
 type Props = {
-    onLoggedIn: (isLoggedId: boolean) => void
+    onLoggedIn: (userId: string) => void
 }
 
 export const FakeLogin: React.FC<Props> = ({ onLoggedIn }: Props) => {
     const [isLoggedIn, setLoggedIn] = useState(false)
 
     // log.debug(isLoggedIn)
-    onLoggedIn(isLoggedIn)
+    onLoggedIn("111222333444")
 
     function handleClick() {
         setLoggedIn(!isLoggedIn)
@@ -26,45 +27,47 @@ export const FakeLogin: React.FC<Props> = ({ onLoggedIn }: Props) => {
 
 export const FacebookLogin: React.FC<Props> = ({ onLoggedIn }: Props) => {
     const [isFacebookSdkReady, setFacebookSdkReady] = useState(false)
-    const [isLoggedIn, setLoggedIn] = useState(false)
+    const [userId, setUserId] = useState("")
 
     useEffect(() => {
-        if (!isFacebookSdkReady) {
-            log.info("Fb.init")
+        async function init() {
+            if (!isFacebookSdkReady) {
+                log.info("Fb.init")
 
-            FB.init({
-                appId: "383163236378113",
-                autoLogAppEvents: true,
-                xfbml: true,
-                version: "v8.0"
-            })
+                FB.init({
+                    appId: "383163236378113",
+                    autoLogAppEvents: true,
+                    xfbml: true,
+                    version: "v8.0"
+                })
 
-            setFacebookSdkReady(true)
-        } else {
-            FB.getLoginStatus((response) => {
-                log.info("response.status!!!:" + response.status)
-                setLoggedIn(response.status === "connected")
-            })
+                setFacebookSdkReady(true)
+            } else {
+                const response = await fbGetLoginStatus()
+                log.info("response", response)
+                setUserId(response.status === "connected" ? response.authResponse.userID : "")
+            }
         }
+
+        void init()
     })
 
-    onLoggedIn(isLoggedIn)
+    async function onClick() {
+        const response = await fbGetLoginStatus()
 
-    function onClick() {
-        FB.getLoginStatus(function (response) {
-            if (response && response.status === "connected") {
-                FB.logout(() => {
-                    setLoggedIn(false)
-                })
-            } else {
-                FB.login(() => {
-                    setLoggedIn(true)
-                })
-            }
-        })
+        if (response && response.status === "connected") {
+            await fbLogout()
+            setUserId("")
+        } else {
+            setUserId(
+                (await fbLogin()).authResponse.userID
+            )
+        }
     }
 
-    const buttonTitle = isLoggedIn ? "Logout" : "Login with Facebook"
+    onLoggedIn(userId)
+
+    const buttonTitle = userId != "" ? "Logout" : "Login with Facebook"
 
     return (<>
         <Button onClick={onClick}>{buttonTitle}</Button>
