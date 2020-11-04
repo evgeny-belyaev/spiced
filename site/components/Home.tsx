@@ -6,21 +6,19 @@ import { CreateCommunityForm } from "./CreateCommunityForm"
 
 const log = new Logger("index")
 
-export const Home : React.FC<unknown> = () => {
+export const Home: React.FC<unknown> = () => {
     const [isLoggedIn, setLoggedIn] = useState(false)
 
     const handleChange = (r: boolean) => {
-        useEffect(() => {
-            setLoggedIn(r)
-        })
+        setLoggedIn(r)
     }
 
     return (
         <App>
-            <FakeLogin onLoggedIn={handleChange} />
-            {/* <FacebookLogin onLoggedIn={handleChange} /> */}
+            {/* <FakeLogin onLoggedIn={handleChange} /> */}
+            <FacebookLogin onLoggedIn={handleChange} />
 
-            {isLoggedIn && <CreateCommunityForm/>}
+            {isLoggedIn && <CreateCommunityForm />}
         </App>
     )
 }
