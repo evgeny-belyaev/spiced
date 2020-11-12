@@ -1,5 +1,5 @@
-import { NextApiRequest, NextApiResponse } from 'next'
-import { createMocks } from 'node-mocks-http';
+import { NextApiRequest, NextApiResponse } from "next"
+import { createMocks } from "node-mocks-http"
 
 type ApiResult<TResponse> = {
     status: number,
@@ -12,7 +12,7 @@ export async function testApi<TRequest, TResponse>(
 ): Promise<ApiResult<TResponse>> {
 
     const { req, res } = createMocks({
-        method: 'POST',
+        method: "POST",
         query: request
     })
 

@@ -1,9 +1,15 @@
-import { SpicedDatabase } from ".."
+import { spicedDatabase } from "../index"
 
 export default describe("community", () => {
     test("should create community", async () => {
         // Act
-        const communityId = await SpicedDatabase.createCommunity("title", "ownerId")
+
+
+        const communityId = await spicedDatabase().createCommunity({
+            title: "title",
+            description: "desc",
+            creatorId: "crId"
+        })
 
         // Assert
         expect(communityId).not.toBeNull()
@@ -12,15 +18,20 @@ export default describe("community", () => {
 
     test("getCommunityById", async () => {
         // Arrange
-        const communityId = await SpicedDatabase.createCommunity("title", "ownerId")
+        const communityId = await spicedDatabase().createCommunity({
+            title: "title",
+            description: "desc",
+            creatorId: "crId"
+        })
 
         // Act
-        const community = await SpicedDatabase.getCommunityById(communityId)
+        const community = await spicedDatabase().getCommunityById(communityId)
 
         // Assert
         expect(community).toEqual({
             title: "title",
-            ownerId: "ownerId"
+            description: "desc",
+            creatorId: "crId"
         })
     })
 })

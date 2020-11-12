@@ -4,10 +4,9 @@ import { Community } from "./types"
 
 const log = new Logger("database")
 
-
 class SpicedDatabase {
     private communitiesList = () => "communities/list"
-    private communityById = (communityId: string) => `communities/list${communityId}`
+    private communityById = (communityId: string) => `communities/list/${communityId}`
 
     private ref = (path: string) => getFirebaseDatabase().ref(path)
 

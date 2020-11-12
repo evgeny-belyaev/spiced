@@ -1,2 +1,3 @@
-import { Home } from "../components/Home"
-export default Home
+import { CreateCommunityPage } from "../components/CreateCommunityPage"
+export default CreateCommunityPage
+
