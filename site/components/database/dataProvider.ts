@@ -1,4 +1,5 @@
 import firebase from "firebase"
+import { Database } from "../constants"
 import { Logger } from "../logger"
 
 const log = new Logger("dataProvider")
@@ -10,8 +11,8 @@ function getFirebaseConfig() {
         }
     } else {
         return {
-            apiKey: "AIzaSyAsoRfHyVtfB0VE-t3eSfgpoEi0FLsXnH0",
-            databaseURL: "https://spiced-f9677.firebaseio.com/"
+            apiKey: Database.accessToken,
+            databaseURL: Database.url
         }
     }
 }

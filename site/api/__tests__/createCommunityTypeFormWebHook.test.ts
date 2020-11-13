@@ -77,8 +77,8 @@ function givenApi() {
     return api
 }
 
-describe("/api/create/[param]", () => {
-    test("responds 500 to invalid POST(no email)", async () => {
+describe("CreateCommunityTypeFormWebHookApi", () => {
+    test("responds 500 to invalid POST(no email)", () => {
         // Arrange
         const api = givenApi()
         const { req, res } = createMocks({
@@ -88,15 +88,11 @@ describe("/api/create/[param]", () => {
         })
 
         // Act
-        await api.handler(req, res)
-
         // Assert
-        expect(res.statusCode).toEqual(500)
-        expect(res._getData()).toEqual("Error")
-        expect(res._getStatusMessage()).toEqual("OK")
+        void expect(api.handler(req, res)).rejects.toEqual(new Error("Invalid request"))
     })
 
-    test("responds 500 to invalid POST", async () => {
+    test("responds 500 to invalid POST", () => {
         // Arrange
         const api = givenApi()
         const { req, res } = createMocks({
@@ -106,12 +102,8 @@ describe("/api/create/[param]", () => {
         })
 
         // Act
-        await api.handler(req, res)
-
         // Assert
-        expect(res.statusCode).toEqual(500)
-        expect(res._getData()).toEqual("Error")
-        expect(res._getStatusMessage()).toEqual("OK")
+        void expect(api.handler(req, res)).rejects.toEqual(new Error("Invalid request"))
     })
 
     test("responds 200 to valid POST", async () => {

@@ -3,8 +3,6 @@ import { spicedDatabase } from "../index"
 export default describe("community", () => {
     test("should create community", async () => {
         // Act
-
-
         const communityId = await spicedDatabase().createCommunity({
             title: "title",
             description: "desc",

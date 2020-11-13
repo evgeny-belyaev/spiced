@@ -1,8 +1,9 @@
-import { IApiEndpoint, safe, post } from "./utils"
+import { post } from "./utils"
 import * as express from "express"
-import { ParamsDictionary } from "express-serve-static-core"
 import { Logger } from "../components/logger"
 import { BaseUrl } from "../components/constants"
+import { ApiEndpoint } from "./ApiEndpoint"
+import { TokenEncryptor } from "../components/TokenEncryptor";
 
 export type CreateCommunityTypeFormWebHookResponse = {
     url: string
@@ -47,48 +48,44 @@ export type CreateCommunityTypeFormWebHookParams = {
 
 const log = new Logger("CreateCommunityTypeFormWebHookApi")
 
-
-export class CreateCommunityTypeFormWebHookApi implements IApiEndpoint<CreateCommunityTypeFormWebHookParams, CreateCommunityTypeFormWebHookResponse> {
+export class CreateCommunityTypeFormWebHookApi extends ApiEndpoint<CreateCommunityTypeFormWebHookParams, CreateCommunityTypeFormWebHookResponse> {
     path = "/createCommunity/hook"
 
     private emailFieldId = "B8IPm7Osl6R1"
 
     async process(token: string, email: string): Promise<void> {
-        const a = token + email
-        const salt = "07fqxivsl4zgd7c6507fqfldiqinln21"
-        Buffer.from(salt + token).toString("base64")
+        const tokenEncryptor = new TokenEncryptor()
+        const url = BaseUrl + "/createCommunity/" + tokenEncryptor.encrypt(token)
 
-        const url = BaseUrl + "/createCommunity/" + token
     }
 
-    async handler(request: express.Request<ParamsDictionary>, response: express.Response<unknown>): Promise<void> {
-        return safe(response, async () => {
-            const params = <CreateCommunityTypeFormWebHookParams>(request.body)
-            log.debug("createCommunity", JSON.stringify(params))
 
-            const { token, answers } = params.form_response
-            const email = answers.filter((a: Answer) => {
+
+    async handler(request: express.Request, response: express.Response<unknown>): Promise<void> {
+        const params = <CreateCommunityTypeFormWebHookParams>(request.body)
+        log.debug("createCommunity", JSON.stringify(params))
+        let email, token
+
+        try {
+            token = params.form_response.token
+            email = params.form_response.answers.filter((a: Answer) => {
                 return a.field.id === this.emailFieldId
             })[0].email
+        } catch (x) {
+            throw Error("Invalid request")
+        }
 
-            if (!!token && !!email) {
-                await this.process(token, email)
-            }
+        if (!!token && !!email) {
+            await this.process(token, email)
+        } else {
+            throw Error("Invalid request")
+        }
 
-            response.status(200).end()
-        })
+        response.status(200).end()
     }
 
     async client(params: CreateCommunityTypeFormWebHookParams): Promise<CreateCommunityTypeFormWebHookResponse> {
         const response = await post(this.path, params)
         return <CreateCommunityTypeFormWebHookResponse>(await response.json())
-    }
-
-    connect(app: express.Application): void {
-        app.post(this.path, async (request: express.Request, response: express.Response): Promise<void> => {
-            return safe(response, () => {
-                return this.handler(request, response)
-            })
-        })
     }
 }

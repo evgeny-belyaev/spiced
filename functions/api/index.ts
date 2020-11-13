@@ -5,8 +5,8 @@ import { CreateCommunityTypeFormWebHookApi } from "../../site/api/createCommunit
 const app = express()
 app.disable("x-powered-by")
 
-new CreateCommunityApi().connect(app)
-new CreateCommunityTypeFormWebHookApi().connect(app)
 
+new CreateCommunityApi().connectPost(app)
+new CreateCommunityTypeFormWebHookApi().connectPost(app)
 
 export default app
