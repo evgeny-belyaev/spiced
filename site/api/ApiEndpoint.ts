@@ -1,7 +1,7 @@
 import * as express from "express"
 import { ParamsDictionary } from "express-serve-static-core"
 import { Logger } from "../components/logger"
-import { IApiEndpoint } from "./utils"
+import { IApiEndpoint } from "./IApiEndpoint"
 
 const log = new Logger("ApiEndpoint")
 

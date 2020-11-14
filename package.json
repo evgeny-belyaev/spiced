@@ -16,7 +16,8 @@
     "test": "jest --silent",
     "testdebug": "jest",
     "test coverage": "jest --coverage",
-    "testwatch": "npm test -- --watch --maxWorkers 4"
+    "testwatch": "npm test -- --watch --maxWorkers 4",
+    "localtunnel5000": "npx localtunnel --port 5000"
   },
   "dependencies": {
     "@mailchimp/mailchimp_marketing": "^3.0.23",

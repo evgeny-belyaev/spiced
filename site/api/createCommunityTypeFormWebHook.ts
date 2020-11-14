@@ -1,9 +1,12 @@
-import { post } from "./utils"
 import * as express from "express"
 import { Logger } from "../components/logger"
-import { BaseUrl } from "../components/constants"
 import { ApiEndpoint } from "./ApiEndpoint"
-import { TokenEncryptor } from "../components/TokenEncryptor";
+import { TokenEncryptor } from "../components/TokenEncryptor"
+import { MailComponent } from "../components/mail"
+import { Url } from "../components/constants"
+import { Fetcher } from "./fetcher"
+import { CommunityComponent } from "../components/logic/CommunityComponent"
+
 
 export type CreateCommunityTypeFormWebHookResponse = {
     url: string
@@ -51,19 +54,19 @@ const log = new Logger("CreateCommunityTypeFormWebHookApi")
 export class CreateCommunityTypeFormWebHookApi extends ApiEndpoint<CreateCommunityTypeFormWebHookParams, CreateCommunityTypeFormWebHookResponse> {
     path = "/createCommunity/hook"
 
-    private emailFieldId = "B8IPm7Osl6R1"
+    private communityComponent: CommunityComponent
 
-    async process(token: string, email: string): Promise<void> {
-        const tokenEncryptor = new TokenEncryptor()
-        const url = BaseUrl + "/createCommunity/" + tokenEncryptor.encrypt(token)
+    constructor(communityComponent: CommunityComponent) {
+        super()
+        this.communityComponent = communityComponent
 
     }
 
+    private emailFieldId = "B8IPm7Osl6R1"
 
+    private validateInput(body: any) {
+        const params = <CreateCommunityTypeFormWebHookParams>(body)
 
-    async handler(request: express.Request, response: express.Response<unknown>): Promise<void> {
-        const params = <CreateCommunityTypeFormWebHookParams>(request.body)
-        log.debug("createCommunity", JSON.stringify(params))
         let email, token
 
         try {
@@ -75,17 +78,24 @@ export class CreateCommunityTypeFormWebHookApi extends ApiEndpoint<CreateCommuni
             throw Error("Invalid request")
         }
 
-        if (!!token && !!email) {
-            await this.process(token, email)
-        } else {
-            throw Error("Invalid request")
+        return {
+            token,
+            email: email ? email : ""
         }
+    }
+
+    async handler(request: express.Request, response: express.Response<unknown>): Promise<void> {
+        log.debug(JSON.stringify(request.body))
+
+        const {token, email} = this.validateInput(request.body)
+
+        await this.communityComponent.sendCreateCommunityConfirmationEmail(token, email)
 
         response.status(200).end()
     }
 
     async client(params: CreateCommunityTypeFormWebHookParams): Promise<CreateCommunityTypeFormWebHookResponse> {
-        const response = await post(this.path, params)
+        const response = await new Fetcher().post(this.path, params)
         return <CreateCommunityTypeFormWebHookResponse>(await response.json())
     }
 }

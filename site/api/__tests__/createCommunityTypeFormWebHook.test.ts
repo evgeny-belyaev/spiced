@@ -1,5 +1,9 @@
 import { CreateCommunityTypeFormWebHookApi } from "../createCommunityTypeFormWebHook"
 import { createMocks } from "node-mocks-http"
+import { TokenEncryptor } from "../../components/TokenEncryptor"
+import { MailComponent } from "../../components/mail"
+import { Url } from "../../components/constants"
+import { CommunityComponent } from "../../components/logic/CommunityComponent"
 
 const responseData = {
     "event_id": "01EPYS7P4P6ZJAYPG1DQ3F23J0",
@@ -71,17 +75,27 @@ const responseData_noEmail = {
     }
 }
 
-function givenApi() {
-    const api = new CreateCommunityTypeFormWebHookApi()
-    api.process = jest.fn()
-    return api
+function givenApi(communityComponent: CommunityComponent) {
+    return new CreateCommunityTypeFormWebHookApi(communityComponent)
+}
+
+function givenCommunityComponent() {
+    return
 }
 
 describe("CreateCommunityTypeFormWebHookApi", () => {
     test("responds 500 to invalid POST(no email)", () => {
         // Arrange
-        const api = givenApi()
-        const { req, res } = createMocks({
+
+        const communityComponent = jest.fn<CommunityComponent>(() =>({
+            sendCreateCommunityConfirmationEmail: jest.fn()
+        }))
+
+        const api = givenApi(
+            communityComponent()
+        )
+
+        const {req, res} = createMocks({
             method: "POST",
             query: {},
             body: responseData_noEmail
@@ -94,8 +108,15 @@ describe("CreateCommunityTypeFormWebHookApi", () => {
 
     test("responds 500 to invalid POST", () => {
         // Arrange
-        const api = givenApi()
-        const { req, res } = createMocks({
+        const communityComponent = jest.fn<CommunityComponent>(() =>({
+            sendCreateCommunityConfirmationEmail: jest.fn()
+        }))
+
+        const api = givenApi(
+            communityComponent()
+        )
+
+        const {req, res} = createMocks({
             method: "POST",
             query: {},
             body: ["invalid"]
@@ -106,10 +127,18 @@ describe("CreateCommunityTypeFormWebHookApi", () => {
         void expect(api.handler(req, res)).rejects.toEqual(new Error("Invalid request"))
     })
 
-    test("responds 200 to valid POST", async () => {
+    test("should encrypt token and send email", async () => {
         // Arrange
-        const api = givenApi()
-        const { req, res } = createMocks({
+        const sendCreateCommunityConfirmationEmail = jest.fn()
+        const communityComponent = jest.fn<CommunityComponent>(() =>({
+            sendCreateCommunityConfirmationEmail
+        }))
+
+        const api = givenApi(
+            communityComponent()
+        )
+
+        const {req, res} = createMocks({
             method: "POST",
             query: {},
             body: responseData
@@ -120,8 +149,8 @@ describe("CreateCommunityTypeFormWebHookApi", () => {
 
         // Assert
         expect(res.statusCode).toEqual(200)
-        expect(api.process).toHaveBeenCalledWith("07fqxivsl4zgd7c6507fqfldiqinln21", "evgeny.belyaev@gmail.com")
+        expect(sendCreateCommunityConfirmationEmail).toBeCalledWith("07fqxivsl4zgd7c6507fqfldiqinln21", "evgeny.belyaev@gmail.com")
     })
 })
 
-export { }
+export {}

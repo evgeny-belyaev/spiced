@@ -15,6 +15,8 @@ describe("MailComponent", () => {
         expect(await mail.pingTx()).toEqual("PONG!")
     })
 
+
+
     // test("Add contact", async () => {
     //     const mail = new MailComponent()
     //

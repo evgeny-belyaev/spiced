@@ -1,36 +1,24 @@
 import { MailChimp } from "../constants"
 import { Logger } from "../logger"
+import { Mailchimp, MailchimpTx, SendResult, TemplateContent } from "./types"
 
 declare function require<T>(name: string): T
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const mailchimp: Mailchimp = require<Mailchimp>("@mailchimp/mailchimp_marketing")
 
+mailchimp.setConfig({
+    apiKey: MailChimp.marketingAccessToken,
+    server: MailChimp.server
+})
+
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const mailchimpTx = require<(key: string) => MailchimpTx>("@mailchimp/mailchimp_transactional")(MailChimp.transactionalAccessToken)
 
-type Mailchimp = {
-    setConfig: (config: unknown) => void,
-    ping: {
-        get: () => Promise<string>
-    },
-    lists: {
-        addListMember: (listId: string, body: unknown) => Promise<{ id: string }>
-        getListMember: (listId: string, subscriberHash: string) => unknown
-    }
-}
-
-type MailchimpTx = {
-    users: {
-        ping: () => Promise<string>
-    }
-}
-
 const log = new Logger("MailComponent")
 
+
 export class MailComponent {
-
-
     async ping(): Promise<unknown> {
         mailchimp.setConfig({
             apiKey: MailChimp.marketingAccessToken,
@@ -60,6 +48,17 @@ export class MailComponent {
             return response.id
         } catch (x) {
             log.error(x)
+            return undefined
         }
+    }
+
+    async sendTemplate(templateName: string, content: TemplateContent[]): Promise<SendResult[]> {
+        const response = await mailchimpTx.messages.sendTemplate({
+            message: "Hello",
+            template_name: templateName,
+            template_content: content
+        })
+
+        return response
     }
 }

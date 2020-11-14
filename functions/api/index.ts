@@ -1,12 +1,15 @@
 import * as express from "express"
-import { CreateCommunityApi } from "../../site/api/createCommunity"
 import { CreateCommunityTypeFormWebHookApi } from "../../site/api/createCommunityTypeFormWebHook"
+import { TokenEncryptor } from "../../site/components/TokenEncryptor"
+import { MailComponent } from "../../site/components/mail"
 
 const app = express()
 app.disable("x-powered-by")
 
 
-new CreateCommunityApi().connectPost(app)
-new CreateCommunityTypeFormWebHookApi().connectPost(app)
+new CreateCommunityTypeFormWebHookApi(
+    new TokenEncryptor(),
+    new MailComponent()
+).connectPost(app)
 
 export default app

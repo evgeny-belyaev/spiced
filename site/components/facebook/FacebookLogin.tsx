@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 import Button from "react-bootstrap/Button"
 import React, { useState } from "react"
-import { Logger } from "./logger"
+import { Logger } from "../logger"
 import { fbGetLoginStatus, fbLogin, fbLogout } from "./facebook"
 
 const log = new Logger("Facebooklogin")
