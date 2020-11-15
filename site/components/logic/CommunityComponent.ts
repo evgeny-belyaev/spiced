@@ -1,16 +1,21 @@
 import { TokenEncryptor } from "../TokenEncryptor"
 import { FormsApi } from "../forms"
-import { Forms, Url } from "../constants"
+import { Forms, MailChimp, Url } from "../constants"
 import { MailComponent } from "../mail"
+import { Logger } from "../logger"
 
 type CreateCommunityResult = {
     communityInvitationLink: string
 }
 
+
+
 export class CommunityComponent {
     private tokenEncryptor: TokenEncryptor
     private formsApi: FormsApi
     private mailComponent: MailComponent
+
+    private log = new Logger("CommunityComponent")
 
     constructor(tokenEncryptor: TokenEncryptor, formsApi: FormsApi, mailComponent: MailComponent) {
         this.tokenEncryptor = tokenEncryptor
@@ -23,10 +28,17 @@ export class CommunityComponent {
             throw Error("Invalid argument")
         }
 
-        await this.mailComponent.sendTemplate("createCommunityConfirmation", [{
-            name: "createCommunityConfirmationUrl",
-            content: Url.getCreateCommunityConfirmationUrl(this.tokenEncryptor.encrypt(formResponseId))
-        }])
+        this.log.debug(`Sending community link with ${formResponseId} to ${email}`)
+
+        await this.mailComponent.sendTemplate(
+            email,
+            "Community creation confirmation",
+            "contact@wowyougotamatch.com",
+            MailChimp.Templates.createCommunityConfirmation,
+            [{
+                name: "createCommunityConfirmationUrl",
+                content: `<a heref="${Url.getCreateCommunityConfirmationUrl(this.tokenEncryptor.encrypt(formResponseId))}">Click me</a>`
+            }])
     }
 
     async createCommunity(encryptedToken: string): Promise<CreateCommunityResult> {

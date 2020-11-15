@@ -7,16 +7,17 @@ const log = new Logger("ApiEndpoint")
 
 export abstract class ApiEndpoint<TParams, TResponse> implements IApiEndpoint<TParams, TResponse> {
     abstract path: string
+
     abstract handler(request: express.Request<ParamsDictionary>, response: express.Response<unknown>): Promise<void>
+
     abstract client(params: TParams): Promise<TResponse>
 
     connectPost(app: express.Application): void {
-        app.post(this.path, async (request: express.Request, response: express.Response): Promise<void> => {
+        app.post(this.path, async (request: express.Request, response: express.Response) => {
             try {
-                return this.handler(request, response)
+                return await this.handler(request, response)
             } catch (x) {
-                response.status(500).send("Error")
-
+                response.status(500).end()
                 log.error(x)
             }
         })

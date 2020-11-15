@@ -23,7 +23,7 @@ export default describe("MailComponent", () => {
         // Arrange
         const mail = new MailComponent()
 
-        await mail.sendTemplate("evgeny.belyaev@gmail.com", "template1",
+        await mail.sendTemplate("evgeny.belyaev@gmail.com", "subject", "me@home.com", "template1",
             [{
                 name: "title",
                 content: "dynamic title!!!!"
@@ -34,8 +34,8 @@ export default describe("MailComponent", () => {
             {
                 "key": "AOOq73pypJb5533oSKdqEw",
                 "message": {
-                    "from_email": "contact@wowyougotamatch.com",
-                    "subject": "test subject",
+                    "from_email": "me@home.com",
+                    "subject": "subject",
                     "to": [{
                         "email": "evgeny.belyaev@gmail.com"
                     }]

@@ -3,6 +3,8 @@ import React from "react"
 import { CommunityComponent } from "../../components/logic/CommunityComponent"
 import { TokenEncryptor } from "../../components/TokenEncryptor"
 import { FormsApi } from "../../components/forms"
+import { MailComponent } from "../../components/mail"
+import { Fetcher } from "../../api/fetcher"
 
 type Props = {
     communityInvitationLink?: string,
@@ -27,7 +29,8 @@ export const getServerSideProps = async (context: GetServerSidePropsContext): Pr
 
         const result = await new CommunityComponent(
             new TokenEncryptor(),
-            new FormsApi()
+            new FormsApi(new Fetcher()),
+            new MailComponent()
         ).createCommunity(encryptedToken)
 
         return {

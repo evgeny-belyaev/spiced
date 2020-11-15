@@ -1,7 +1,7 @@
 import { CommunityComponent } from "../CommunityComponent"
 import { TokenEncryptor } from "../../TokenEncryptor"
 import { FormsApi } from "../../forms"
-import { Forms, Url } from "../../constants"
+import { Forms, MailChimp, Url } from "../../constants"
 import { MailComponent } from "../../mail"
 
 export default describe("CommunityComponent", () => {
@@ -33,10 +33,13 @@ export default describe("CommunityComponent", () => {
         // Assert
         expect(encrypt).toBeCalledWith("id")
         expect(sendTemplate).toBeCalledWith(
-            "createCommunityConfirmation",
+            "a@b.com",
+            "Community creation confirmation",
+            "contact@wowyougotamatch.com",
+            MailChimp.Templates.createCommunityConfirmation,
             [{
                 name: "createCommunityConfirmationUrl",
-                content: Url.getBaseUrl() + "/createCommunity/encrypted"
+                content: "<a heref=\"http://localhost:5000/createCommunity/encrypted\">Click me</a>"
             }]
         )
     })

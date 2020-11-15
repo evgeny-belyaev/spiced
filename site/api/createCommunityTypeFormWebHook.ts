@@ -1,9 +1,6 @@
 import * as express from "express"
 import { Logger } from "../components/logger"
 import { ApiEndpoint } from "./ApiEndpoint"
-import { TokenEncryptor } from "../components/TokenEncryptor"
-import { MailComponent } from "../components/mail"
-import { Url } from "../components/constants"
 import { Fetcher } from "./fetcher"
 import { CommunityComponent } from "../components/logic/CommunityComponent"
 

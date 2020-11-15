@@ -52,18 +52,22 @@ export class MailComponent {
         }
     }
 
-    async sendTemplate(email: string, templateName: string, content: TemplateContent[]): Promise<SendResult[]> {
+    async sendTemplate(
+        emailAddress: string,
+        subject: string,
+        from: string,
+        templateName: string,
+        content: TemplateContent[]): Promise<SendResult[]> {
         const response = await mailchimpTx.messages.sendTemplate({
             message: {
-                subject: "test subject",
-                from_email : "contact@wowyougotamatch.com",
+                subject,
+                from_email: from,
                 to: [{
-                    email: email
+                    email: emailAddress
                 }]
             },
             template_name: templateName,
             template_content: content
-
         })
 
         return response
