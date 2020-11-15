@@ -18,7 +18,7 @@ export const Forms = {
 
 export const MailChimp = {
     marketingAccessToken: isServer() ? "5ef474ca75d706884cc1b905dd8cf091-us2" : "",
-    transactionalAccessToken: isServer() ? "JGLn0S0z5HxJbXFiyEJFjw" /* test key */ : "",
+    transactionalAccessToken: isServer() ? "AOOq73pypJb5533oSKdqEw" : "",
     server: isServer() ? "us2" : "",
     audienceId: isServer() ? "94657a4562" : ""
 }

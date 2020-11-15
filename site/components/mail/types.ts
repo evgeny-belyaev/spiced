@@ -2,17 +2,30 @@ export type TemplateContent = {
     name: string,
     content: string
 }
+
+type To = {
+    email: string,
+    name?: string,
+    type?: "to" | "cc" | "bcc"
+}
+
 export type Template = {
     template_name: string,
     template_content: TemplateContent[],
-    message: string
+    message: {
+        subject: string,
+        from_email: string,
+        to: To[]
+    }
 }
+
 export type SendResult = {
     email: string,
     status: string,
     reject_status: string,
     _id: string
 }
+
 export type MailchimpTx = {
     users: {
         ping: () => Promise<string>
@@ -21,6 +34,7 @@ export type MailchimpTx = {
         sendTemplate: (body: Template) => Promise<SendResult[]>
     }
 }
+
 export type Mailchimp = {
     setConfig: (config: unknown) => void,
     ping: {
