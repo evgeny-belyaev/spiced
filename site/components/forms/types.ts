@@ -1,13 +1,9 @@
-import { Forms } from "../constants"
-import { Fetcher } from "../../api/fetcher"
-
-type Field = {
+export type Field = {
     id: string,
     type: string,
     title: string,
     description: string
 }
-
 export type FormAnswer = {
     field: {
         id: string,
@@ -32,7 +28,6 @@ export type FormAnswer = {
     boolean?: boolean,
     date?: string
 }
-
 type Item = {
     response_id: string,
     definition: {
@@ -43,8 +38,7 @@ type Item = {
         score: number
     }
 }
-
-type FormResponse = {
+export type FormResponse = {
     total_items: number,
     page_count: number,
     _links: {
@@ -52,30 +46,4 @@ type FormResponse = {
         reports: string
     },
     items: Item[]
-}
-
-export class FormsApi {
-    private fetcher: Fetcher
-
-    constructor(fetcher: Fetcher) {
-        this.fetcher = fetcher
-    }
-
-    public getAnswerById(answers: FormAnswer[], fieldId: string): FormAnswer {
-        return answers.filter((a) => a.field.id === fieldId)[0]
-    }
-
-    async getAnswers(formId: string, responseId: string): Promise<FormAnswer[]> {
-        const responsesUrl = Forms.getResponsesUrl(formId, [responseId])
-        const response = await this.fetcher.get(responsesUrl)
-
-        if (response) {
-            const formResponse = await response.json() as FormResponse
-            const firstItem = formResponse.items[0]
-
-            return firstItem.answers
-        } else {
-            return []
-        }
-    }
 }

@@ -1,12 +1,21 @@
-import { spicedDatabase } from "../index"
+import { SpicedDatabase } from "../spicedDatabase"
 
 export default describe("community", () => {
     test("should create community", async () => {
+        // Arrange
+        const db = new SpicedDatabase()
+
         // Act
-        const communityId = await spicedDatabase().createCommunity({
+        const communityId = await db.createCommunity({
             title: "title",
-            description: "desc",
-            creatorId: "crId"
+            publicLink: "publicLink",
+            creator: {
+                firstName: "firstName",
+                lastName: "lastName",
+                website: "website",
+                phoneNumber: "phoneNumber",
+                emailAddress: "emailAddress"
+            }
         })
 
         // Assert
@@ -16,20 +25,33 @@ export default describe("community", () => {
 
     test("getCommunityById", async () => {
         // Arrange
-        const communityId = await spicedDatabase().createCommunity({
+        const db = new SpicedDatabase()
+        const communityId = await db.createCommunity({
             title: "title",
-            description: "desc",
-            creatorId: "crId"
+            publicLink: "publicLink",
+            creator: {
+                firstName: "firstName",
+                lastName: "lastName",
+                website: "website",
+                phoneNumber: "phoneNumber",
+                emailAddress: "emailAddress"
+            }
         })
 
         // Act
-        const community = await spicedDatabase().getCommunityById(communityId)
+        const community = await db.getCommunityById(communityId)
 
         // Assert
         expect(community).toEqual({
             title: "title",
-            description: "desc",
-            creatorId: "crId"
+            publicLink: "publicLink",
+            creator: {
+                firstName: "firstName",
+                lastName: "lastName",
+                website: "website",
+                phoneNumber: "phoneNumber",
+                emailAddress: "emailAddress"
+            }
         })
     })
 })

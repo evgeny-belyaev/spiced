@@ -1,26 +1,34 @@
 import { TokenEncryptor } from "../TokenEncryptor"
-import { FormsApi } from "../forms"
+import { FormsApi } from "../forms/formsApi"
 import { Forms, MailChimp, Url } from "../constants"
 import { MailComponent } from "../mail"
 import { Logger } from "../logger"
+import { FormsUtils } from "../forms/formsUtils"
+import { SpicedDatabase } from "../database/spicedDatabase"
 
 type CreateCommunityResult = {
     communityInvitationLink: string
 }
 
 
-
 export class CommunityComponent {
     private tokenEncryptor: TokenEncryptor
     private formsApi: FormsApi
     private mailComponent: MailComponent
+    private spicedDatabase: SpicedDatabase
 
     private log = new Logger("CommunityComponent")
 
-    constructor(tokenEncryptor: TokenEncryptor, formsApi: FormsApi, mailComponent: MailComponent) {
+    constructor(
+        tokenEncryptor: TokenEncryptor,
+        formsApi: FormsApi,
+        mailComponent: MailComponent,
+        spicedDatabase: SpicedDatabase
+    ) {
         this.tokenEncryptor = tokenEncryptor
         this.formsApi = formsApi
         this.mailComponent = mailComponent
+        this.spicedDatabase = spicedDatabase
     }
 
     async sendCreateCommunityConfirmationEmail(formResponseId: string, email: string): Promise<void> {
@@ -44,21 +52,36 @@ export class CommunityComponent {
 
     async createCommunity(encryptedToken: string): Promise<CreateCommunityResult> {
         const answers = await this.formsApi.getAnswers(
-            Forms.createCommunityFormId,
+            Forms.createCommunity.formId,
             this.tokenEncryptor.decrypt(encryptedToken)
         )
 
-        console.log(JSON.stringify(answers))
+        this.log.debug("Form answers are", answers)
 
-        // const communityKey = await spicedDatabase().createCommunity({
-        //     title: "params.description",
-        //     description: "params.description",
-        //     creatorId: "params.userId"
-        // })
+        const utils = new FormsUtils()
+
+        const firstName = utils.getAnswerById(answers, Forms.createCommunity.fields.firstName)
+        const lastName = utils.getAnswerById(answers, Forms.createCommunity.fields.lastName)
+        const communityTitle = utils.getAnswerById(answers, Forms.createCommunity.fields.communityTitle)
+        const communityPublicLink = utils.getAnswerById(answers, Forms.createCommunity.fields.communityPublicLink)
+        const creatorEmailAddress = utils.getAnswerById(answers, Forms.createCommunity.fields.creatorEmailAddress)
+        const creatorPhoneNumber = utils.getAnswerById(answers, Forms.createCommunity.fields.creatorPhoneNumber)
+        const creatorWebsite = utils.getAnswerById(answers, Forms.createCommunity.fields.creatorWebsite)
+
+        const communityKey = await this.spicedDatabase.createCommunity({
+            title: utils.getText(communityTitle),
+            publicLink: utils.getUrl(communityPublicLink),
+            creator: {
+                firstName: utils.getText(firstName),
+                lastName: utils.getText(lastName),
+                emailAddress: utils.getEmail(creatorEmailAddress),
+                phoneNumber: utils.getPhoneNumber(creatorPhoneNumber),
+                website: utils.getUrl(creatorWebsite)
+            }
+        })
 
         return {
-            communityInvitationLink: "communityInvitationLink"
-            // communityInvitationLink: Url.getCommunityInvitationLink(this.tokenEncryptor.encrypt(communityKey))
+            communityInvitationLink: Url.getCommunityInvitationLink(this.tokenEncryptor.encrypt(communityKey))
         }
     }
 

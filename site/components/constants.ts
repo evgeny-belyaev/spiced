@@ -2,14 +2,26 @@ import { isServer } from "../api/utils"
 
 export const Forms = {
     accessToken: isServer() ? "CnLWx37r88w9NoqC5H3UrkVM1UDgNYVBt9VQi22aDURm" : "",
-    createCommunityFormId: "NaV9AthP",
+
+    createCommunity: {
+        formId: "NaV9AthP",
+        fields: {
+            firstName: "iRELkeOPH06I",
+            lastName: "9IoVfWEsWEJm",
+            communityTitle: "hzQC3bQ87sQL",
+            communityPublicLink: "Uukms7hM8K5i",
+            creatorEmailAddress: "B8IPm7Osl6R1",
+            creatorPhoneNumber: "iSTnU99AXZ3z",
+            creatorWebsite: "QxmULEP1S82p"
+        }
+    },
 
     getResponsesUrl(formId: string, includedResponsesIds: string[]): string {
         if (includedResponsesIds.length == 0) {
             throw Error("Invalid argument: includedResponsesIds")
         }
 
-        const included_responses_ids = includedResponsesIds ? `included_responses_ids=${includedResponsesIds.join(",")}` : ""
+        const included_responses_ids = includedResponsesIds ? `included_response_ids=${includedResponsesIds.join(",")}` : ""
         const query = included_responses_ids
 
         return `https://api.typeform.com/forms/${formId}/responses?${query}`

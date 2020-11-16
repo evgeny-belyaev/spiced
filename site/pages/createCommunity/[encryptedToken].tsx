@@ -2,15 +2,18 @@ import { GetServerSidePropsContext, GetServerSidePropsResult } from "next"
 import React from "react"
 import { CommunityComponent } from "../../components/logic/CommunityComponent"
 import { TokenEncryptor } from "../../components/TokenEncryptor"
-import { FormsApi } from "../../components/forms"
+import { FormsApi } from "../../components/forms/formsApi"
 import { MailComponent } from "../../components/mail"
-import { Fetcher } from "../../api/fetcher"
+import { SpicedDatabase } from "../../components/database/spicedDatabase"
+import { Logger } from "../../components/logger"
+
 
 type Props = {
     communityInvitationLink?: string,
     error?: string
 }
 
+const log = new Logger("CreateCommunityConfirmationPage")
 
 const CreateCommunityConfirmationPage: React.FC<Props> = (props: Props) => {
 
@@ -27,10 +30,13 @@ export const getServerSideProps = async (context: GetServerSidePropsContext): Pr
     try {
         const encryptedToken = String(context.params ? context.params["encryptedToken"] : "")
 
+        log.debug("getServerSiteProps", encryptedToken)
+
         const result = await new CommunityComponent(
             new TokenEncryptor(),
-            new FormsApi(new Fetcher()),
-            new MailComponent()
+            new FormsApi(),
+            new MailComponent(),
+            new SpicedDatabase()
         ).createCommunity(encryptedToken)
 
         return {
@@ -39,6 +45,8 @@ export const getServerSideProps = async (context: GetServerSidePropsContext): Pr
             }
         }
     } catch (x) {
+        log.error(x)
+
         return {
             props: {
                 error: "Error!"

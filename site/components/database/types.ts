@@ -1,7 +1,13 @@
 export type Community = {
     title: string
-    description: string
-    creatorId: string
+    publicLink: string,
+    creator: {
+        firstName: string,
+        lastName: string,
+        emailAddress: string,
+        phoneNumber: string,
+        website: string
+    }
 }
 
 export type Db = {

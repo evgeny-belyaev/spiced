@@ -9,13 +9,13 @@ export class Fetcher {
         })
     }
 
-    async get(url: string, params?: unknown): Promise<Response> {
+    async get(url: string, headers?: unknown, bodyParams?: unknown): Promise<Response> {
         return await fetch(url, {
             method: "get",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(params)
+            body: JSON.stringify(bodyParams)
         })
     }
 }

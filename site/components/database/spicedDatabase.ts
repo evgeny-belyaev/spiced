@@ -4,7 +4,7 @@ import { Community } from "./types"
 
 const log = new Logger("database")
 
-class SpicedDatabase {
+export class SpicedDatabase {
     private communitiesList = () => "communities/list"
     private communityById = (communityId: string) => `communities/list/${communityId}`
 
@@ -25,5 +25,3 @@ class SpicedDatabase {
         return <Community>s.val()
     }
 }
-
-export const spicedDatabase = (): SpicedDatabase => new SpicedDatabase()
