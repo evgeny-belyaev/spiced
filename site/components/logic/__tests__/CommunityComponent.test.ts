@@ -39,7 +39,7 @@ export default describe("CommunityComponent", () => {
             MailChimp.Templates.createCommunityConfirmation,
             [{
                 name: "createCommunityConfirmationUrl",
-                content: "<a heref=\"http://localhost:5000/createCommunity/encrypted\">Click me</a>"
+                content: "<a href=\"http://localhost:5000/createCommunity/encrypted\">Click me</a>"
             }]
         )
     })

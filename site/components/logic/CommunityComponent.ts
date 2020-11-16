@@ -28,7 +28,8 @@ export class CommunityComponent {
             throw Error("Invalid argument")
         }
 
-        this.log.debug(`Sending community link with ${formResponseId} to ${email}`)
+        const content = `<a href="${Url.getCreateCommunityConfirmationUrl(this.tokenEncryptor.encrypt(formResponseId))}">Click me</a>`
+        this.log.debug(`Sending community link with ${formResponseId} to ${email} content is ${content}`)
 
         await this.mailComponent.sendTemplate(
             email,
@@ -37,7 +38,7 @@ export class CommunityComponent {
             MailChimp.Templates.createCommunityConfirmation,
             [{
                 name: "createCommunityConfirmationUrl",
-                content: `<a heref="${Url.getCreateCommunityConfirmationUrl(this.tokenEncryptor.encrypt(formResponseId))}">Click me</a>`
+                content
             }])
     }
 
