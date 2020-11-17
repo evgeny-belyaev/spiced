@@ -29,13 +29,27 @@ export const Forms = {
 }
 
 export const MailChimp = {
+    from: "contact@wowyougotamatch.com",
+
     marketingAccessToken: isServer() ? "5ef474ca75d706884cc1b905dd8cf091-us2" : "",
     transactionalAccessToken: isServer() ? "AOOq73pypJb5533oSKdqEw" : "",
     server: isServer() ? "us2" : "",
     audienceId: isServer() ? "94657a4562" : "",
 
     Templates: {
-        createCommunityConfirmation: "createCommunityConfirmation"
+        createCommunityConfirmation: {
+            name: "createCommunityConfirmation",
+            fields: {
+                createCommunityConfirmationUrl: "createCommunityConfirmationUrl"
+            }
+        },
+        communityCreated: {
+            name: "communityCreated",
+            fields: {
+                communityTitle: "communityTitle",
+                communityInvitationLink: "communityInvitationLink"
+            }
+        }
     }
 }
 

@@ -17,8 +17,9 @@ export abstract class ApiEndpoint<TParams, TResponse> implements IApiEndpoint<TP
             try {
                 return await this.handler(request, response)
             } catch (x) {
-                response.status(500).end()
                 log.error(x)
+
+                response.status(500).end()
             } finally {
                 response.end()
             }

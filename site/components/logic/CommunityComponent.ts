@@ -5,11 +5,12 @@ import { MailComponent } from "../mail"
 import { Logger } from "../logger"
 import { FormsUtils } from "../forms/formsUtils"
 import { SpicedDatabase } from "../database/spicedDatabase"
+import { BaseError } from "../baseError"
 
 type CreateCommunityResult = {
-    communityInvitationLink: string
+    communityInvitationLink?: string,
+    error?: BaseError
 }
-
 
 export class CommunityComponent {
     private tokenEncryptor: TokenEncryptor
@@ -19,7 +20,7 @@ export class CommunityComponent {
 
     private log = new Logger("CommunityComponent")
 
-    constructor(
+    constructor (
         tokenEncryptor: TokenEncryptor,
         formsApi: FormsApi,
         mailComponent: MailComponent,
@@ -31,7 +32,7 @@ export class CommunityComponent {
         this.spicedDatabase = spicedDatabase
     }
 
-    async sendCreateCommunityConfirmationEmail(formResponseId: string, email: string): Promise<void> {
+    async sendCreateCommunityConfirmationEmail (formResponseId: string, email: string): Promise<void> {
         if (!formResponseId || !email) {
             throw Error("Invalid argument")
         }
@@ -39,21 +40,24 @@ export class CommunityComponent {
         const content = `<a href="${Url.getCreateCommunityConfirmationUrl(this.tokenEncryptor.encrypt(formResponseId))}">Click me</a>`
         this.log.debug(`Sending community link with ${formResponseId} to ${email} content is ${content}`)
 
+        const mailTemplate = MailChimp.Templates.createCommunityConfirmation
+
         await this.mailComponent.sendTemplate(
             email,
             "Community creation confirmation",
-            "contact@wowyougotamatch.com",
-            MailChimp.Templates.createCommunityConfirmation,
+            MailChimp.from,
+            mailTemplate.name,
             [{
-                name: "createCommunityConfirmationUrl",
+                name: mailTemplate.fields.createCommunityConfirmationUrl,
                 content
             }])
     }
 
-    async createCommunity(encryptedToken: string): Promise<CreateCommunityResult> {
+    async createCommunity (encryptedToken: string): Promise<CreateCommunityResult> {
+        const typeformResponseId = this.tokenEncryptor.decrypt(encryptedToken)
         const answers = await this.formsApi.getAnswers(
             Forms.createCommunity.formId,
-            this.tokenEncryptor.decrypt(encryptedToken)
+            typeformResponseId
         )
 
         this.log.debug("Form answers are", answers)
@@ -68,28 +72,52 @@ export class CommunityComponent {
         const creatorPhoneNumber = utils.getAnswerById(answers, Forms.createCommunity.fields.creatorPhoneNumber)
         const creatorWebsite = utils.getAnswerById(answers, Forms.createCommunity.fields.creatorWebsite)
 
+        const emailAddress = utils.getEmail(creatorEmailAddress)
+        const title = utils.getText(communityTitle)
+
         const communityKey = await this.spicedDatabase.createCommunity({
-            title: utils.getText(communityTitle),
+            title: title,
             publicLink: utils.getUrl(communityPublicLink),
+            typeFormResponseId: typeformResponseId,
             creator: {
                 firstName: utils.getText(firstName),
                 lastName: utils.getText(lastName),
-                emailAddress: utils.getEmail(creatorEmailAddress),
+                emailAddress: emailAddress,
                 phoneNumber: utils.getPhoneNumber(creatorPhoneNumber),
                 website: utils.getUrl(creatorWebsite)
             }
         })
+        const invitationLink = Url.getCommunityInvitationLink(this.tokenEncryptor.encrypt(communityKey))
+        const invitationLinkMarkup = `<a href="${invitationLink}">${invitationLink}</a>`
+        const mailTemplate = MailChimp.Templates.communityCreated
+
+        await this.mailComponent.sendTemplate(
+            emailAddress,
+            "Community created",
+            MailChimp.from,
+            mailTemplate.name,
+            [
+                {
+                    name: mailTemplate.fields.communityTitle,
+                    content: title
+                },
+                {
+                    name: mailTemplate.fields.communityInvitationLink,
+                    content: invitationLinkMarkup
+                }
+            ]
+        )
 
         return {
-            communityInvitationLink: Url.getCommunityInvitationLink(this.tokenEncryptor.encrypt(communityKey))
+            communityInvitationLink: invitationLink
         }
     }
 
-    joinCommunity(communityId: string, userId: string): string {
+    joinCommunity (communityId: string, userId: string): string {
         return ""
     }
 
-    optIn(communityId: string): string {
+    optIn (communityId: string): string {
         return ""
     }
 }

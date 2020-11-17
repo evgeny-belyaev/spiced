@@ -79,10 +79,6 @@ function givenApi(communityComponent: CommunityComponent) {
     return new CreateCommunityTypeFormWebHookApi(communityComponent)
 }
 
-function givenCommunityComponent() {
-    return
-}
-
 describe("CreateCommunityTypeFormWebHookApi", () => {
     test("responds 500 to invalid POST(no email)", () => {
         // Arrange

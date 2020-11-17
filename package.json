@@ -23,6 +23,7 @@
     "@mailchimp/mailchimp_marketing": "^3.0.23",
     "@mailchimp/mailchimp_transactional": "^1.0.19",
     "@typeform/embed": "^0.25.6",
+    "axios": "^0.21.0",
     "body-parser": "^1.18.3",
     "bootstrap": "^4.5.3",
     "compression": "^1.7.3",
@@ -35,8 +36,7 @@
     "next": "^9.5.3",
     "react": "^16.13.1",
     "react-bootstrap": "^1.4.0",
-    "react-dom": "^16.13.1",
-    "axios": "^0.21.0"
+    "react-dom": "^16.13.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.3",
@@ -57,12 +57,13 @@
     "eslint-plugin-react-hooks": "^4.2.0",
     "firebase-functions-test": "^0.1.6",
     "firebase-tools": "^8.11.2",
+    "identity-obj-proxy": "^3.0.0",
     "jest": "26.4.2",
+    "jest-mock-axios": "^4.2.1",
     "localtunnel": "2.0.0",
     "node-mocks-http": "^1.9.0",
     "ts-jest": "^26.4.4",
-    "typescript": "^4.0.3",
-    "jest-mock-axios": "^4.2.1"
+    "typescript": "^4.0.3"
   },
   "engines": {
     "node": "10"

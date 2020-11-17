@@ -1,6 +1,7 @@
 export type Community = {
     title: string
     publicLink: string,
+    typeFormResponseId: string,
     creator: {
         firstName: string,
         lastName: string,
