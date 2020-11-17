@@ -1,9 +1,8 @@
 import { CommunityComponent } from "../CommunityComponent"
 import { TokenEncryptor } from "../../TokenEncryptor"
-import { FormsApi } from "../../forms/formsApi"
 import { Forms, MailChimp, Url } from "../../constants"
-import { MailComponent } from "../../mail"
 import { EntityAlreadyExists, SpicedDatabase } from "../../database/spicedDatabase"
+import { givenFormsApi, givenMailComponent, givenSpicedDatabase, givenTokenEncryptor } from "../../testUtils"
 
 const answers = [
     {
@@ -70,55 +69,6 @@ const answers = [
         "url": "com.com"
     }
 ]
-
-function givenTokenEncryptor () {
-    const decrypt = jest.fn(() => ("decrypted"))
-    const encrypt = jest.fn(() => ("encrypted"))
-
-    const tokenEncryptorMock = jest.fn<TokenEncryptor>(() => ({
-        decrypt, encrypt
-    }))
-
-    return {
-        mock: tokenEncryptorMock,
-        decrypt, encrypt
-    }
-}
-
-function givenMailComponent () {
-    const getAnswers = jest.fn()
-    const sendTemplate = jest.fn()
-
-    return {
-        mock: jest.fn<MailComponent>(() => ({
-            getAnswers, sendTemplate
-        })),
-        getAnswers,
-        sendTemplate
-    }
-}
-
-function givenFormsApi () {
-    const getAnswers = jest.fn()
-
-    return {
-        mock: jest.fn<FormsApi>(() => ({
-            getAnswers
-        })),
-        getAnswers
-    }
-}
-
-function givenSpicedDatabase () {
-    const createCommunity = jest.fn()
-
-    return {
-        mock: jest.fn<SpicedDatabase>(() => ({
-            createCommunity
-        })),
-        createCommunity
-    }
-}
 
 
 export default describe("CommunityComponent", () => {
@@ -238,5 +188,29 @@ export default describe("CommunityComponent", () => {
         // Act
         await expect(communityComponent.createCommunity("encrypted"))
             .rejects.toBeInstanceOf(EntityAlreadyExists)
+    })
+
+    test("findCommunityByEncryptedToken", async () => {
+        // Arrange
+        const { mock: spicedDatabaseMock, getCommunityById } = givenSpicedDatabase()
+        const { mock: tokenEncryptorMock, decrypt } = givenTokenEncryptor()
+        const { mock: mailComponentMock, sendTemplate } = givenMailComponent()
+        const { mock: formsApiMock, getAnswers } = givenFormsApi()
+
+        getAnswers.mockImplementation(() => answers)
+
+        const communityComponent = new CommunityComponent(
+            tokenEncryptorMock(),
+            formsApiMock(),
+            mailComponentMock(),
+            spicedDatabaseMock()
+        )
+
+        // Act
+        await communityComponent.findCommunityByEncryptedToken("encrypted")
+
+        // Assert
+        expect(decrypt).toBeCalledWith("encrypted")
+        expect(getCommunityById).toBeCalledWith("decrypted")
     })
 })

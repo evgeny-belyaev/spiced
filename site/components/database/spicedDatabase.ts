@@ -40,6 +40,10 @@ export class SpicedDatabase {
     }
 
     async getCommunityById(communityId: string): Promise<Community | null> {
+        if (!communityId) {
+            return null
+        }
+
         const dataSnapshot = await this.ref(this.communityById(communityId))
             .once("value")
 

@@ -1,0 +1,38 @@
+import React from "react"
+import { TypeForm } from "../../components/forms/TypeForm"
+import { Forms } from "../../components/constants"
+import { useRouter } from "next/router"
+import serverEntryPoint, { Props } from "../../components/pages/join"
+import { Alert } from "react-bootstrap"
+
+import "bootstrap/dist/css/bootstrap.min.css"
+
+export default (props: Props) => {
+    const hiddenFields = [
+        {
+            name: Forms.joinCommunity.hiddenFields.communityTitle,
+            value: props.communityTitle as string
+        }
+    ]
+
+    if (props.error) {
+        return (
+            <Alert variant="warning">
+                {props.error}
+            </Alert>
+        )
+    } else {
+        return <TypeForm
+            typeformId={Forms.joinCommunity.formId}
+            elementId="join_community_form"
+            hiddenFields={hiddenFields}
+            style={{
+                height: "500px"
+            }}/>
+    }
+}
+
+
+// This gets called on every request
+export const getServerSideProps = serverEntryPoint
+

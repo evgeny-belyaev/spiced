@@ -5,7 +5,7 @@ export const Forms = {
 
     createCommunity: {
         formId: "NaV9AthP",
-        fields: {
+        answers: {
             firstName: "iRELkeOPH06I",
             lastName: "9IoVfWEsWEJm",
             communityTitle: "hzQC3bQ87sQL",
@@ -13,6 +13,16 @@ export const Forms = {
             creatorEmailAddress: "B8IPm7Osl6R1",
             creatorPhoneNumber: "iSTnU99AXZ3z",
             creatorWebsite: "QxmULEP1S82p"
+        }
+    },
+
+    joinCommunity : {
+        formId: "Y6665JuG",
+        hiddenFields: {
+            communityTitle: "communityTitle"
+        },
+        answers: {
+
         }
     },
 

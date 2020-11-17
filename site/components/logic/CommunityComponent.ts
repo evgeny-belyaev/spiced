@@ -6,6 +6,7 @@ import { Logger } from "../logger"
 import { FormsUtils } from "../forms/formsUtils"
 import { SpicedDatabase } from "../database/spicedDatabase"
 import { BaseError } from "../baseError"
+import { Community } from "../database/types"
 
 type CreateCommunityResult = {
     communityInvitationLink?: string,
@@ -53,6 +54,11 @@ export class CommunityComponent {
             }])
     }
 
+    async findCommunityByEncryptedToken (encryptedToken: string): Promise<Community | null> {
+        const decryptedToken = this.tokenEncryptor.decrypt(encryptedToken)
+        return await this.spicedDatabase.getCommunityById(decryptedToken)
+    }
+
     async createCommunity (encryptedToken: string): Promise<CreateCommunityResult> {
         const typeformResponseId = this.tokenEncryptor.decrypt(encryptedToken)
         const answers = await this.formsApi.getAnswers(
@@ -64,13 +70,13 @@ export class CommunityComponent {
 
         const utils = new FormsUtils()
 
-        const firstName = utils.getAnswerById(answers, Forms.createCommunity.fields.firstName)
-        const lastName = utils.getAnswerById(answers, Forms.createCommunity.fields.lastName)
-        const communityTitle = utils.getAnswerById(answers, Forms.createCommunity.fields.communityTitle)
-        const communityPublicLink = utils.getAnswerById(answers, Forms.createCommunity.fields.communityPublicLink)
-        const creatorEmailAddress = utils.getAnswerById(answers, Forms.createCommunity.fields.creatorEmailAddress)
-        const creatorPhoneNumber = utils.getAnswerById(answers, Forms.createCommunity.fields.creatorPhoneNumber)
-        const creatorWebsite = utils.getAnswerById(answers, Forms.createCommunity.fields.creatorWebsite)
+        const firstName = utils.getAnswerById(answers, Forms.createCommunity.answers.firstName)
+        const lastName = utils.getAnswerById(answers, Forms.createCommunity.answers.lastName)
+        const communityTitle = utils.getAnswerById(answers, Forms.createCommunity.answers.communityTitle)
+        const communityPublicLink = utils.getAnswerById(answers, Forms.createCommunity.answers.communityPublicLink)
+        const creatorEmailAddress = utils.getAnswerById(answers, Forms.createCommunity.answers.creatorEmailAddress)
+        const creatorPhoneNumber = utils.getAnswerById(answers, Forms.createCommunity.answers.creatorPhoneNumber)
+        const creatorWebsite = utils.getAnswerById(answers, Forms.createCommunity.answers.creatorWebsite)
 
         const emailAddress = utils.getEmail(creatorEmailAddress)
         const title = utils.getText(communityTitle)

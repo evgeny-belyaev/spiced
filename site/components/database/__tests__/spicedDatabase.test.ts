@@ -112,6 +112,18 @@ export default describe("community", () => {
         })
     })
 
+    test("getCommunityById should return null if no communityId provided", async () => {
+        // Arrange
+        const db = new SpicedDatabase()
+
+        // Act
+        const community = await db.getCommunityById("")
+
+        // Assert
+        expect(community).toBeNull()
+    })
+
+
     test("communitiesIdByTypeFormResponseId should return null when no community created", async () => {
         // Arrange
         const db = new SpicedDatabase()
