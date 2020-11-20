@@ -1,4 +1,4 @@
-import { getServerSidePropsImpl } from "../pages/createCommunity/[encryptedToken]"
+import { getServerSidePropsImpl } from "../pages/createCommunity/[communityCreationToken]"
 import { givenCommunityComponent, givenGetServerSidePropsContext } from "../components/testUtils"
 
 
@@ -9,7 +9,7 @@ export default describe("Pages: createCommunity", () => {
 
         // Act
         const context = givenGetServerSidePropsContext({
-            encryptedToken: "asd"
+            communityCreationToken: "asd"
         })
 
         await getServerSidePropsImpl(

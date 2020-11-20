@@ -1,9 +1,7 @@
-import { CreateCommunityTypeFormWebHookApi } from "../createCommunityTypeFormWebHook"
-import { createMocks } from "node-mocks-http"
-import { TokenEncryptor } from "../../components/TokenEncryptor"
-import { MailComponent } from "../../components/mail"
-import { Url } from "../../components/constants"
+import { givenCommunityComponent } from "../../components/testUtils"
 import { CommunityComponent } from "../../components/logic/CommunityComponent"
+import { JoinCommunityWebHookApi } from "../joinCommunityWebHook"
+import { createMocks } from "node-mocks-http"
 
 const responseData = {
     "event_id": "01EPYS7P4P6ZJAYPG1DQ3F23J0",
@@ -18,7 +16,7 @@ const responseData = {
             "title": "Community creation",
             "fields": [
                 {
-                    "id": "B8IPm7Osl6R1",
+                    "id": "fWuSaWrKCVbZ",
                     "title": "\\nEnter your email, please",
                     "type": "email",
                     "ref": "a46913210c42aaf5",
@@ -31,7 +29,7 @@ const responseData = {
                 "type": "email",
                 "email": "evgeny.belyaev@gmail.com",
                 "field": {
-                    "id": "B8IPm7Osl6R1",
+                    "id": "fWuSaWrKCVbZ",
                     "type": "email",
                     "ref": "a46913210c42aaf5"
                 }
@@ -40,11 +38,12 @@ const responseData = {
     }
 }
 
+
 const responseData_noEmail = {
     "event_id": "01EPYS7P4P6ZJAYPG1DQ3F23J0",
     "event_type": "form_response",
     "form_response": {
-        "form_id": "NaV9AthP",
+        "form_id": "Y6665JuG",
         "token": "07fqxivsl4zgd7c6507fqfldiqinln21",
         "landed_at": "2020-11-12T17:49:16Z",
         "submitted_at": "2020-11-12T17:49:44Z",
@@ -53,7 +52,7 @@ const responseData_noEmail = {
             "title": "Community creation",
             "fields": [
                 {
-                    "id": "B8IPm7Osl6R1__WRONG",
+                    "id": "WRONG",
                     "title": "\\nEnter your email, please",
                     "type": "email",
                     "ref": "a46913210c42aaf5",
@@ -66,7 +65,7 @@ const responseData_noEmail = {
                 "type": "email",
                 "email": "evgeny.belyaev@gmail.com",
                 "field": {
-                    "id": "B8IPm7Osl6R1__WRONG",
+                    "id": "WRONG",
                     "type": "email",
                     "ref": "a46913210c42aaf5"
                 }
@@ -75,23 +74,21 @@ const responseData_noEmail = {
     }
 }
 
-function givenApi(communityComponent: CommunityComponent) {
-    return new CreateCommunityTypeFormWebHookApi(communityComponent)
+
+function givenApi (communityComponent: CommunityComponent) {
+    return new JoinCommunityWebHookApi(communityComponent)
 }
 
-describe("CreateCommunityTypeFormWebHookApi", () => {
+export default describe("JoinCommunityWebHookApi", () => {
     test("responds 500 to invalid POST(no email)", () => {
         // Arrange
-
-        const communityComponent = jest.fn<CommunityComponent>(() =>({
-            sendCreateCommunityConfirmationEmail: jest.fn()
-        }))
+        const { mock: communityComponent } = givenCommunityComponent()
 
         const api = givenApi(
             communityComponent()
         )
 
-        const {req, res} = createMocks({
+        const { req, res } = createMocks({
             method: "POST",
             query: {},
             body: responseData_noEmail
@@ -104,15 +101,13 @@ describe("CreateCommunityTypeFormWebHookApi", () => {
 
     test("responds 500 to invalid POST", () => {
         // Arrange
-        const communityComponent = jest.fn<CommunityComponent>(() =>({
-            sendCreateCommunityConfirmationEmail: jest.fn()
-        }))
+        const { mock: communityComponent } = givenCommunityComponent()
 
         const api = givenApi(
             communityComponent()
         )
 
-        const {req, res} = createMocks({
+        const { req, res } = createMocks({
             method: "POST",
             query: {},
             body: ["invalid"]
@@ -123,18 +118,15 @@ describe("CreateCommunityTypeFormWebHookApi", () => {
         void expect(api.handler(req, res)).rejects.toEqual(new Error("Invalid request"))
     })
 
-    test("should encrypt token and send email", async () => {
+    test("should call sendJoinCommunityConfirmationEmail with valid args", async () => {
         // Arrange
-        const sendCreateCommunityConfirmationEmail = jest.fn()
-        const communityComponent = jest.fn<CommunityComponent>(() =>({
-            sendCreateCommunityConfirmationEmail
-        }))
+        const { mock: communityComponent, sendJoinCommunityConfirmationEmail } = givenCommunityComponent()
 
         const api = givenApi(
             communityComponent()
         )
 
-        const {req, res} = createMocks({
+        const { req, res } = createMocks({
             method: "POST",
             query: {},
             body: responseData
@@ -145,8 +137,6 @@ describe("CreateCommunityTypeFormWebHookApi", () => {
 
         // Assert
         expect(res.statusCode).toEqual(200)
-        expect(sendCreateCommunityConfirmationEmail).toBeCalledWith("07fqxivsl4zgd7c6507fqfldiqinln21", "evgeny.belyaev@gmail.com")
+        expect(sendJoinCommunityConfirmationEmail).toBeCalledWith("07fqxivsl4zgd7c6507fqfldiqinln21", "evgeny.belyaev@gmail.com")
     })
 })
-
-export {}

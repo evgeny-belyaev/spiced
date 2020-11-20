@@ -9,12 +9,24 @@ import { IncomingMessage, ServerResponse } from "http"
 export const givenCommunityComponent = () => {
     const createCommunity = jest.fn()
     const findCommunityByEncryptedToken = jest.fn()
+    const sendJoinCommunityConfirmationEmail = jest.fn()
+    const sendCreateCommunityConfirmationEmail = jest.fn()
+    const joinCommunityByEncryptedToken = jest.fn()
+
     return {
         mock: jest.fn<CommunityComponent>(() => ({
-            createCommunity, findCommunityByEncryptedToken
+            createCommunity,
+            findCommunityByEncryptedToken,
+            sendJoinCommunityConfirmationEmail,
+            sendCreateCommunityConfirmationEmail,
+            joinCommunityByEncryptedToken
         })),
+
         createCommunity,
-        findCommunityByEncryptedToken
+        findCommunityByEncryptedToken,
+        sendJoinCommunityConfirmationEmail,
+        sendCreateCommunityConfirmationEmail,
+        joinCommunityByEncryptedToken
     }
 }
 

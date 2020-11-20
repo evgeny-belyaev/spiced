@@ -33,13 +33,38 @@ export class CommunityComponent {
         this.spicedDatabase = spicedDatabase
     }
 
+    async joinCommunityByEncryptedToken (joinToken: string): Promise<Community | null> {
+        return null
+    }
+
+    async sendJoinCommunityConfirmationEmail (formResponseId: string, email: string): Promise<void> {
+        if (!formResponseId || !email) {
+            throw Error("Invalid argument")
+        }
+
+        const content = `<a href="${Url.getJoinCommunityConfirmationUrl(this.tokenEncryptor.encrypt(formResponseId))}">Click me</a>`
+        this.log.debug(`Sending join confirmation link with ${formResponseId} to ${email} content is ${content}`)
+
+        const mailTemplate = MailChimp.Templates.joinCommunityConfirmation
+
+        await this.mailComponent.sendTemplate(
+            email,
+            "Community creation confirmation",
+            MailChimp.from,
+            mailTemplate.name,
+            [{
+                name: mailTemplate.fields.joinCommunityConfirmationUrl,
+                content
+            }])
+    }
+
     async sendCreateCommunityConfirmationEmail (formResponseId: string, email: string): Promise<void> {
         if (!formResponseId || !email) {
             throw Error("Invalid argument")
         }
 
         const content = `<a href="${Url.getCreateCommunityConfirmationUrl(this.tokenEncryptor.encrypt(formResponseId))}">Click me</a>`
-        this.log.debug(`Sending community link with ${formResponseId} to ${email} content is ${content}`)
+        this.log.debug(`Sending create community confirmation link with ${formResponseId} to ${email} content is ${content}`)
 
         const mailTemplate = MailChimp.Templates.createCommunityConfirmation
 

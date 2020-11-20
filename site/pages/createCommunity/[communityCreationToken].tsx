@@ -44,7 +44,7 @@ export const getServerSidePropsImpl = async (
     communityComponent: CommunityComponent
 ): Promise<GetServerSidePropsResult<Props>> => {
     try {
-        const encryptedToken = String(context.params ? context.params["encryptedToken"] : "")
+        const encryptedToken = String(context.params ? context.params["communityCreationToken"] : "")
 
         log.debug("getServerSiteProps", encryptedToken)
 

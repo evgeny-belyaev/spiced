@@ -1,16 +1,16 @@
 import { givenCommunityComponent, givenGetServerSidePropsContext } from "../../../testUtils"
-import { getServerSidePropsImpl } from "../"
+import { getServerSidePropsImpl } from "../index"
 
 
 export default describe("getServerSidePropsImpl", () => {
     test("should return props", async () => {
         // Arrange
-        const { mock: communityComponent, findCommunityByEncryptedToken } = givenCommunityComponent()
+        const { mock: communityComponent, joinCommunityByEncryptedToken } = givenCommunityComponent()
         const context = givenGetServerSidePropsContext({
-            encryptedToken: "asd"
+            joinToken: "asd"
         })
 
-        findCommunityByEncryptedToken.mockImplementation(() => ({
+        joinCommunityByEncryptedToken.mockImplementation(() => ({
             title: "title"
         }))
 
@@ -21,34 +21,10 @@ export default describe("getServerSidePropsImpl", () => {
         )
 
         // Assert
-        expect(findCommunityByEncryptedToken).toBeCalledWith("asd")
+        expect(joinCommunityByEncryptedToken).toBeCalledWith("asd")
         expect(props).toEqual({
             props: {
                 communityTitle: "title"
-            }
-        })
-    })
-
-    test("should return error when community not found", async () => {
-        // Arrange
-        const { mock: communityComponent, findCommunityByEncryptedToken } = givenCommunityComponent()
-        const context = givenGetServerSidePropsContext({
-            encryptedToken: "asd"
-        })
-
-        findCommunityByEncryptedToken.mockImplementation(() => null)
-
-        // Act
-        const props = await getServerSidePropsImpl(
-            context,
-            communityComponent()
-        )
-
-        // Assert
-        expect(findCommunityByEncryptedToken).toBeCalledWith("asd")
-        expect(props).toEqual({
-            props: {
-                error: "Cant' find community"
             }
         })
     })

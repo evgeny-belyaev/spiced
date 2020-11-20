@@ -47,3 +47,40 @@ export type FormResponse = {
     },
     items: Item[]
 }
+
+export type WebHookParams = {
+    event_id: string,
+    form_response: {
+        form_id: string,
+        token: string,
+        definition: {
+            fields: [{
+                id: string,
+                title: string,
+                type: string,
+                ref: string
+            }]
+        },
+        answers: [WebHookAnswer]
+    }
+}
+
+export type WebHookAnswer = {
+    type: string,
+    text?: string,
+    url?: string,
+    email?: string,
+    phone_number?: string,
+    number?: number,
+    boolean?: boolean,
+    date?: string,
+    choice?: {
+        label?: string,
+        other?: string
+    },
+    field: {
+        id: string,
+        type: string,
+        ref: string
+    }
+}

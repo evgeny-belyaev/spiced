@@ -1,7 +1,6 @@
 import { CommunityComponent } from "../CommunityComponent"
-import { TokenEncryptor } from "../../TokenEncryptor"
 import { Forms, MailChimp, Url } from "../../constants"
-import { EntityAlreadyExists, SpicedDatabase } from "../../database/spicedDatabase"
+import { EntityAlreadyExists } from "../../database/spicedDatabase"
 import { givenFormsApi, givenMailComponent, givenSpicedDatabase, givenTokenEncryptor } from "../../testUtils"
 
 const answers = [
@@ -72,23 +71,47 @@ const answers = [
 
 
 export default describe("CommunityComponent", () => {
-    test("sendCreateCommunityConfirmationEmail", async () => {
+    test("sendJoinCommunityConfirmationEmail", async () => {
         // Arrange
-        const encrypt = jest.fn(() => {
-            return "encrypted"
-        })
-
-        const tokenEncryptorMock = jest.fn<TokenEncryptor>(() => ({
-            encrypt
-        }))
-
+        const { mock: tokenEncryptorMock, encrypt } = givenTokenEncryptor()
         const { mock: mailComponentMock, sendTemplate } = givenMailComponent()
-
-        const spicedDatabaseMock = jest.fn<SpicedDatabase>()
+        const { mock: spicedDatabaseMock } = givenSpicedDatabase()
+        const { mock: formsApiMock } = givenFormsApi()
 
         const communityComponent = new CommunityComponent(
             tokenEncryptorMock(),
-            jest.fn()(),
+            formsApiMock(),
+            mailComponentMock(),
+            spicedDatabaseMock()
+        )
+
+        // Act
+        await communityComponent.sendJoinCommunityConfirmationEmail("id", "a@b.com")
+
+        // Assert
+        expect(encrypt).toBeCalledWith("id")
+        expect(sendTemplate).toBeCalledWith(
+            "a@b.com",
+            "Community creation confirmation",
+            "contact@wowyougotamatch.com",
+            MailChimp.Templates.joinCommunityConfirmation.name,
+            [{
+                name: MailChimp.Templates.joinCommunityConfirmation.fields.joinCommunityConfirmationUrl,
+                content: "<a href=\"http://localhost:5000/join/encrypted\">Click me</a>"
+            }]
+        )
+    })
+
+    test("sendCreateCommunityConfirmationEmail", async () => {
+        // Arrange
+        const { mock: tokenEncryptorMock, encrypt } = givenTokenEncryptor()
+        const { mock: mailComponentMock, sendTemplate } = givenMailComponent()
+        const { mock: spicedDatabaseMock } = givenSpicedDatabase()
+        const { mock: formsApiMock } = givenFormsApi()
+
+        const communityComponent = new CommunityComponent(
+            tokenEncryptorMock(),
+            formsApiMock(),
             mailComponentMock(),
             spicedDatabaseMock()
         )
@@ -156,12 +179,12 @@ export default describe("CommunityComponent", () => {
                 content: "community title"
             }, {
                 name: MailChimp.Templates.communityCreated.fields.communityInvitationLink,
-                content: `<a href="${Url.getBaseUrl()}/community/encrypted">${Url.getBaseUrl()}/community/encrypted</a>`
+                content: `<a href="${Url.getBaseUrl()}/invitation/encrypted">${Url.getBaseUrl()}/invitation/encrypted</a>`
             }]
         )
 
         expect(result).toEqual({
-            communityInvitationLink: `${Url.getBaseUrl()}/community/encrypted`
+            communityInvitationLink: `${Url.getBaseUrl()}/invitation/encrypted`
         })
 
     })

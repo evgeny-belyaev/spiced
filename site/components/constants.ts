@@ -5,6 +5,7 @@ export const Forms = {
 
     createCommunity: {
         formId: "NaV9AthP",
+        name: "createCommunity",
         answers: {
             firstName: "iRELkeOPH06I",
             lastName: "9IoVfWEsWEJm",
@@ -18,11 +19,12 @@ export const Forms = {
 
     joinCommunity : {
         formId: "Y6665JuG",
+        name: "joinCommunity",
         hiddenFields: {
             communityTitle: "communityTitle"
         },
         answers: {
-
+            emailAddress: "fWuSaWrKCVbZ"
         }
     },
 
@@ -53,6 +55,12 @@ export const MailChimp = {
                 createCommunityConfirmationUrl: "createCommunityConfirmationUrl"
             }
         },
+        joinCommunityConfirmation: {
+            name: "joinCommunityConfirmationCommunityConfirmation",
+            fields: {
+                joinCommunityConfirmationUrl: "joinCommunityConfirmationUrl"
+            }
+        },
         communityCreated: {
             name: "communityCreated",
             fields: {
@@ -75,11 +83,15 @@ export const Url = {
             "https://spiced-f9677.web.app"
     },
 
-    getCreateCommunityConfirmationUrl(encryptedToken: string): string {
-        return this.getBaseUrl() + "/createCommunity/" + encryptedToken
+    getCreateCommunityConfirmationUrl(communityCreationToken: string): string {
+        return this.getBaseUrl() + "/createCommunity/" + communityCreationToken
     },
 
-    getCommunityInvitationLink(encryptedCommunityId: string): string {
-        return this.getBaseUrl() + "/community/" + encryptedCommunityId
+    getCommunityInvitationLink(invitationToken: string): string {
+        return this.getBaseUrl() + "/invitation/" + invitationToken
+    },
+
+    getJoinCommunityConfirmationUrl(joinToken: string): string {
+        return this.getBaseUrl() + "/join/" + joinToken
     }
 }

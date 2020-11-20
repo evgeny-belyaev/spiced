@@ -1,5 +1,9 @@
 import { FormAnswer } from "./types"
 
+export function getTypeWormWebHookPath(hookName: string) {
+    return `${hookName}/hook`
+}
+
 export class FormsUtils {
     public getAnswerById(answers: FormAnswer[], fieldId: string): FormAnswer | null {
         const filtered = answers.filter((a) => a.field.id === fieldId)

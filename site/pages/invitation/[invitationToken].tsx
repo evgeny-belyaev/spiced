@@ -1,8 +1,7 @@
 import React from "react"
 import { TypeForm } from "../../components/forms/TypeForm"
 import { Forms } from "../../components/constants"
-import { useRouter } from "next/router"
-import serverEntryPoint, { Props } from "../../components/pages/join"
+import serverEntryPoint, { Props } from "../../components/pages/invitation"
 import { Alert } from "react-bootstrap"
 
 import "bootstrap/dist/css/bootstrap.min.css"
