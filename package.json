@@ -12,6 +12,7 @@
     "rebuild": "yarn run clean && yarn run build",
     "clean": "rm -rf build",
     "build": "yarn run build-site && yarn run build-functions",
+    "predeploy-firebase" : "yarn run build && yarn run setup-hooks production",
     "deploy-firebase": "firebase deploy --only functions,hosting",
     "test": "jest --silent",
     "testdebug": "jest",

@@ -2,10 +2,20 @@ import * as axios from "axios"
 import { Forms } from "../site/components/constants"
 import { getTypeWormWebHookPath } from "../site/components/forms/formsUtils"
 
-const accessToken = "CnLWx37r88w9NoqC5H3UrkVM1UDgNYVBt9VQi22aDURm"
-// const host = Url.getBaseUrl()
-const host = "https://lazy-falcon-8.loca.lt"
-const baseUrl = `${host}/spiced-f9677/us-central1`
+type Environment = {
+    functionsBaseUrl: string
+}
+
+type Configuration = NodeJS.Dict<Environment>
+
+const config: Configuration = {
+    production: {
+        functionsBaseUrl: "https://us-central1-spiced-f9677.cloudfunctions.net"
+    },
+    local: {
+        functionsBaseUrl: "https://soft-otter-11.loca.lt/spiced-f9677/us-central1"
+    }
+}
 
 type Response = {
     url: string,
@@ -14,7 +24,7 @@ type Response = {
     id: string
 }
 
-async function createWebHook (formId: string, hookName: string) {
+async function createWebHook (formId: string, hookName: string, env: Environment) {
     const url = `https://api.typeform.com/forms/${formId}/webhooks/${hookName}`
 
     try {
@@ -22,10 +32,10 @@ async function createWebHook (formId: string, hookName: string) {
         const result = await axios.default(url, {
             method: "PUT",
             headers: {
-                "Authorization": `Bearer ${accessToken}`
+                "Authorization": `Bearer ${Forms.accessToken}`
             },
             data: {
-                "url": `${baseUrl}/api${hookPath}`,
+                "url": `${env.functionsBaseUrl}/api${hookPath}`,
                 "enabled": true
             }
         })
@@ -39,17 +49,27 @@ async function createWebHook (formId: string, hookName: string) {
 
 }
 
-async function setup (): Promise<void> {
+async function setup (configurationName: string): Promise<void> {
+    const env = config[configurationName]
+
+    if (env === undefined) {
+        console.log("Cant find env " + configurationName)
+        return
+    }
+
     await createWebHook(
         Forms.createCommunity.formId,
-        Forms.createCommunity.name
+        Forms.createCommunity.name,
+        env
     )
 
     await createWebHook(
         Forms.joinCommunity.formId,
-        Forms.joinCommunity.name
+        Forms.joinCommunity.name,
+        env
     )
 }
 
-void setup()
 
+const args = process.argv.slice(2)
+void setup(args[0])

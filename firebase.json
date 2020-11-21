@@ -20,7 +20,7 @@
   "functions": {
     "source": ".",
     "predeploy": [
-      "yarn run build"
+      "yarn run predeploy-firebase"
     ],
     "runtime": "nodejs10"
   },
