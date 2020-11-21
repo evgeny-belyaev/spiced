@@ -12,8 +12,6 @@ export type CreateCommunityWebHookResponse = {
     url: string
 }
 
-
-
 const log = new Logger("CreateCommunityWebHookApi")
 
 export class CreateCommunityWebHookApi extends ApiEndpoint<WebHookParams, CreateCommunityWebHookResponse> {

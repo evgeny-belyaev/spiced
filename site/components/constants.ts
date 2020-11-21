@@ -81,17 +81,5 @@ export const Url = {
         return process.env["NODE_ENV"] == "development" || process.env["NODE_ENV"] == "test" ?
             "http://localhost:5000" :
             "https://spiced-f9677.web.app"
-    },
-
-    getCreateCommunityConfirmationUrl(communityCreationToken: string): string {
-        return this.getBaseUrl() + "/createCommunity/" + communityCreationToken
-    },
-
-    getCommunityInvitationLink(invitationToken: string): string {
-        return this.getBaseUrl() + "/invitation/" + invitationToken
-    },
-
-    getJoinCommunityConfirmationUrl(joinToken: string): string {
-        return this.getBaseUrl() + "/join/" + joinToken
     }
 }

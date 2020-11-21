@@ -1,7 +1,14 @@
 import { CommunityComponent } from "../CommunityComponent"
 import { Forms, MailChimp, Url } from "../../constants"
 import { EntityAlreadyExists } from "../../database/spicedDatabase"
-import { givenFormsApi, givenMailComponent, givenSpicedDatabase, givenTokenEncryptor } from "../../testUtils"
+import {
+    givenFormsApi,
+    givenMailComponent,
+    givenSpicedDatabase,
+    givenTokenEncryptor,
+    givenUrlBuilder
+} from "../../testUtils"
+import { url } from "inspector"
 
 const answers = [
     {
@@ -73,23 +80,19 @@ const answers = [
 export default describe("CommunityComponent", () => {
     test("sendJoinCommunityConfirmationEmail", async () => {
         // Arrange
-        const { mock: tokenEncryptorMock, encrypt } = givenTokenEncryptor()
+        const { mock: urlBuilder, getJoinCommunityConfirmationUrl } = givenUrlBuilder()
         const { mock: mailComponentMock, sendTemplate } = givenMailComponent()
         const { mock: spicedDatabaseMock } = givenSpicedDatabase()
         const { mock: formsApiMock } = givenFormsApi()
 
-        const communityComponent = new CommunityComponent(
-            tokenEncryptorMock(),
-            formsApiMock(),
-            mailComponentMock(),
-            spicedDatabaseMock()
-        )
+        getJoinCommunityConfirmationUrl.mockImplementation(() => ("url"))
+
+        const communityComponent = new CommunityComponent(formsApiMock(), mailComponentMock(), spicedDatabaseMock(), urlBuilder())
 
         // Act
-        await communityComponent.sendJoinCommunityConfirmationEmail("id", "a@b.com")
+        await communityComponent.sendJoinCommunityConfirmationEmail("id", "a@b.com", "key")
 
         // Assert
-        expect(encrypt).toBeCalledWith("id")
         expect(sendTemplate).toBeCalledWith(
             "a@b.com",
             "Community creation confirmation",
@@ -97,30 +100,26 @@ export default describe("CommunityComponent", () => {
             MailChimp.Templates.joinCommunityConfirmation.name,
             [{
                 name: MailChimp.Templates.joinCommunityConfirmation.fields.joinCommunityConfirmationUrl,
-                content: "<a href=\"http://localhost:5000/join/encrypted\">Click me</a>"
+                content: "<a href=\"url\">Click me</a>"
             }]
         )
     })
 
     test("sendCreateCommunityConfirmationEmail", async () => {
         // Arrange
-        const { mock: tokenEncryptorMock, encrypt } = givenTokenEncryptor()
+        const { mock: urlBuilder, getCreateCommunityConfirmationUrl } = givenUrlBuilder()
         const { mock: mailComponentMock, sendTemplate } = givenMailComponent()
         const { mock: spicedDatabaseMock } = givenSpicedDatabase()
         const { mock: formsApiMock } = givenFormsApi()
 
-        const communityComponent = new CommunityComponent(
-            tokenEncryptorMock(),
-            formsApiMock(),
-            mailComponentMock(),
-            spicedDatabaseMock()
-        )
+        getCreateCommunityConfirmationUrl.mockImplementation(() => ("url"))
+
+        const communityComponent = new CommunityComponent(formsApiMock(), mailComponentMock(), spicedDatabaseMock(), urlBuilder())
 
         // Act
         await communityComponent.sendCreateCommunityConfirmationEmail("id", "a@b.com")
 
         // Assert
-        expect(encrypt).toBeCalledWith("id")
         expect(sendTemplate).toBeCalledWith(
             "a@b.com",
             "Community creation confirmation",
@@ -128,7 +127,7 @@ export default describe("CommunityComponent", () => {
             MailChimp.Templates.createCommunityConfirmation.name,
             [{
                 name: MailChimp.Templates.createCommunityConfirmation.fields.createCommunityConfirmationUrl,
-                content: "<a href=\"http://localhost:5000/createCommunity/encrypted\">Click me</a>"
+                content: "<a href=\"url\">Click me</a>"
             }]
         )
     })
@@ -136,30 +135,25 @@ export default describe("CommunityComponent", () => {
     test("createCommunity", async () => {
         // Arrange
         const { mock: spicedDatabaseMock, createCommunity } = givenSpicedDatabase()
-        const { mock: tokenEncryptorMock, decrypt } = givenTokenEncryptor()
         const { mock: mailComponentMock, sendTemplate } = givenMailComponent()
         const { mock: formsApiMock, getAnswers } = givenFormsApi()
+        const { mock: urlBuilder, getCommunityInvitationUrl } = givenUrlBuilder()
 
+        getCommunityInvitationUrl.mockImplementation(() => ("url"))
         getAnswers.mockImplementation(() => answers)
 
-        const communityComponent = new CommunityComponent(
-            tokenEncryptorMock(),
-            formsApiMock(),
-            mailComponentMock(),
-            spicedDatabaseMock()
-        )
+        const communityComponent = new CommunityComponent(formsApiMock(), mailComponentMock(), spicedDatabaseMock(), urlBuilder())
 
         // Act
-        const result = await communityComponent.createCommunity("encrypted")
+        const result = await communityComponent.createCommunity("formResponseId")
 
         // Assert
-        expect(decrypt).toBeCalledWith("encrypted")
-        expect(getAnswers).toBeCalledWith(Forms.createCommunity.formId, "decrypted")
+        expect(getAnswers).toBeCalledWith(Forms.createCommunity.formId, "formResponseId")
 
         expect(createCommunity).toBeCalledWith({
             title: "community title",
             publicLink: "public link",
-            typeFormResponseId: "decrypted",
+            typeFormResponseId: "formResponseId",
             creator: {
                 firstName: "firstName",
                 lastName: "lastName",
@@ -179,12 +173,12 @@ export default describe("CommunityComponent", () => {
                 content: "community title"
             }, {
                 name: MailChimp.Templates.communityCreated.fields.communityInvitationLink,
-                content: `<a href="${Url.getBaseUrl()}/invitation/encrypted">${Url.getBaseUrl()}/invitation/encrypted</a>`
+                content: "<a href=\"url\">url</a>"
             }]
         )
 
         expect(result).toEqual({
-            communityInvitationLink: `${Url.getBaseUrl()}/invitation/encrypted`
+            communityInvitationLink: "url"
         })
 
     })
@@ -192,7 +186,7 @@ export default describe("CommunityComponent", () => {
     test("should return error if community already exists", async () => {
         // Arrange
         const { mock: spicedDatabaseMock, createCommunity } = givenSpicedDatabase()
-        const { mock: tokenEncryptorMock, decrypt } = givenTokenEncryptor()
+        const { mock: urlBuilder } = givenUrlBuilder()
         const { mock: mailComponentMock, sendTemplate } = givenMailComponent()
         const { mock: formsApiMock, getAnswers } = givenFormsApi()
 
@@ -201,39 +195,28 @@ export default describe("CommunityComponent", () => {
             throw new EntityAlreadyExists("")
         })
 
-        const communityComponent = new CommunityComponent(
-            tokenEncryptorMock(),
-            formsApiMock(),
-            mailComponentMock(),
-            spicedDatabaseMock()
-        )
+        const communityComponent = new CommunityComponent(formsApiMock(), mailComponentMock(), spicedDatabaseMock(), urlBuilder())
 
         // Act
         await expect(communityComponent.createCommunity("encrypted"))
             .rejects.toBeInstanceOf(EntityAlreadyExists)
     })
 
-    test("findCommunityByEncryptedToken", async () => {
+    test("findCommunityByCommunityKey", async () => {
         // Arrange
         const { mock: spicedDatabaseMock, getCommunityById } = givenSpicedDatabase()
-        const { mock: tokenEncryptorMock, decrypt } = givenTokenEncryptor()
+        const { mock: urlBuilder } = givenUrlBuilder()
         const { mock: mailComponentMock, sendTemplate } = givenMailComponent()
         const { mock: formsApiMock, getAnswers } = givenFormsApi()
 
         getAnswers.mockImplementation(() => answers)
 
-        const communityComponent = new CommunityComponent(
-            tokenEncryptorMock(),
-            formsApiMock(),
-            mailComponentMock(),
-            spicedDatabaseMock()
-        )
+        const communityComponent = new CommunityComponent(formsApiMock(), mailComponentMock(), spicedDatabaseMock(), urlBuilder())
 
         // Act
-        await communityComponent.findCommunityByEncryptedToken("encrypted")
+        await communityComponent.findCommunityByCommunityKey("communityKey")
 
         // Assert
-        expect(decrypt).toBeCalledWith("encrypted")
-        expect(getCommunityById).toBeCalledWith("decrypted")
+        expect(getCommunityById).toBeCalledWith("communityKey")
     })
 })

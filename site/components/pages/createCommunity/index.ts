@@ -1,18 +1,19 @@
+// This gets called on every request
 import { GetServerSidePropsContext, GetServerSidePropsResult } from "next"
 import { CommunityComponent } from "../../logic/CommunityComponent"
-import { EntityAlreadyExists, SpicedDatabase } from "../../database/spicedDatabase"
-import { Logger } from "../../logger"
 import { TokenEncryptor } from "../../TokenEncryptor"
 import { FormsApi } from "../../forms/formsApi"
 import { MailComponent } from "../../mail"
+import { EntityAlreadyExists, SpicedDatabase } from "../../database/spicedDatabase"
 import { UrlBuilder } from "../../urlBuilder"
+import { Logger } from "../../logger"
 
 export type Props = {
-    communityTitle?: string,
+    communityInvitationLink?: string,
     error?: string
 }
 
-const log = new Logger("CommunityInvitationPage")
+const log = new Logger("CreateCommunityConfirmationPage")
 
 export const getServerSidePropsImpl = async (
     context: GetServerSidePropsContext,
@@ -20,23 +21,14 @@ export const getServerSidePropsImpl = async (
     urlBuilder: UrlBuilder
 ): Promise<GetServerSidePropsResult<Props>> => {
     try {
-        const token = urlBuilder.getInvitationToken(context)
-        const community = await communityComponent.findCommunityByCommunityKey(token.communityKey)
+        const token = urlBuilder.getCreateCommunityConfirmationToken(context)
+        const result = await communityComponent.createCommunity(token.formsResponseId)
 
-        if (community == null) {
-            return {
-                props: {
-                    error: "Cant' find community"
-                }
-            }
-        } else {
-            return {
-                props: {
-                    communityTitle: community.title
-                }
+        return {
+            props: {
+                communityInvitationLink: result.communityInvitationLink
             }
         }
-
     } catch (x) {
         log.error(x)
 
@@ -50,18 +42,15 @@ export const getServerSidePropsImpl = async (
 
         return {
             props: {
-                error: "Cant' find community"
+                error: "Unknown error"
             }
         }
     }
 }
 
-export default async (context: GetServerSidePropsContext): Promise<GetServerSidePropsResult<Props>> => {
-    return getServerSidePropsImpl(
+export default async (context: GetServerSidePropsContext): Promise<GetServerSidePropsResult<Props>> =>
+    getServerSidePropsImpl(
         context,
         new CommunityComponent(new FormsApi(), new MailComponent(), new SpicedDatabase(), new UrlBuilder(new TokenEncryptor())),
         new UrlBuilder(new TokenEncryptor())
     )
-}
-
-

@@ -5,10 +5,38 @@ import { TokenEncryptor } from "./TokenEncryptor"
 import { SpicedDatabase } from "./database/spicedDatabase"
 import { ParsedUrlQuery } from "querystring"
 import { IncomingMessage, ServerResponse } from "http"
+import { UrlBuilder } from "./urlBuilder"
+
+export const givenUrlBuilder = () => {
+    const getCreateCommunityConfirmationUrl = jest.fn()
+    const getCreateCommunityConfirmationToken = jest.fn()
+    const getJoinConfirmationToken = jest.fn()
+    const getInvitationToken = jest.fn()
+    const getJoinCommunityConfirmationUrl = jest.fn()
+    const getCommunityInvitationUrl = jest.fn()
+
+    return {
+        mock: jest.fn<UrlBuilder>(() => ({
+            getCreateCommunityConfirmationUrl,
+            getCreateCommunityConfirmationToken,
+            getJoinConfirmationToken,
+            getInvitationToken,
+            getJoinCommunityConfirmationUrl,
+            getCommunityInvitationUrl
+        })),
+
+        getCreateCommunityConfirmationUrl,
+        getCreateCommunityConfirmationToken,
+        getJoinConfirmationToken,
+        getInvitationToken,
+        getJoinCommunityConfirmationUrl,
+        getCommunityInvitationUrl
+    }
+}
 
 export const givenCommunityComponent = () => {
     const createCommunity = jest.fn()
-    const findCommunityByEncryptedToken = jest.fn()
+    const findCommunityByCommunityKey = jest.fn()
     const sendJoinCommunityConfirmationEmail = jest.fn()
     const sendCreateCommunityConfirmationEmail = jest.fn()
     const joinCommunityByEncryptedToken = jest.fn()
@@ -16,14 +44,14 @@ export const givenCommunityComponent = () => {
     return {
         mock: jest.fn<CommunityComponent>(() => ({
             createCommunity,
-            findCommunityByEncryptedToken,
+            findCommunityByCommunityKey,
             sendJoinCommunityConfirmationEmail,
             sendCreateCommunityConfirmationEmail,
-            joinCommunityByEncryptedToken
+            joinCommunity: joinCommunityByEncryptedToken
         })),
 
         createCommunity,
-        findCommunityByEncryptedToken,
+        findCommunityByCommunityKey,
         sendJoinCommunityConfirmationEmail,
         sendCreateCommunityConfirmationEmail,
         joinCommunityByEncryptedToken
@@ -82,7 +110,7 @@ export function givenSpicedDatabase () {
     }
 }
 
-export const givenGetServerSidePropsContext = (params: ParsedUrlQuery) => ({
+export const givenGetServerSidePropsContext = (params: ParsedUrlQuery = {}) => ({
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     req: jest.fn<IncomingMessage>()(),
 

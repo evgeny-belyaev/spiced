@@ -1,12 +1,12 @@
-import { TokenEncryptor } from "../TokenEncryptor"
 import { FormsApi } from "../forms/formsApi"
-import { Forms, MailChimp, Url } from "../constants"
+import { Forms, MailChimp } from "../constants"
 import { MailComponent } from "../mail"
 import { Logger } from "../logger"
 import { FormsUtils } from "../forms/formsUtils"
 import { SpicedDatabase } from "../database/spicedDatabase"
 import { BaseError } from "../baseError"
 import { Community } from "../database/types"
+import { UrlBuilder } from "../urlBuilder"
 
 type CreateCommunityResult = {
     communityInvitationLink?: string,
@@ -14,35 +14,24 @@ type CreateCommunityResult = {
 }
 
 export class CommunityComponent {
-    private tokenEncryptor: TokenEncryptor
-    private formsApi: FormsApi
-    private mailComponent: MailComponent
-    private spicedDatabase: SpicedDatabase
 
     private log = new Logger("CommunityComponent")
 
     constructor (
-        tokenEncryptor: TokenEncryptor,
-        formsApi: FormsApi,
-        mailComponent: MailComponent,
-        spicedDatabase: SpicedDatabase
+        private formsApi: FormsApi,
+        private mailComponent: MailComponent,
+        private spicedDatabase: SpicedDatabase,
+        private urlBuilder: UrlBuilder
     ) {
-        this.tokenEncryptor = tokenEncryptor
-        this.formsApi = formsApi
-        this.mailComponent = mailComponent
-        this.spicedDatabase = spicedDatabase
     }
 
-    async joinCommunityByEncryptedToken (joinToken: string): Promise<Community | null> {
-        return null
-    }
-
-    async sendJoinCommunityConfirmationEmail (formResponseId: string, email: string): Promise<void> {
-        if (!formResponseId || !email) {
+    async sendJoinCommunityConfirmationEmail (formResponseId: string, email: string, communityKey: string): Promise<void> {
+        if (!formResponseId || !email || !communityKey) {
             throw Error("Invalid argument")
         }
 
-        const content = `<a href="${Url.getJoinCommunityConfirmationUrl(this.tokenEncryptor.encrypt(formResponseId))}">Click me</a>`
+        const url = this.urlBuilder.getJoinCommunityConfirmationUrl(communityKey, email)
+        const content = `<a href="${url}">Click me</a>`
         this.log.debug(`Sending join confirmation link with ${formResponseId} to ${email} content is ${content}`)
 
         const mailTemplate = MailChimp.Templates.joinCommunityConfirmation
@@ -63,7 +52,9 @@ export class CommunityComponent {
             throw Error("Invalid argument")
         }
 
-        const content = `<a href="${Url.getCreateCommunityConfirmationUrl(this.tokenEncryptor.encrypt(formResponseId))}">Click me</a>`
+        const url = this.urlBuilder.getCreateCommunityConfirmationUrl(formResponseId)
+        const content = `<a href="${url}">Click me</a>`
+
         this.log.debug(`Sending create community confirmation link with ${formResponseId} to ${email} content is ${content}`)
 
         const mailTemplate = MailChimp.Templates.createCommunityConfirmation
@@ -79,16 +70,14 @@ export class CommunityComponent {
             }])
     }
 
-    async findCommunityByEncryptedToken (encryptedToken: string): Promise<Community | null> {
-        const decryptedToken = this.tokenEncryptor.decrypt(encryptedToken)
-        return await this.spicedDatabase.getCommunityById(decryptedToken)
+    async findCommunityByCommunityKey (communityKey: string): Promise<Community | null> {
+        return await this.spicedDatabase.getCommunityById(communityKey)
     }
 
-    async createCommunity (encryptedToken: string): Promise<CreateCommunityResult> {
-        const typeformResponseId = this.tokenEncryptor.decrypt(encryptedToken)
+    async createCommunity (formsResponseId: string): Promise<CreateCommunityResult> {
         const answers = await this.formsApi.getAnswers(
             Forms.createCommunity.formId,
-            typeformResponseId
+            formsResponseId
         )
 
         this.log.debug("Form answers are", answers)
@@ -109,7 +98,7 @@ export class CommunityComponent {
         const communityKey = await this.spicedDatabase.createCommunity({
             title: title,
             publicLink: utils.getUrl(communityPublicLink),
-            typeFormResponseId: typeformResponseId,
+            typeFormResponseId: formsResponseId,
             creator: {
                 firstName: utils.getText(firstName),
                 lastName: utils.getText(lastName),
@@ -118,7 +107,7 @@ export class CommunityComponent {
                 website: utils.getUrl(creatorWebsite)
             }
         })
-        const invitationLink = Url.getCommunityInvitationLink(this.tokenEncryptor.encrypt(communityKey))
+        const invitationLink = this.urlBuilder.getCommunityInvitationUrl(communityKey)
         const invitationLinkMarkup = `<a href="${invitationLink}">${invitationLink}</a>`
         const mailTemplate = MailChimp.Templates.communityCreated
 
@@ -144,8 +133,8 @@ export class CommunityComponent {
         }
     }
 
-    joinCommunity (communityId: string, userId: string): string {
-        return ""
+    async joinCommunity (communityKey: string, personEmail: string): Promise<Community | null> {
+        return null
     }
 
     optIn (communityId: string): string {

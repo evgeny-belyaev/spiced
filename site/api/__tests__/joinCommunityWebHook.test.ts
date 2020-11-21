@@ -137,6 +137,6 @@ export default describe("JoinCommunityWebHookApi", () => {
 
         // Assert
         expect(res.statusCode).toEqual(200)
-        expect(sendJoinCommunityConfirmationEmail).toBeCalledWith("07fqxivsl4zgd7c6507fqfldiqinln21", "evgeny.belyaev@gmail.com")
+        expect(sendJoinCommunityConfirmationEmail).toBeCalledWith("07fqxivsl4zgd7c6507fqfldiqinln21", "evgeny.belyaev@gmail.com", "TODO")
     })
 })

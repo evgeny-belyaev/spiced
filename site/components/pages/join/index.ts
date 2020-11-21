@@ -5,6 +5,7 @@ import { FormsApi } from "../../forms/formsApi"
 import { MailComponent } from "../../mail"
 import { SpicedDatabase } from "../../database/spicedDatabase"
 import { Logger } from "../../logger"
+import { UrlBuilder } from "../../urlBuilder"
 
 export type Props = {
     communityTitle?: string,
@@ -14,10 +15,14 @@ export type Props = {
 const log = new Logger("JoinCommunityPage")
 
 
-export async function getServerSidePropsImpl (context: GetServerSidePropsContext, communityComponent: CommunityComponent): Promise<GetServerSidePropsResult<Props>> {
+export async function getServerSidePropsImpl (
+    context: GetServerSidePropsContext,
+    communityComponent: CommunityComponent,
+    urlBuilder: UrlBuilder
+): Promise<GetServerSidePropsResult<Props>> {
     try {
-        const encryptedToken = String(context.params ? context.params["joinToken"] : "")
-        const community = await communityComponent.joinCommunityByEncryptedToken(encryptedToken)
+        const token = urlBuilder.getJoinConfirmationToken(context)
+        const community = await communityComponent.joinCommunity(token.communityKey, token.personEmail)
 
         if (community == null) {
             return {
@@ -48,11 +53,7 @@ export async function getServerSidePropsImpl (context: GetServerSidePropsContext
 export default async (context: GetServerSidePropsContext): Promise<GetServerSidePropsResult<Props>> => {
     return getServerSidePropsImpl(
         context,
-        new CommunityComponent(
-            new TokenEncryptor(),
-            new FormsApi(),
-            new MailComponent(),
-            new SpicedDatabase()
-        )
+        new CommunityComponent(new FormsApi(), new MailComponent(), new SpicedDatabase(), new UrlBuilder(new TokenEncryptor())),
+        new UrlBuilder(new TokenEncryptor())
     )
 }
