@@ -17,8 +17,9 @@
     "testdebug": "jest",
     "test coverage": "jest --coverage",
     "testwatch": "npm test -- --watch --maxWorkers 4",
-    "localtunnel5000": "npx localtunnel --port 5000",
-    "setupWebHoooks": "ts-node functions/setupWebHooks.ts"
+    "tunnel-functions": "npx localtunnel --port 5001",
+    "tunnel-site": "npx localtunnel --port 5000",
+    "setup-hooks": "ts-node functions/setupWebHooks.ts"
   },
   "dependencies": {
     "@mailchimp/mailchimp_marketing": "^3.0.23",

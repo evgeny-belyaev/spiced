@@ -1,9 +1,10 @@
 import * as axios from "axios"
-import { Forms, Url } from "../site/components/constants"
+import { Forms } from "../site/components/constants"
 import { getTypeWormWebHookPath } from "../site/components/forms/formsUtils"
 
 const accessToken = "CnLWx37r88w9NoqC5H3UrkVM1UDgNYVBt9VQi22aDURm"
-const host = Url.getBaseUrl()
+// const host = Url.getBaseUrl()
+const host = "https://lazy-falcon-8.loca.lt"
 const baseUrl = `${host}/spiced-f9677/us-central1`
 
 type Response = {
@@ -24,7 +25,7 @@ async function createWebHook (formId: string, hookName: string) {
                 "Authorization": `Bearer ${accessToken}`
             },
             data: {
-                "url": `${baseUrl}/api/${hookPath}`,
+                "url": `${baseUrl}/api${hookPath}`,
                 "enabled": true
             }
         })

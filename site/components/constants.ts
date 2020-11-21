@@ -56,7 +56,7 @@ export const MailChimp = {
             }
         },
         joinCommunityConfirmation: {
-            name: "joinCommunityConfirmationCommunityConfirmation",
+            name: "joinCommunityConfirmation",
             fields: {
                 joinCommunityConfirmationUrl: "joinCommunityConfirmationUrl"
             }

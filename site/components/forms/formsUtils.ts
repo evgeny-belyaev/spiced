@@ -1,7 +1,7 @@
 import { FormAnswer } from "./types"
 
 export function getTypeWormWebHookPath(hookName: string) {
-    return `${hookName}/hook`
+    return `/${hookName}/hook`
 }
 
 export class FormsUtils {

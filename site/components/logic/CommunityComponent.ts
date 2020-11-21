@@ -38,7 +38,7 @@ export class CommunityComponent {
 
         await this.mailComponent.sendTemplate(
             email,
-            "Community creation confirmation",
+            "Wow! Follow the link to join!",
             MailChimp.from,
             mailTemplate.name,
             [{
