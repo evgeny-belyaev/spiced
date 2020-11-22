@@ -9,6 +9,7 @@ import { UrlBuilder } from "../../urlBuilder"
 
 export type Props = {
     communityTitle?: string,
+    communityId?: string
     error?: string
 }
 
@@ -21,7 +22,7 @@ export const getServerSidePropsImpl = async (
 ): Promise<GetServerSidePropsResult<Props>> => {
     try {
         const token = urlBuilder.getInvitationToken(context)
-        const community = await communityComponent.findCommunityByCommunityKey(token.communityKey)
+        const community = await communityComponent.findCommunityById(token.communityKey)
 
         if (community == null) {
             return {
@@ -32,7 +33,8 @@ export const getServerSidePropsImpl = async (
         } else {
             return {
                 props: {
-                    communityTitle: community.title
+                    communityTitle: community.title,
+                    communityId: token.communityKey // TODO: Encrypt?
                 }
             }
         }

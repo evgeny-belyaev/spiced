@@ -65,13 +65,14 @@ export default describe("UrlBuilder", () => {
 
     test("getJoinCommunityConfirmationUrl", () => {
         // Arrange
-        const { mock: tokenEncryptor } = givenTokenEncryptor()
+        const { mock: tokenEncryptor, encrypt } = givenTokenEncryptor()
         const urlBuilder = new UrlBuilder(tokenEncryptor())
 
         // Act
-        const url = urlBuilder.getJoinCommunityConfirmationUrl("communityKey", "a@b.c")
+        const url = urlBuilder.getJoinCommunityConfirmationUrl("communityId", "777")
 
         // Assert
+        expect(encrypt).toBeCalledWith("{\"communityId\":\"communityId\",\"formResponseId\":\"777\"}")
         expect(url).toEqual(`${Url.getBaseUrl()}/join/encrypted`)
     })
 
@@ -83,13 +84,13 @@ export default describe("UrlBuilder", () => {
             JoinConfirmationToken: "encrypted"
         })
 
-        decrypt.mockImplementation(() =>("{\"communityKey\":\"asd\", \"personEmail\":\"a@b.c\"}"))
+        decrypt.mockImplementation(() =>("{\"communityId\":\"communityId\", \"formResponseId\":\"777\"}"))
 
         // Act
         const token = urlBuilder.getJoinConfirmationToken(context)
 
         // Assert
         expect(decrypt).toBeCalledWith("encrypted")
-        expect(token).toEqual(new JoinConfirmationToken("asd", "a@b.c"))
+        expect(token).toEqual(new JoinConfirmationToken("communityId", "777"))
     })
 })

@@ -6,12 +6,12 @@ import { InvitationToken } from "../../../urlBuilder"
 export default describe("getServerSidePropsImpl", () => {
     test("should return props", async () => {
         // Arrange
-        const { mock: communityComponent, findCommunityByCommunityKey } = givenCommunityComponent()
+        const { mock: communityComponent, findCommunityById } = givenCommunityComponent()
         const { mock: urlBuilder, getInvitationToken } = givenUrlBuilder()
         const context = givenGetServerSidePropsContext()
 
         getInvitationToken.mockImplementation(() => (new InvitationToken("communityKey")))
-        findCommunityByCommunityKey.mockImplementation(() => ({
+        findCommunityById.mockImplementation(() => ({
             title: "title"
         }))
 
@@ -23,22 +23,23 @@ export default describe("getServerSidePropsImpl", () => {
         )
 
         // Assert
-        expect(findCommunityByCommunityKey).toBeCalledWith("communityKey")
+        expect(findCommunityById).toBeCalledWith("communityKey")
         expect(props).toEqual({
             props: {
-                communityTitle: "title"
+                communityTitle: "title",
+                communityId: "communityKey"
             }
         })
     })
 
     test("should return error when community not found", async () => {
         // Arrange
-        const { mock: communityComponent, findCommunityByCommunityKey } = givenCommunityComponent()
+        const { mock: communityComponent, findCommunityById } = givenCommunityComponent()
         const { mock: urlBuilder, getInvitationToken } = givenUrlBuilder()
         const context = givenGetServerSidePropsContext()
 
         getInvitationToken.mockImplementation(() => (new InvitationToken("communityKey")))
-        findCommunityByCommunityKey.mockImplementation(() => null)
+        findCommunityById.mockImplementation(() => null)
 
 
         // Act
@@ -49,7 +50,7 @@ export default describe("getServerSidePropsImpl", () => {
         )
 
         // Assert
-        expect(findCommunityByCommunityKey).toBeCalledWith("communityKey")
+        expect(findCommunityById).toBeCalledWith("communityKey")
         expect(props).toEqual({
             props: {
                 error: "Cant' find community"

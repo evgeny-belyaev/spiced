@@ -21,30 +21,28 @@ export class JoinCommunityWebHookApi extends ApiEndpoint<WebHookParams, JoinComm
     private validateInput (body: any) {
         const params = <WebHookParams>(body)
 
-        let email, formResponseId, communityKey
+        let email, formResponseId
 
         try {
             formResponseId = params.form_response.token
             email = params.form_response.answers.filter((a: WebHookAnswer) => {
-                return a.field.id === Forms.joinCommunity.answers.emailAddress
-            })[0].email,
-            communityKey = "TODO"
+                return a.field.id === Forms.joinCommunity.answers.memberEmailAddress
+            })[0].email
         } catch (x) {
             throw Error("Invalid request")
         }
 
         return {
             formResponseId,
-            email: email ? email : "",
-            communityKey
+            email: email ? email : ""
         }
     }
 
 
     async handler (request: express.Request, response: express.Response): Promise<void> {
-        const { formResponseId, email, communityKey } = this.validateInput(request.body)
+        const { formResponseId, email } = this.validateInput(request.body)
 
-        await this.communityComponent.sendJoinCommunityConfirmationEmail(formResponseId, email, communityKey)
+        await this.communityComponent.sendJoinCommunityConfirmationEmail(formResponseId, email)
 
         response.status(200).end()
 

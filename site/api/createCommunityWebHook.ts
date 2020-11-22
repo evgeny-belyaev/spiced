@@ -1,5 +1,4 @@
 import * as express from "express"
-import { Logger } from "../components/logger"
 import { ApiEndpoint } from "./ApiEndpoint"
 import { Fetcher } from "./fetcher"
 import { CommunityComponent } from "../components/logic/CommunityComponent"
@@ -11,8 +10,6 @@ import { WebHookAnswer, WebHookParams } from "../components/forms/types"
 export type CreateCommunityWebHookResponse = {
     url: string
 }
-
-const log = new Logger("CreateCommunityWebHookApi")
 
 export class CreateCommunityWebHookApi extends ApiEndpoint<WebHookParams, CreateCommunityWebHookResponse> {
     path = getTypeWormWebHookPath(Forms.createCommunity.name)
@@ -42,7 +39,7 @@ export class CreateCommunityWebHookApi extends ApiEndpoint<WebHookParams, Create
     }
 
     async handler (request: express.Request, response: express.Response<unknown>): Promise<void> {
-        log.debug(JSON.stringify(request.body))
+        // log.debug(JSON.stringify(request.body))
 
         const { token, email } = this.validateInput(request.body)
 

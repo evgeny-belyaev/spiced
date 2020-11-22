@@ -7,8 +7,8 @@ export const Forms = {
         formId: "NaV9AthP",
         name: "createCommunity",
         answers: {
-            firstName: "iRELkeOPH06I",
-            lastName: "9IoVfWEsWEJm",
+            creatorFirstName: "iRELkeOPH06I",
+            creatorLastName: "9IoVfWEsWEJm",
             communityTitle: "hzQC3bQ87sQL",
             communityPublicLink: "Uukms7hM8K5i",
             creatorEmailAddress: "B8IPm7Osl6R1",
@@ -17,18 +17,25 @@ export const Forms = {
         }
     },
 
-    joinCommunity : {
+    joinCommunity: {
         formId: "Y6665JuG",
         name: "joinCommunity",
         hiddenFields: {
-            communityTitle: "communityTitle"
+            // TypeForm automatically converts all hidden fields names to lowercase.
+            // No camel case here!
+            communityTitle: "communitytitle",
+            communityId: "communityid"
         },
         answers: {
-            emailAddress: "fWuSaWrKCVbZ"
+            memberFirstName: "yTfniwfEZHmy",
+            memberLastName: "7pfMxKZlyBqe",
+            memberEmailAddress: "fWuSaWrKCVbZ",
+            memberPhoneNumber: "3kIm7gd9aPCl",
+            memberWebsite: "bKxH0PJxunet"
         }
     },
 
-    getResponsesUrl(formId: string, includedResponsesIds: string[]): string {
+    getResponsesUrl (formId: string, includedResponsesIds: string[]): string {
         if (includedResponsesIds.length == 0) {
             throw Error("Invalid argument: includedResponsesIds")
         }
@@ -61,6 +68,12 @@ export const MailChimp = {
                 joinCommunityConfirmationUrl: "joinCommunityConfirmationUrl"
             }
         },
+        communityJoined :{
+            name: "communityJoined",
+            fields: {
+                communityTitle: "communityTitle"
+            }
+        },
         communityCreated: {
             name: "communityCreated",
             fields: {
@@ -77,9 +90,10 @@ export const Database = {
 }
 
 export const Url = {
-    getBaseUrl(): string {
+    getBaseUrl (): string {
         return process.env["NODE_ENV"] == "development" || process.env["NODE_ENV"] == "test" ?
             "http://localhost:5000" :
             "https://spiced-f9677.web.app"
+        // "https://tiny-dolphin-96.loca.lt"
     }
 }

@@ -1,16 +1,57 @@
 import { CommunityComponent } from "../CommunityComponent"
-import { Forms, MailChimp, Url } from "../../constants"
+import { Forms, MailChimp } from "../../constants"
 import { EntityAlreadyExists } from "../../database/spicedDatabase"
-import {
-    givenFormsApi,
-    givenMailComponent,
-    givenSpicedDatabase,
-    givenTokenEncryptor,
-    givenUrlBuilder
-} from "../../testUtils"
-import { url } from "inspector"
+import { givenFormsApi, givenMailComponent, givenSpicedDatabase, givenUrlBuilder } from "../../testUtils"
 
-const answers = [
+const answersJoin = [
+    {
+        "field": {
+            "id": "yTfniwfEZHmy",
+            "ref": "b78462b6-51a1-4971-ac3e-435f6d6bd2e6",
+            "type": "short_text"
+        },
+        "type": "text",
+        "text": "asdf"
+    },
+    {
+        "field": {
+            "id": "7pfMxKZlyBqe",
+            "ref": "9547e114-21ab-4727-9e98-283fe992303b",
+            "type": "short_text"
+        },
+        "type": "text",
+        "text": "fdsa"
+    },
+    {
+        "field": {
+            "id": "fWuSaWrKCVbZ",
+            "ref": "a46913210c42aaf5",
+            "type": "email"
+        },
+        "type": "email",
+        "email": "a@b.c"
+    },
+    {
+        "field": {
+            "id": "3kIm7gd9aPCl",
+            "ref": "b08d4ba443cad868",
+            "type": "phone_number"
+        },
+        "type": "phone_number",
+        "phone_number": "+79819861819"
+    },
+    {
+        "field": {
+            "id": "bKxH0PJxunet",
+            "ref": "d9e7f7cb-084c-43bc-b04b-67c209c5d2f2",
+            "type": "website"
+        },
+        "type": "url",
+        "url": "https://asdf.com"
+    }
+]
+
+const answersCreate = [
     {
         "field": {
             "id": "iRELkeOPH06I",
@@ -77,25 +118,93 @@ const answers = [
 ]
 
 
+const response = {
+    "total_items": 8,
+    "page_count": 1,
+    "items": [
+        {
+            "landing_id": "eli8isxk856vsacygwnsy2xnyqeli8is",
+            "token": "eli8isxk856vsacygwnsy2xnyqeli8is",
+            "response_id": "eli8isxk856vsacygwnsy2xnyqeli8is",
+            "landed_at": "2020-11-21T12:15:40Z",
+            "submitted_at": "2020-11-21T12:16:08Z",
+            "metadata": {
+                "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.67 Safari/537.36",
+                "platform": "other",
+                "referer": "https://radmir765811.typeform.com/to/Y6665JuG?communityTitle=33&typeform-embed=embed-widget&embed-hide-footer=true&embed-hide-headers=true&embed-opacity=100&typeform-embed-id=kf5z2",
+                "network_id": "70cde7363d",
+                "browser": "default"
+            },
+            "hidden": {
+                "communityid": "communityKey",
+                "communitytitle": "33"
+            },
+            "calculated": {
+                "score": 0
+            },
+            "answers": [
+                {
+                    "field": {
+                        "id": "yTfniwfEZHmy",
+                        "ref": "b78462b6-51a1-4971-ac3e-435f6d6bd2e6",
+                        "type": "short_text"
+                    },
+                    "type": "text",
+                    "text": "sdfsd"
+                },
+                {
+                    "field": {
+                        "id": "7pfMxKZlyBqe",
+                        "ref": "9547e114-21ab-4727-9e98-283fe992303b",
+                        "type": "short_text"
+                    },
+                    "type": "text",
+                    "text": "sfsdfsd"
+                },
+                {
+                    "field": {
+                        "id": "fWuSaWrKCVbZ",
+                        "ref": "a46913210c42aaf5",
+                        "type": "email"
+                    },
+                    "type": "email",
+                    "email": "evgeny.belyaev@gmail.com"
+                },
+                {
+                    "field": {
+                        "id": "3kIm7gd9aPCl",
+                        "ref": "b08d4ba443cad868",
+                        "type": "phone_number"
+                    },
+                    "type": "phone_number",
+                    "phone_number": "+12015555555"
+                }
+            ]
+        }
+    ]
+}
+
 export default describe("CommunityComponent", () => {
     test("sendJoinCommunityConfirmationEmail", async () => {
         // Arrange
         const { mock: urlBuilder, getJoinCommunityConfirmationUrl } = givenUrlBuilder()
         const { mock: mailComponentMock, sendTemplate } = givenMailComponent()
         const { mock: spicedDatabaseMock } = givenSpicedDatabase()
-        const { mock: formsApiMock } = givenFormsApi()
+        const { mock: formsApiMock, getResponse } = givenFormsApi()
 
         getJoinCommunityConfirmationUrl.mockImplementation(() => ("url"))
+        getResponse.mockImplementation(() => Promise.resolve(response))
 
         const communityComponent = new CommunityComponent(formsApiMock(), mailComponentMock(), spicedDatabaseMock(), urlBuilder())
 
         // Act
-        await communityComponent.sendJoinCommunityConfirmationEmail("id", "a@b.com", "key")
+        await communityComponent.sendJoinCommunityConfirmationEmail("formResponseId", "a@b.com")
 
         // Assert
+        expect(getJoinCommunityConfirmationUrl).toBeCalledWith("communityKey", "formResponseId")
         expect(sendTemplate).toBeCalledWith(
             "a@b.com",
-            "Community creation confirmation",
+            "Wow! Follow the link to join!",
             "contact@wowyougotamatch.com",
             MailChimp.Templates.joinCommunityConfirmation.name,
             [{
@@ -134,13 +243,16 @@ export default describe("CommunityComponent", () => {
 
     test("createCommunity", async () => {
         // Arrange
-        const { mock: spicedDatabaseMock, createCommunity } = givenSpicedDatabase()
+        const { mock: spicedDatabaseMock, createCommunity, createUser, createMember } = givenSpicedDatabase()
         const { mock: mailComponentMock, sendTemplate } = givenMailComponent()
         const { mock: formsApiMock, getAnswers } = givenFormsApi()
         const { mock: urlBuilder, getCommunityInvitationUrl } = givenUrlBuilder()
 
+        createUser.mockImplementation(() => Promise.resolve("userIdHash"))
+        createMember.mockImplementation(() => Promise.resolve())
+        createCommunity.mockImplementation(() => Promise.resolve("communityId"))
         getCommunityInvitationUrl.mockImplementation(() => ("url"))
-        getAnswers.mockImplementation(() => answers)
+        getAnswers.mockImplementation(() => answersCreate)
 
         const communityComponent = new CommunityComponent(formsApiMock(), mailComponentMock(), spicedDatabaseMock(), urlBuilder())
 
@@ -150,18 +262,22 @@ export default describe("CommunityComponent", () => {
         // Assert
         expect(getAnswers).toBeCalledWith(Forms.createCommunity.formId, "formResponseId")
 
+        expect(createUser).toBeCalledWith({
+            firstName: "firstName",
+            lastName: "lastName",
+            emailAddress: "a@b.com",
+            phoneNumber: "123",
+            website: "com.com"
+        })
+
         expect(createCommunity).toBeCalledWith({
             title: "community title",
             publicLink: "public link",
             typeFormResponseId: "formResponseId",
-            creator: {
-                firstName: "firstName",
-                lastName: "lastName",
-                emailAddress: "a@b.com",
-                phoneNumber: "123",
-                website: "com.com"
-            }
+            creatorUserId: "userIdHash"
         })
+
+        expect(createMember).toBeCalledWith("communityId", "userIdHash")
 
         expect(sendTemplate).toBeCalledWith(
             "a@b.com",
@@ -190,7 +306,7 @@ export default describe("CommunityComponent", () => {
         const { mock: mailComponentMock, sendTemplate } = givenMailComponent()
         const { mock: formsApiMock, getAnswers } = givenFormsApi()
 
-        getAnswers.mockImplementation(() => answers)
+        getAnswers.mockImplementation(() => answersCreate)
         createCommunity.mockImplementation(() => {
             throw new EntityAlreadyExists("")
         })
@@ -209,14 +325,87 @@ export default describe("CommunityComponent", () => {
         const { mock: mailComponentMock, sendTemplate } = givenMailComponent()
         const { mock: formsApiMock, getAnswers } = givenFormsApi()
 
-        getAnswers.mockImplementation(() => answers)
+        getAnswers.mockImplementation(() => answersCreate)
 
         const communityComponent = new CommunityComponent(formsApiMock(), mailComponentMock(), spicedDatabaseMock(), urlBuilder())
 
         // Act
-        await communityComponent.findCommunityByCommunityKey("communityKey")
+        await communityComponent.findCommunityById("communityKey")
 
         // Assert
         expect(getCommunityById).toBeCalledWith("communityKey")
+    })
+
+    test("joinCommunity", async () => {
+        // Arrange
+        const { mock: spicedDatabaseMock, getCommunityById, createUser, createMember } = givenSpicedDatabase()
+        const { mock: mailComponentMock, sendTemplate } = givenMailComponent()
+        const { mock: formsApiMock, getAnswers } = givenFormsApi()
+        const { mock: urlBuilder } = givenUrlBuilder()
+
+        getCommunityById.mockImplementation(() => ({
+            title: "title"
+        }))
+        getAnswers.mockImplementation(() => answersJoin)
+
+        createUser.mockImplementation(() => Promise.resolve("userIdHash"))
+        createMember.mockImplementation(() => Promise.resolve())
+
+
+        const communityComponent = new CommunityComponent(formsApiMock(), mailComponentMock(), spicedDatabaseMock(), urlBuilder())
+        const communityId = "communityId"
+        const formResponseId = "formResponseId"
+
+        // Act
+        const result = await communityComponent.joinCommunity(communityId, formResponseId)
+
+        // Assert
+        expect(getCommunityById).toBeCalledWith(communityId)
+        expect(getAnswers).toBeCalledWith(Forms.joinCommunity.formId, formResponseId)
+        expect(createUser).toBeCalledWith({
+            firstName: "asdf",
+            lastName: "fdsa",
+            phoneNumber: "+79819861819",
+            website: "https://asdf.com",
+            emailAddress: "a@b.c"
+        })
+        expect(createMember).toBeCalledWith(communityId, "userIdHash")
+        expect(sendTemplate).toBeCalledWith(
+            "a@b.c",
+            "You've successfully joined",
+            MailChimp.from,
+            MailChimp.Templates.communityJoined.name,
+            [
+                {
+                    name: MailChimp.Templates.communityJoined.fields.communityTitle,
+                    content: "title"
+                }
+            ]
+        )
+    })
+
+    test("joinCommunity, should throw if no community", async () => {
+        // Arrange
+        const { mock: spicedDatabaseMock, getCommunityById, createUser, createMember } = givenSpicedDatabase()
+        const { mock: mailComponentMock, sendTemplate } = givenMailComponent()
+        const { mock: formsApiMock, getAnswers } = givenFormsApi()
+        const { mock: urlBuilder } = givenUrlBuilder()
+
+        getCommunityById.mockImplementation(() => null)
+
+        const communityComponent = new CommunityComponent(formsApiMock(), mailComponentMock(), spicedDatabaseMock(), urlBuilder())
+        const communityId = "communityId"
+        const formResponseId = "formResponseId"
+
+        // Act
+        // Assert
+        await expect(async () => {
+            await communityComponent.joinCommunity(communityId, formResponseId)
+        }).rejects.toThrowError("Invalid argument")
+
+        expect(sendTemplate).toHaveBeenCalledTimes(0)
+        expect(getAnswers).toHaveBeenCalledTimes(0)
+        expect(createUser).toHaveBeenCalledTimes(0)
+        expect(createMember).toHaveBeenCalledTimes(0)
     })
 })

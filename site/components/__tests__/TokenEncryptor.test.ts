@@ -19,6 +19,19 @@ describe("TokenEncryptor", () => {
             round("")
         }).toThrowError("Invalid argument: data")
     })
+
+    test("Should produce different ciphers for same data", () => {
+        // Arrange
+        const encryptor = new TokenEncryptor()
+        const sameData = "sameData"
+
+        // Act
+        const res1 = encryptor.encrypt(sameData)
+        const res2 = encryptor.encrypt(sameData)
+
+        // Assert
+        expect(res1).not.toEqual(res2)
+    })
 })
 
 export {}

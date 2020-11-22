@@ -34,6 +34,7 @@ type Item = {
         fields: Field[]
     },
     answers: FormAnswer[],
+    hidden: NodeJS.Dict<string>,
     calculated: {
         score: number
     }

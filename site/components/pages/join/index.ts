@@ -22,7 +22,7 @@ export async function getServerSidePropsImpl (
 ): Promise<GetServerSidePropsResult<Props>> {
     try {
         const token = urlBuilder.getJoinConfirmationToken(context)
-        const community = await communityComponent.joinCommunity(token.communityKey, token.personEmail)
+        const community = await communityComponent.joinCommunity(token.communityId, token.formResponseId)
 
         if (community == null) {
             return {

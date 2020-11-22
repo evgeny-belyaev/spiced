@@ -22,7 +22,7 @@ export class InvitationToken {
 }
 
 export class JoinConfirmationToken {
-    constructor (public communityKey: string, public personEmail: string) {
+    constructor (public communityId: string, public formResponseId: string) {
     }
 
     static fromString (s: string): JoinConfirmationToken {
@@ -80,8 +80,8 @@ export class UrlBuilder {
     }
 
 
-    getJoinCommunityConfirmationUrl (communityKey: string, personEmail: string): string {
-        const token = new JoinConfirmationToken(communityKey, personEmail)
+    getJoinCommunityConfirmationUrl (communityKey: string, formResponseId: string): string {
+        const token = new JoinConfirmationToken(communityKey, formResponseId)
         return Url.getBaseUrl() + "/join/" + this.encrypt(token)
     }
 

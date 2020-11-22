@@ -25,12 +25,26 @@ export class CommunityComponent {
     ) {
     }
 
-    async sendJoinCommunityConfirmationEmail (formResponseId: string, email: string, communityKey: string): Promise<void> {
-        if (!formResponseId || !email || !communityKey) {
+    async sendJoinCommunityConfirmationEmail (formResponseId: string, email: string): Promise<void> {
+        if (!formResponseId || !email) {
             throw Error("Invalid argument")
         }
 
-        const url = this.urlBuilder.getJoinCommunityConfirmationUrl(communityKey, email)
+        this.log.debug(`Getting response for form ${Forms.joinCommunity.formId}, formResponseId=${formResponseId}`)
+
+        const response = await this.formsApi.getResponse(Forms.joinCommunity.formId, formResponseId)
+
+        this.log.debug("Response: " + JSON.stringify(response))
+
+        const communityId =
+            response && response.items && response.items.length ?
+                response.items[0].hidden[Forms.joinCommunity.hiddenFields.communityId] : undefined
+
+        if (!communityId) {
+            throw Error("Invalid argument")
+        }
+
+        const url = this.urlBuilder.getJoinCommunityConfirmationUrl(communityId, formResponseId)
         const content = `<a href="${url}">Click me</a>`
         this.log.debug(`Sending join confirmation link with ${formResponseId} to ${email} content is ${content}`)
 
@@ -70,8 +84,8 @@ export class CommunityComponent {
             }])
     }
 
-    async findCommunityByCommunityKey (communityKey: string): Promise<Community | null> {
-        return await this.spicedDatabase.getCommunityById(communityKey)
+    async findCommunityById (communityId: string): Promise<Community | null> {
+        return await this.spicedDatabase.getCommunityById(communityId)
     }
 
     async createCommunity (formsResponseId: string): Promise<CreateCommunityResult> {
@@ -84,8 +98,8 @@ export class CommunityComponent {
 
         const utils = new FormsUtils()
 
-        const firstName = utils.getAnswerById(answers, Forms.createCommunity.answers.firstName)
-        const lastName = utils.getAnswerById(answers, Forms.createCommunity.answers.lastName)
+        const firstName = utils.getAnswerById(answers, Forms.createCommunity.answers.creatorFirstName)
+        const lastName = utils.getAnswerById(answers, Forms.createCommunity.answers.creatorLastName)
         const communityTitle = utils.getAnswerById(answers, Forms.createCommunity.answers.communityTitle)
         const communityPublicLink = utils.getAnswerById(answers, Forms.createCommunity.answers.communityPublicLink)
         const creatorEmailAddress = utils.getAnswerById(answers, Forms.createCommunity.answers.creatorEmailAddress)
@@ -95,19 +109,24 @@ export class CommunityComponent {
         const emailAddress = utils.getEmail(creatorEmailAddress)
         const title = utils.getText(communityTitle)
 
-        const communityKey = await this.spicedDatabase.createCommunity({
+        const userId = await this.spicedDatabase.createUser({
+            firstName: utils.getText(firstName),
+            lastName: utils.getText(lastName),
+            emailAddress: emailAddress,
+            phoneNumber: utils.getPhoneNumber(creatorPhoneNumber),
+            website: utils.getUrl(creatorWebsite)
+        })
+
+        const communityId = await this.spicedDatabase.createCommunity({
             title: title,
             publicLink: utils.getUrl(communityPublicLink),
             typeFormResponseId: formsResponseId,
-            creator: {
-                firstName: utils.getText(firstName),
-                lastName: utils.getText(lastName),
-                emailAddress: emailAddress,
-                phoneNumber: utils.getPhoneNumber(creatorPhoneNumber),
-                website: utils.getUrl(creatorWebsite)
-            }
+            creatorUserId: userId
         })
-        const invitationLink = this.urlBuilder.getCommunityInvitationUrl(communityKey)
+
+        await this.spicedDatabase.createMember(communityId, userId)
+
+        const invitationLink = this.urlBuilder.getCommunityInvitationUrl(communityId)
         const invitationLinkMarkup = `<a href="${invitationLink}">${invitationLink}</a>`
         const mailTemplate = MailChimp.Templates.communityCreated
 
@@ -133,8 +152,50 @@ export class CommunityComponent {
         }
     }
 
-    async joinCommunity (communityKey: string, personEmail: string): Promise<Community | null> {
-        return null
+    async joinCommunity (communityId: string, formResponseId: string): Promise<Community | null> {
+        const community = await this.spicedDatabase.getCommunityById(communityId)
+
+        if (!community) {
+            throw new Error("Invalid argument")
+        }
+
+        const answers = await this.formsApi.getAnswers(Forms.joinCommunity.formId, formResponseId)
+
+        const utils = new FormsUtils()
+
+        const memberFirstName = utils.getAnswerById(answers, Forms.joinCommunity.answers.memberFirstName)
+        const memberLastName = utils.getAnswerById(answers, Forms.joinCommunity.answers.memberLastName)
+        const memberEmailAddress = utils.getAnswerById(answers, Forms.joinCommunity.answers.memberEmailAddress)
+        const memberPhoneNumber = utils.getAnswerById(answers, Forms.joinCommunity.answers.memberPhoneNumber)
+        const memberWebsite = utils.getAnswerById(answers, Forms.joinCommunity.answers.memberWebsite)
+
+        const emailAddress = utils.getEmail(memberEmailAddress)
+
+        const userId = await this.spicedDatabase.createUser({
+            firstName: utils.getText(memberFirstName),
+            lastName: utils.getText(memberLastName),
+            phoneNumber: utils.getPhoneNumber(memberPhoneNumber),
+            website: utils.getUrl(memberWebsite),
+            emailAddress: emailAddress
+        })
+
+        await this.spicedDatabase.createMember(communityId, userId)
+
+        const mailTemplate = MailChimp.Templates.communityJoined
+        await this.mailComponent.sendTemplate(
+            emailAddress,
+            "You've successfully joined",
+            MailChimp.from,
+            mailTemplate.name,
+            [
+                {
+                    name: mailTemplate.fields.communityTitle,
+                    content: community.title
+                }
+            ]
+        )
+
+        return community
     }
 
     optIn (communityId: string): string {

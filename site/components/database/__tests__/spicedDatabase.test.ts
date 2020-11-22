@@ -1,9 +1,8 @@
 import { EntityAlreadyExists, SpicedDatabase } from "../spicedDatabase"
 import * as crypto from "crypto"
+import { givenRandomString } from "../../testUtils"
 
-const givenRandomString = () => crypto.randomBytes(20).toString("hex")
-
-export default describe("community", () => {
+export default describe("SpicedDatabase", () => {
     test("createCommunity", async () => {
         // Arrange
         const db = new SpicedDatabase()
@@ -158,5 +157,64 @@ export default describe("community", () => {
 
         // Assert
         expect(result).toEqual(communityId)
+    })
+
+    test("createUser", async () => {
+        // Arrange
+        const db = new SpicedDatabase()
+        const email = crypto.randomBytes(20).toString("hex") + "@mail.com"
+        const key = crypto.createHash("sha256").update(email).digest("hex")
+
+        // Act
+        const result = await db.createUser({
+            firstName: "firstName",
+            lastName: "lastName:",
+            emailAddress: email,
+            phoneNumber: "phoneNumber",
+            website: "website"
+        })
+
+        // Assert
+        expect(result).toEqual(key)
+    })
+
+    test("getUserByEmail", async () => {
+        const db = new SpicedDatabase()
+        const email = givenRandomString(20) + "@mail.com"
+        const user = {
+            firstName: "firstName",
+            lastName: "lastName:",
+            emailAddress: email,
+            phoneNumber: "phoneNumber",
+            website: "website"
+        }
+
+        await db.createUser(user)
+
+        // Act
+        const result = await db.getUserByEmail(email)
+
+        // Assert
+        expect(result).toEqual(user)
+    })
+
+    test("createMember getMembers", async () => {
+        // Arrangea
+        const db = new SpicedDatabase()
+        const communityId = givenRandomString()
+        const userId1 = givenRandomString()
+        const userId2 = givenRandomString()
+
+        await db.createMember(communityId, userId1)
+        await db.createMember(communityId, userId2)
+
+        // Act
+        const result = await db.getMembers(communityId)
+
+        // Assert
+        expect(Object.keys(result)).toContain(userId1)
+        expect(Object.keys(result)).toContain(userId2)
+
+        expect(Object.values(result)).toEqual([true, true])
     })
 })

@@ -6,6 +6,7 @@ import { SpicedDatabase } from "./database/spicedDatabase"
 import { ParsedUrlQuery } from "querystring"
 import { IncomingMessage, ServerResponse } from "http"
 import { UrlBuilder } from "./urlBuilder"
+import crypto from "crypto"
 
 export const givenUrlBuilder = () => {
     const getCreateCommunityConfirmationUrl = jest.fn()
@@ -36,7 +37,7 @@ export const givenUrlBuilder = () => {
 
 export const givenCommunityComponent = () => {
     const createCommunity = jest.fn()
-    const findCommunityByCommunityKey = jest.fn()
+    const findCommunityById = jest.fn()
     const sendJoinCommunityConfirmationEmail = jest.fn()
     const sendCreateCommunityConfirmationEmail = jest.fn()
     const joinCommunityByEncryptedToken = jest.fn()
@@ -44,14 +45,14 @@ export const givenCommunityComponent = () => {
     return {
         mock: jest.fn<CommunityComponent>(() => ({
             createCommunity,
-            findCommunityByCommunityKey,
+            findCommunityById,
             sendJoinCommunityConfirmationEmail,
             sendCreateCommunityConfirmationEmail,
             joinCommunity: joinCommunityByEncryptedToken
         })),
 
         createCommunity,
-        findCommunityByCommunityKey,
+        findCommunityById,
         sendJoinCommunityConfirmationEmail,
         sendCreateCommunityConfirmationEmail,
         joinCommunityByEncryptedToken
@@ -88,25 +89,42 @@ export function givenMailComponent () {
 
 export function givenFormsApi () {
     const getAnswers = jest.fn()
+    const getResponse = jest.fn()
 
     return {
         mock: jest.fn<FormsApi>(() => ({
-            getAnswers
+            getAnswers,
+            getResponse
         })),
-        getAnswers
+        getAnswers,
+        getResponse
     }
 }
 
 export function givenSpicedDatabase () {
     const createCommunity = jest.fn()
     const getCommunityById = jest.fn()
+    const createUser = jest.fn()
+    const getUserByEmail = jest.fn()
+    const createMember = jest.fn()
+    const getMembers = jest.fn()
 
     return {
         mock: jest.fn<SpicedDatabase>(() => ({
-            createCommunity, getCommunityById
+            createCommunity,
+            getCommunityById,
+            getUserByEmail,
+            createMember,
+            getMembers,
+            createUser
+
         })),
         createCommunity,
-        getCommunityById
+        getCommunityById,
+        getUserByEmail,
+        createMember,
+        getMembers,
+        createUser
     }
 }
 
@@ -121,3 +139,6 @@ export const givenGetServerSidePropsContext = (params: ParsedUrlQuery = {}) => (
     resolvedUrl: "",
     params
 })
+
+export const givenRandomString = (length = 20) =>
+    crypto.randomBytes(length / 2).toString("hex")

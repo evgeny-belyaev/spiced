@@ -11,6 +11,10 @@ export default (props: Props) => {
         {
             name: Forms.joinCommunity.hiddenFields.communityTitle,
             value: props.communityTitle as string
+        },
+        {
+            name: Forms.joinCommunity.hiddenFields.communityId,
+            value: props.communityId as string
         }
     ]
 
