@@ -1,29 +1,14 @@
 import { Logger } from "../logger"
 import { getFirebaseDatabase } from "./dataProvider"
-import { Community, Members, User } from "./types"
-import { BaseError } from "../baseError"
+import { Community, Match, Matches, Members, PreviousMatches, User } from "./types"
 import * as crypto from "crypto"
+import { SpicedDatabasePathHelper } from "./spicedDatabasePathHelper"
+import { EntityAlreadyExists } from "./entityAlreadyExists"
 
 const log = new Logger("database")
 
-export class EntityAlreadyExists extends BaseError {
-    constructor (public message: string) {
-        super()
-    }
-}
-
-
 export class SpicedDatabase {
-    private memberByCommunityIdByUserId = (communityId: string, userId: string) => `members/byCommunityId/${communityId}/byId/${userId}`
-    private membersByCommunityId = (communityId: string) => `members/byCommunityId/${communityId}/byId`
-
-    private userByEmail = (email: string) => `users/byEmail/${email}`
-
-    private communitiesById = () => "communities/byId"
-    private communitiesIdByTypeFormResponseId = () => "communities/byTypeFormResponseId"
-
-    private communityById = (communityId: string) => `${this.communitiesById()}/${communityId}`
-    private communityIdByTypeFormResponseId = (responseId: string) => `${this.communitiesIdByTypeFormResponseId()}/${responseId}`
+    private path = new SpicedDatabasePathHelper()
 
     private ref = (path: string) => getFirebaseDatabase().ref(path)
     private value = async <T> (path: string): Promise<T> =>
@@ -43,12 +28,12 @@ export class SpicedDatabase {
             throw new EntityAlreadyExists(`Community with ${community.typeFormResponseId} already exists`)
         }
 
-        const newCommunityRef = await this.ref(this.communitiesById())
+        const newCommunityRef = await this.ref(this.path.communitiesById())
             .push(community)
 
         const communityId = newCommunityRef.key!
 
-        await this.ref(this.communityIdByTypeFormResponseId(community.typeFormResponseId)).set(communityId)
+        await this.ref(this.path.communityIdByTypeFormResponseId(community.typeFormResponseId)).set(communityId)
 
         return communityId
     }
@@ -58,21 +43,21 @@ export class SpicedDatabase {
             return null
         }
 
-        const dataSnapshot = await this.ref(this.communityById(communityId))
+        const dataSnapshot = await this.ref(this.path.communityById(communityId))
             .once("value")
 
         return <Community>dataSnapshot.val()
     }
 
     async getCommunityIdByTypeFormResponseId (typeFormResponseId: string): Promise<string | null> {
-        const dataSnapshot = await this.ref(this.communityIdByTypeFormResponseId(typeFormResponseId)).once("value")
+        const dataSnapshot = await this.ref(this.path.communityIdByTypeFormResponseId(typeFormResponseId)).once("value")
 
         return dataSnapshot.val() as string
     }
 
     async createUser (user: User): Promise<string> {
         const key = this.sha256(user.emailAddress)
-        await this.set(this.userByEmail(key), user)
+        await this.set(this.path.userByEmail(key), user)
 
         return key
     }
@@ -80,14 +65,32 @@ export class SpicedDatabase {
     async getUserByEmail (email: string): Promise<User> {
         const key = this.sha256(email)
 
-        return await this.value(this.userByEmail(key))
+        return await this.value(this.path.userByEmail(key))
     }
 
-    async createMember(communityId: string, userId: string): Promise<void> {
-        await this.set(this.memberByCommunityIdByUserId(communityId, userId), true)
+    async createMember (communityId: string, userId: string): Promise<void> {
+        await this.set(this.path.memberByCommunityIdByUserId(communityId, userId), true)
     }
 
-    async getMembers(communityId: string): Promise<Members> {
-        return await this.value(this.membersByCommunityId(communityId))
+    async getMembers (communityId: string): Promise<Members> {
+        return await this.value(this.path.membersByCommunityId(communityId))
+    }
+
+    async getPreviouslyMatched (userId: string, communityId: string): Promise<PreviousMatches> {
+        return await this.value(this.path.matchedBeforeUsersList(userId, communityId))
+    }
+
+    async setPreviouslyMatched (userId: string, matchedUserId: string, communityId: string, timeSpanId: string): Promise<void> {
+        await this.ref(this.path.matchedBeforeUser(userId, matchedUserId, communityId)).set({
+            timeSpanId: timeSpanId
+        })
+    }
+
+    async setMatches (communityId: string, timeSpanId: string, matches: Matches): Promise<void> {
+        await this.ref(this.path.matches(timeSpanId, communityId)).set(matches)
+    }
+
+    async getMatches (communityId: string, timeSpanId: string): Promise<Matches> {
+        return await this.value(this.path.matches(timeSpanId, communityId))
     }
 }

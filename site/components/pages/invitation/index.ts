@@ -1,11 +1,12 @@
 import { GetServerSidePropsContext, GetServerSidePropsResult } from "next"
 import { CommunityComponent } from "../../logic/CommunityComponent"
-import { EntityAlreadyExists, SpicedDatabase } from "../../database/spicedDatabase"
+import { SpicedDatabase } from "../../database/spicedDatabase"
 import { Logger } from "../../logger"
 import { TokenEncryptor } from "../../TokenEncryptor"
 import { FormsApi } from "../../forms/formsApi"
 import { MailComponent } from "../../mail"
 import { UrlBuilder } from "../../urlBuilder"
+import { EntityAlreadyExists } from "../../database/entityAlreadyExists"
 
 export type Props = {
     communityTitle?: string,

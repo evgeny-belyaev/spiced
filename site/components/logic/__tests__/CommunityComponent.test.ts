@@ -1,7 +1,7 @@
 import { CommunityComponent } from "../CommunityComponent"
 import { Forms, MailChimp } from "../../constants"
-import { EntityAlreadyExists } from "../../database/spicedDatabase"
 import { givenFormsApi, givenMailComponent, givenSpicedDatabase, givenUrlBuilder } from "../../testUtils"
+import { EntityAlreadyExists } from "../../database/entityAlreadyExists"
 
 const answersJoin = [
     {

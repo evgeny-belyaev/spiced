@@ -6,7 +6,8 @@ import { SpicedDatabase } from "./database/spicedDatabase"
 import { ParsedUrlQuery } from "querystring"
 import { IncomingMessage, ServerResponse } from "http"
 import { UrlBuilder } from "./urlBuilder"
-import crypto from "crypto"
+import crypto  = require("crypto")
+import { Matcher } from "./logic/matcher"
 
 export const givenUrlBuilder = () => {
     const getCreateCommunityConfirmationUrl = jest.fn()
@@ -108,6 +109,7 @@ export function givenSpicedDatabase () {
     const getUserByEmail = jest.fn()
     const createMember = jest.fn()
     const getMembers = jest.fn()
+    const getPreviouslyMatched = jest.fn()
 
     return {
         mock: jest.fn<SpicedDatabase>(() => ({
@@ -116,15 +118,16 @@ export function givenSpicedDatabase () {
             getUserByEmail,
             createMember,
             getMembers,
-            createUser
-
+            createUser,
+            getPreviouslyMatched
         })),
         createCommunity,
         getCommunityById,
         getUserByEmail,
         createMember,
         getMembers,
-        createUser
+        createUser,
+        getPreviouslyMatched
     }
 }
 
@@ -139,6 +142,18 @@ export const givenGetServerSidePropsContext = (params: ParsedUrlQuery = {}) => (
     resolvedUrl: "",
     params
 })
+
+export const givenMatcher = () => {
+    const calculateMatch = jest.fn()
+
+    return {
+        mock: jest.fn<Matcher>(() => ({
+            calculateMatch
+        })),
+
+        calculateMatch
+    }
+}
 
 export const givenRandomString = (length = 20) =>
     crypto.randomBytes(length / 2).toString("hex")

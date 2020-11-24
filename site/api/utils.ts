@@ -23,6 +23,22 @@ async function gracefulSleep (n: number) {
     }
 }
 
+export function shuffleArray<T> (arr: T[]): T[] {
+    let i = arr.length, j, temp
+
+    if (i == 0) return arr
+
+    while (--i) {
+        j = Math.floor(Math.random() * (i + 1))
+        temp = arr[i]
+        arr[i] = arr[j]
+        arr[j] = temp
+    }
+
+    return arr
+}
+
+
 export async function callGracefully<T> (
     what: () => Promise<T>,
     isSuccess: (result: T) => boolean,

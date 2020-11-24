@@ -13,6 +13,19 @@ export type Community = {
     creatorUserId: string
 }
 
+export type Matches = NodeJS.Dict<Match>
+
+export type Match = {
+    second: string
+}
+
+export type PreviousMatches = NodeJS.Dict<PreviousMatch>
+
+export type PreviousMatch = {
+    timeSpanId: number,
+    feedback?: string
+}
+
 export type Members = NodeJS.Dict<boolean>
 /*
 const dbExample = {

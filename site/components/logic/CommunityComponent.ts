@@ -198,7 +198,48 @@ export class CommunityComponent {
         return community
     }
 
-    optIn (communityId: string): string {
+
+
+    optIn (communityId: string, userId: string, timeSpanId: string): string {
         return ""
     }
+    /*
+
+    calculateMatch(communityId: string, timeSpanId:string, matchs: string[]) {
+        let alreadyMatched = []
+        let match = []
+        for(let userId in matchs) {
+            const previouslyMatched = getPreviouslyMatchedFor(userId, communityId)
+
+            const matchedUserId = matchs.exclude(previouslyMatched).exclude(alreadyMatched)[RandomId]
+
+            alreadyMatched.push(userId)
+            alreadyMatched.push(matchedUserId)
+
+            match.push({
+                first: userId,
+                second: matchedUserId
+            })
+        }
+
+        return match
+    }
+
+    matchCommunity(communityId: string, timeSpanId: string) {
+        const optedInMembersIds = getListOfOptedInMembers(communityId, timeSpanId)
+
+        const matchs = calculateMatch(communityId, timeSpanId, optedInMembersIds)
+
+        saveMatch(communityId, timeSpanId, matchs)
+    }
+
+    match(timeSpanId: string) {
+        const communities = getListOfOptedInCommunities(timeSpanId)
+
+        for(let community in communities) {
+            this.matchCommunity(community.communityId, timeSpanId)
+        }
+    }
+
+     */
 }

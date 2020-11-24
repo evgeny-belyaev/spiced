@@ -4,9 +4,10 @@ import { CommunityComponent } from "../../logic/CommunityComponent"
 import { TokenEncryptor } from "../../TokenEncryptor"
 import { FormsApi } from "../../forms/formsApi"
 import { MailComponent } from "../../mail"
-import { EntityAlreadyExists, SpicedDatabase } from "../../database/spicedDatabase"
+import { SpicedDatabase } from "../../database/spicedDatabase"
 import { UrlBuilder } from "../../urlBuilder"
 import { Logger } from "../../logger"
+import { EntityAlreadyExists } from "../../database/entityAlreadyExists"
 
 export type Props = {
     communityInvitationLink?: string,
