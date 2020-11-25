@@ -24,6 +24,10 @@ async function gracefulSleep (n: number) {
 }
 
 export function shuffleArray<T> (arr: T[]): T[] {
+    if (isTest()) {
+        return arr
+    }
+
     let i = arr.length, j, temp
 
     if (i == 0) return arr
@@ -37,7 +41,6 @@ export function shuffleArray<T> (arr: T[]): T[] {
 
     return arr
 }
-
 
 export async function callGracefully<T> (
     what: () => Promise<T>,

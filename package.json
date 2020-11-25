@@ -21,7 +21,7 @@
     "tunnel-functions": "npx localtunnel --port 5001",
     "tunnel-site": "npx localtunnel --port 5000",
     "setup-hooks": "ts-node functions/setupWebHooks.ts",
-    "investigate-match": "ts-node site/components/logic/matcher.investigate.ts"
+    "investigate-match": "export NODE_ENV=development && ts-node site/components/logic/matcher.investigate.ts"
   },
   "dependencies": {
     "@mailchimp/mailchimp_marketing": "^3.0.23",

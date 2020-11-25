@@ -75,6 +75,8 @@ export default describe("SpicedDatabase", () => {
         const community = await db.getCommunityById(communityId)
 
         // Assert
+        const communityIds = Object.keys(await db.getCommunitiesIds())
+        expect(communityIds).toContain(communityId)
         expect(community).toEqual({
             title: "title",
             publicLink: "publicLink",
@@ -243,10 +245,10 @@ export default describe("SpicedDatabase", () => {
 
         const matches = {
             [userId1]: {
-                second: matchedUserId
+                matchedUserId: matchedUserId
             },
             [userId2]: {
-                second: ""
+                matchedUserId: ""
             }
         }
 
@@ -265,10 +267,10 @@ export default describe("SpicedDatabase", () => {
 
         const matches = {
             [userId1]: {
-                second: matchedUserId
+                matchedUserId: matchedUserId
             },
             [userId2]: {
-                second: ""
+                matchedUserId: ""
             }
         }
         await db.setMatches(communityId, timespanId, matches)
@@ -277,7 +279,37 @@ export default describe("SpicedDatabase", () => {
         const result = await db.getMatches(communityId, timespanId)
 
         // Assert
-        expect(result).toHaveProperty(userId1, { second: matchedUserId })
-        expect(result).toHaveProperty(userId2, { second: "" })
+        expect(Object.keys(result).length).toEqual(2)
+        expect(result).toHaveProperty(userId1, { matchedUserId: matchedUserId })
+        expect(result).toHaveProperty(userId2, { matchedUserId: "" })
+    })
+
+    test("setMatchedCommunity", async () => {
+        // Arrange
+        const db = new SpicedDatabase()
+        const communityId = givenRandomString(10) + "communityId"
+        const timespanId = givenRandomString(10) + "timespanId"
+
+        // Act Assert
+        await expect(db.setMatchedCommunity(communityId, timespanId)).resolves.toEqual(undefined)
+    })
+
+    test("getMatchedCommunities", async () => {
+        // Arrange
+        const db = new SpicedDatabase()
+        const communityId1 = givenRandomString(10) + "communityId1"
+        const communityId2 = givenRandomString(10) + "communityId2"
+        const timespanId = givenRandomString(10) + "timespanId"
+
+        await db.setMatchedCommunity(communityId1, timespanId)
+        await db.setMatchedCommunity(communityId2, timespanId)
+
+        // Act
+        const result = await db.getMatchedCommunities(timespanId)
+
+        // Assert
+        expect(Object.keys(result).length).toEqual(2)
+        expect(result).toHaveProperty(communityId1, true)
+        expect(result).toHaveProperty(communityId2, true)
     })
 })

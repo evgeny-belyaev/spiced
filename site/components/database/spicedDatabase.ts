@@ -1,6 +1,6 @@
 import { Logger } from "../logger"
 import { getFirebaseDatabase } from "./dataProvider"
-import { Community, Match, Matches, Members, PreviousMatches, User } from "./types"
+import { CommunitiesIds, Community, MatchedCommunities, Matches, Members, PreviousMatches, User } from "./types"
 import * as crypto from "crypto"
 import { SpicedDatabasePathHelper } from "./spicedDatabasePathHelper"
 import { EntityAlreadyExists } from "./entityAlreadyExists"
@@ -34,6 +34,7 @@ export class SpicedDatabase {
         const communityId = newCommunityRef.key!
 
         await this.ref(this.path.communityIdByTypeFormResponseId(community.typeFormResponseId)).set(communityId)
+        await this.ref(this.path.communityId(communityId)).set(true)
 
         return communityId
     }
@@ -47,6 +48,10 @@ export class SpicedDatabase {
             .once("value")
 
         return <Community>dataSnapshot.val()
+    }
+
+    async getCommunitiesIds(): Promise<CommunitiesIds> {
+        return await this.value(this.path.communitiesIds())
     }
 
     async getCommunityIdByTypeFormResponseId (typeFormResponseId: string): Promise<string | null> {
@@ -84,6 +89,14 @@ export class SpicedDatabase {
         await this.ref(this.path.matchedBeforeUser(userId, matchedUserId, communityId)).set({
             timeSpanId: timeSpanId
         })
+    }
+
+    async setMatchedCommunity (communityId: string, timeSpanId: string): Promise<void> {
+        await this.ref(this.path.matchedCommunity(timeSpanId, communityId)).set(true)
+    }
+
+    async getMatchedCommunities (timeSpanId: string): Promise<MatchedCommunities> {
+        return await this.value(this.path.matchedCommunitiesIds(timeSpanId))
     }
 
     async setMatches (communityId: string, timeSpanId: string, matches: Matches): Promise<void> {

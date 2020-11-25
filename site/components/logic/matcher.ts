@@ -1,8 +1,8 @@
 import { SpicedDatabase } from "../database/spicedDatabase"
 import { Logger } from "../logger"
 import { Matches } from "../database/types"
-import { shuffleArray } from "../../api/utils"
 
+const millisecondsInDay = 24 * 60 * 60 * 1000
 
 export class Matcher {
     constructor (private spicedDatabase: SpicedDatabase) {
@@ -10,9 +10,29 @@ export class Matcher {
 
     private log = new Logger("Matcher")
 
+    getTimeSpanId (utc: number): number {
+        const now = new Date(utc) // local
+
+        const today =  now.getDay()
+        const daysLeft = 8 - today
+        const nextMonday =  new Date(utc + daysLeft * millisecondsInDay)
+        nextMonday.setUTCHours(0, 0, 0, 0)
+
+        return nextMonday.getTime()
+    }
+
     async saveMatches (matches: Matches, communityId: string, timeSpanId: string): Promise<void> {
-        for (const userId of Object.keys(matches)) {
-            const matchedUserId = matches[userId]?.second
+        const keys = Object.keys(matches)
+
+        if (keys.length === 0) {
+            return
+        }
+
+        await this.spicedDatabase.setMatches(communityId, timeSpanId, matches)
+        await this.spicedDatabase.setMatchedCommunity(communityId, timeSpanId)
+
+        for (const userId of keys) {
+            const matchedUserId = matches[userId]?.matchedUserId
 
             if (matchedUserId) {
                 await this.spicedDatabase.setPreviouslyMatched(userId, matchedUserId, communityId, timeSpanId)
@@ -50,8 +70,18 @@ export class Matcher {
                     second: vacant[0]
                 }
 
+                /**
+                 * Match first with second
+                 */
                 result[m.first] = {
-                    second: m.second
+                    matchedUserId: m.second
+                }
+
+                /**
+                 * Match second with first as well
+                 */
+                result[m.second] = {
+                    matchedUserId: m.first
                 }
 
                 // this.log.debug(`Match is ${JSON.stringify(m)}`)
@@ -64,7 +94,7 @@ export class Matcher {
                 }
 
                 result[m.first] = {
-                    second: m.second
+                    matchedUserId: m.second
                 }
 
                 // this.log.debug(`Match is ${JSON.stringify(m)}`)
@@ -72,7 +102,6 @@ export class Matcher {
                 break
             }
         }
-
 
         if (Object.keys(result).length === 1 && applicantsIds.length > 1) {
             this.log.debug("The community is exhausted")

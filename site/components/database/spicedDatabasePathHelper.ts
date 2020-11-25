@@ -11,6 +11,9 @@ export class SpicedDatabasePathHelper {
 
     userByEmail = (email: string) => `${this.root}/users/byEmail/${email}`
 
+    communitiesIds = () => `${this.root}/communities/ids`
+    communityId = (communityId: string) => `${this.root}/communities/ids/${communityId}`
+
     communitiesById = () => `${this.root}/communities/${this.byId}`
     communitiesIdByTypeFormResponseId = () => `${this.root}/communities/byTypeFormResponseId`
 
@@ -20,18 +23,8 @@ export class SpicedDatabasePathHelper {
     matchedBeforeUser = (userId: string, matchedUserId: string, communityId: string) => `${this.root}/matched/${this.byCommunityId}/${communityId}/${this.byUserId}/${userId}/${matchedUserId}`
     matchedBeforeUsersList = (userId: string, communityId: string) => `${this.root}/matched/${this.byCommunityId}/${communityId}/${this.byUserId}/${userId}`
 
-
-    /**
-     * List of community ids participating in match in given timeSpanId
-     * @param timeSpanId
-     */
-    matchCommunityIds = (timeSpanId: string) => `${this.root}/matches/${this.byTimeSpanId}/${timeSpanId}/communityIds`
-
-    /**
-     * List of matches for given communityId and given timeSpanId
-     * @param timeSpanId
-     * @param communityId
-     */
     matches = (timeSpanId: string, communityId: string) => `${this.root}/matches/${this.byTimeSpanId}/${timeSpanId}/${this.byCommunityId}/${communityId}`
 
+    matchedCommunity = (timeSpanId: string, communityId: string) => `${this.root}/matches/${this.byTimeSpanId}/${timeSpanId}/communityIds/${communityId}`
+    matchedCommunitiesIds = (timeSpanId: string) => `${this.root}/matches/${this.byTimeSpanId}/${timeSpanId}/communityIds`
 }

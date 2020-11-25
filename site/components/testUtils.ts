@@ -6,7 +6,7 @@ import { SpicedDatabase } from "./database/spicedDatabase"
 import { ParsedUrlQuery } from "querystring"
 import { IncomingMessage, ServerResponse } from "http"
 import { UrlBuilder } from "./urlBuilder"
-import crypto  = require("crypto")
+import crypto from "crypto"
 import { Matcher } from "./logic/matcher"
 
 export const givenUrlBuilder = () => {
@@ -110,6 +110,11 @@ export function givenSpicedDatabase () {
     const createMember = jest.fn()
     const getMembers = jest.fn()
     const getPreviouslyMatched = jest.fn()
+    const setMatches = jest.fn()
+    const setMatchedCommunity = jest.fn()
+    const setPreviouslyMatched = jest.fn()
+    const getCommunitiesIds = jest.fn()
+    const getMatches = jest.fn()
 
     return {
         mock: jest.fn<SpicedDatabase>(() => ({
@@ -119,15 +124,26 @@ export function givenSpicedDatabase () {
             createMember,
             getMembers,
             createUser,
-            getPreviouslyMatched
+            getPreviouslyMatched,
+            setMatches,
+            setMatchedCommunity,
+            setPreviouslyMatched,
+            getCommunitiesIds,
+            getMatches
         })),
+
         createCommunity,
         getCommunityById,
         getUserByEmail,
         createMember,
         getMembers,
         createUser,
-        getPreviouslyMatched
+        getPreviouslyMatched,
+        setMatches,
+        setMatchedCommunity,
+        setPreviouslyMatched,
+        getCommunitiesIds,
+        getMatches
     }
 }
 
@@ -145,13 +161,19 @@ export const givenGetServerSidePropsContext = (params: ParsedUrlQuery = {}) => (
 
 export const givenMatcher = () => {
     const calculateMatch = jest.fn()
+    const getTimeSpanId = jest.fn()
+    const saveMatches = jest.fn()
 
     return {
         mock: jest.fn<Matcher>(() => ({
-            calculateMatch
+            calculateMatch,
+            getTimeSpanId,
+            saveMatches
         })),
 
-        calculateMatch
+        calculateMatch,
+        getTimeSpanId,
+        saveMatches
     }
 }
 

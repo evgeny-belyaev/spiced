@@ -80,7 +80,14 @@ export const MailChimp = {
                 communityTitle: "communityTitle",
                 communityInvitationLink: "communityInvitationLink"
             }
-        }
+        },
+        matched :{
+            name: "matched",
+            fields: {
+                matchedUserName: "matchedUserName",
+                matchedUserEmail: "matchedUserEmail"
+            }
+        },
     }
 }
 

@@ -8,6 +8,7 @@ import { SpicedDatabase } from "../../database/spicedDatabase"
 import { UrlBuilder } from "../../urlBuilder"
 import { Logger } from "../../logger"
 import { EntityAlreadyExists } from "../../database/entityAlreadyExists"
+import { Matcher } from "../../logic/matcher"
 
 export type Props = {
     communityInvitationLink?: string,
@@ -52,6 +53,11 @@ export const getServerSidePropsImpl = async (
 export default async (context: GetServerSidePropsContext): Promise<GetServerSidePropsResult<Props>> =>
     getServerSidePropsImpl(
         context,
-        new CommunityComponent(new FormsApi(), new MailComponent(), new SpicedDatabase(), new UrlBuilder(new TokenEncryptor())),
+        new CommunityComponent(
+            new FormsApi(),
+            new MailComponent(),
+            new SpicedDatabase(),
+            new UrlBuilder(new TokenEncryptor()),
+            new Matcher(new SpicedDatabase())),
         new UrlBuilder(new TokenEncryptor())
     )

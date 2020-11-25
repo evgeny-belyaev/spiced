@@ -7,6 +7,8 @@ import { SpicedDatabase } from "../database/spicedDatabase"
 import { BaseError } from "../baseError"
 import { Community } from "../database/types"
 import { UrlBuilder } from "../urlBuilder"
+import { shuffleArray } from "../../api/utils"
+import { Matcher } from "./matcher"
 
 type CreateCommunityResult = {
     communityInvitationLink?: string,
@@ -17,15 +19,16 @@ export class CommunityComponent {
 
     private log = new Logger("CommunityComponent")
 
-    constructor (
+    constructor(
         private formsApi: FormsApi,
         private mailComponent: MailComponent,
         private spicedDatabase: SpicedDatabase,
-        private urlBuilder: UrlBuilder
+        private urlBuilder: UrlBuilder,
+        private matcher: Matcher
     ) {
     }
 
-    async sendJoinCommunityConfirmationEmail (formResponseId: string, email: string): Promise<void> {
+    async sendJoinCommunityConfirmationEmail(formResponseId: string, email: string): Promise<void> {
         if (!formResponseId || !email) {
             throw Error("Invalid argument")
         }
@@ -61,7 +64,7 @@ export class CommunityComponent {
             }])
     }
 
-    async sendCreateCommunityConfirmationEmail (formResponseId: string, email: string): Promise<void> {
+    async sendCreateCommunityConfirmationEmail(formResponseId: string, email: string): Promise<void> {
         if (!formResponseId || !email) {
             throw Error("Invalid argument")
         }
@@ -84,11 +87,11 @@ export class CommunityComponent {
             }])
     }
 
-    async findCommunityById (communityId: string): Promise<Community | null> {
+    async findCommunityById(communityId: string): Promise<Community | null> {
         return await this.spicedDatabase.getCommunityById(communityId)
     }
 
-    async createCommunity (formsResponseId: string): Promise<CreateCommunityResult> {
+    async createCommunity(formsResponseId: string): Promise<CreateCommunityResult> {
         const answers = await this.formsApi.getAnswers(
             Forms.createCommunity.formId,
             formsResponseId
@@ -152,7 +155,7 @@ export class CommunityComponent {
         }
     }
 
-    async joinCommunity (communityId: string, formResponseId: string): Promise<Community | null> {
+    async joinCommunity(communityId: string, formResponseId: string): Promise<Community | null> {
         const community = await this.spicedDatabase.getCommunityById(communityId)
 
         if (!community) {
@@ -198,48 +201,59 @@ export class CommunityComponent {
         return community
     }
 
+    private async sendMatchEmails(communityId: string, timeSpanId: string): Promise<void> {
+        const matches = await this.spicedDatabase.getMatches(communityId, timeSpanId)
+        const usersIds = Object.keys(matches)
+        const mailTemplate = MailChimp.Templates.matched
 
+        for (const userId of usersIds) {
+            const match = matches[userId]
+            if (!match) {
+                continue
+            }
 
-    optIn (communityId: string, userId: string, timeSpanId: string): string {
-        return ""
-    }
-    /*
+            console.log(userId)
 
-    calculateMatch(communityId: string, timeSpanId:string, matchs: string[]) {
-        let alreadyMatched = []
-        let match = []
-        for(let userId in matchs) {
-            const previouslyMatched = getPreviouslyMatchedFor(userId, communityId)
+            const user = await this.spicedDatabase.getUserByEmail(userId)
+            const matchedUser = await this.spicedDatabase.getUserByEmail(match.matchedUserId)
 
-            const matchedUserId = matchs.exclude(previouslyMatched).exclude(alreadyMatched)[RandomId]
-
-            alreadyMatched.push(userId)
-            alreadyMatched.push(matchedUserId)
-
-            match.push({
-                first: userId,
-                second: matchedUserId
-            })
-        }
-
-        return match
-    }
-
-    matchCommunity(communityId: string, timeSpanId: string) {
-        const optedInMembersIds = getListOfOptedInMembers(communityId, timeSpanId)
-
-        const matchs = calculateMatch(communityId, timeSpanId, optedInMembersIds)
-
-        saveMatch(communityId, timeSpanId, matchs)
-    }
-
-    match(timeSpanId: string) {
-        const communities = getListOfOptedInCommunities(timeSpanId)
-
-        for(let community in communities) {
-            this.matchCommunity(community.communityId, timeSpanId)
+            await this.mailComponent.sendTemplate(
+                user.emailAddress,
+                "Wow! You've matched!",
+                MailChimp.from,
+                mailTemplate.name,
+                [
+                    {
+                        name: mailTemplate.fields.matchedUserName,
+                        content: matchedUser.firstName + " " + matchedUser.lastName
+                    },
+                    {
+                        name: mailTemplate.fields.matchedUserEmail,
+                        content: matchedUser.emailAddress
+                    }
+                ]
+            )
         }
     }
 
-     */
+    async monday(now: Date): Promise<void> {
+        const timeSpanId = this.matcher.getTimeSpanId(now.getTime()).toString()
+        const allCommunitiesIds = await this.spicedDatabase.getCommunitiesIds()
+
+        console.log(allCommunitiesIds)
+
+        const ids = Object.keys(allCommunitiesIds)
+
+        for (const communityId of ids) {
+            const members = await this.spicedDatabase.getMembers(communityId)
+            const applicantsIds = Object.keys(members)
+
+            const matches = await this.matcher.calculateMatch(communityId, timeSpanId,
+                shuffleArray(applicantsIds)
+            )
+
+            await this.matcher.saveMatches(matches, communityId, timeSpanId)
+            await this.sendMatchEmails(communityId, timeSpanId)
+        }
+    }
 }

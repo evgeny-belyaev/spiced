@@ -18,7 +18,7 @@ async function investigate () {
 
     // Act
     let matches, i
-    for (i = 0; i < 1; i++) {
+    for (i = 0; i < 100; i++) {
         const timeSpanId = givenRandomString(10) + `timeSpanId${i}`
 
         matches = await matcher.calculateMatch(communityId1, timeSpanId,

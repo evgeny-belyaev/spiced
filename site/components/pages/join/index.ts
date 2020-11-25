@@ -6,6 +6,7 @@ import { MailComponent } from "../../mail"
 import { SpicedDatabase } from "../../database/spicedDatabase"
 import { Logger } from "../../logger"
 import { UrlBuilder } from "../../urlBuilder"
+import { Matcher } from "../../logic/matcher"
 
 export type Props = {
     communityTitle?: string,
@@ -53,7 +54,12 @@ export async function getServerSidePropsImpl (
 export default async (context: GetServerSidePropsContext): Promise<GetServerSidePropsResult<Props>> => {
     return getServerSidePropsImpl(
         context,
-        new CommunityComponent(new FormsApi(), new MailComponent(), new SpicedDatabase(), new UrlBuilder(new TokenEncryptor())),
+        new CommunityComponent(
+            new FormsApi(),
+            new MailComponent(),
+            new SpicedDatabase(),
+            new UrlBuilder(new TokenEncryptor()),
+            new Matcher(new SpicedDatabase())),
         new UrlBuilder(new TokenEncryptor())
     )
 }
