@@ -8,7 +8,7 @@
     "start-site-dev": "yarn run build-site && next dev site/",
     "start-site": "yarn run build-site && next start site/",
     "start-site-https": "NODE_OPTIONS='--inspect' node site/server",
-    "start-emulator": "firebase emulators:start",
+    "start-emulator": "export SPICED_INTEGRATION=none && firebase emulators:start",
     "start-integration-emulator": "export SPICED_INTEGRATION=integration && firebase emulators:start",
     "rebuild": "yarn run clean && yarn run build",
     "clean": "rm -rf build",

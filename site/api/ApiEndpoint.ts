@@ -25,4 +25,18 @@ export abstract class ApiEndpoint<TParams, TResponse> implements IApiEndpoint<TP
             }
         })
     }
+
+    connectGet(app: express.Application): void {
+        app.get(this.path, async (request: express.Request, response: express.Response) => {
+            try {
+                return await this.handler(request, response)
+            } catch (x) {
+                log.error(x)
+
+                response.status(500).end()
+            } finally {
+                response.end()
+            }
+        })
+    }
 }

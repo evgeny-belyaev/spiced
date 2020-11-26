@@ -83,7 +83,7 @@ async function match() {
 
     log.debug(`POST ${url}`)
 
-    await axios.post(url)
+    await axios.get(url)
 }
 
 async function run(): Promise<void> {

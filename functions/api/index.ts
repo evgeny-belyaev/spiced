@@ -34,6 +34,6 @@ const communityComponent: ICommunityComponent = isIntegration() ?
 
 new CreateCommunityWebHookApi(communityComponent).connectPost(app)
 new JoinCommunityWebHookApi(communityComponent).connectPost(app)
-new MatchApi(communityComponent).connectPost(app)
+new MatchApi(communityComponent).connectGet(app)
 
 export default app
