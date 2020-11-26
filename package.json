@@ -9,6 +9,7 @@
     "start-site": "yarn run build-site && next start site/",
     "start-site-https": "NODE_OPTIONS='--inspect' node site/server",
     "start-emulator": "firebase emulators:start",
+    "start-integration-emulator": "export SPICED_INTEGRATION=integration && firebase emulators:start",
     "rebuild": "yarn run clean && yarn run build",
     "clean": "rm -rf build",
     "build": "yarn run build-site && yarn run build-functions",
@@ -21,7 +22,8 @@
     "tunnel-functions": "npx localtunnel --port 5001",
     "tunnel-site": "npx localtunnel --port 5000",
     "setup-hooks": "ts-node functions/setupWebHooks.ts",
-    "investigate-match": "export NODE_ENV=development && ts-node site/components/logic/matcher.investigate.ts"
+    "investigate-match": "export NODE_ENV=development && ts-node site/components/logic/matcher.investigate.ts",
+    "integration": "export SPICED_INTEGRATION=integration && ts-node site/integration/index.ts"
   },
   "dependencies": {
     "@mailchimp/mailchimp_marketing": "^3.0.23",
@@ -40,7 +42,8 @@
     "next": "^9.5.3",
     "react": "^16.13.1",
     "react-bootstrap": "^1.4.0",
-    "react-dom": "^16.13.1"
+    "react-dom": "^16.13.1",
+    "moment": "^2.29.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.3",

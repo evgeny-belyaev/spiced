@@ -1,27 +1,22 @@
 import { SpicedDatabase } from "../database/spicedDatabase"
 import { Logger } from "../logger"
 import { Matches } from "../database/types"
-
-const millisecondsInDay = 24 * 60 * 60 * 1000
+import moment from "moment"
 
 export class Matcher {
-    constructor (private spicedDatabase: SpicedDatabase) {
+    constructor(private spicedDatabase: SpicedDatabase) {
     }
 
     private log = new Logger("Matcher")
 
-    getTimeSpanId (utc: number): number {
-        const now = new Date(utc) // local
+    getTimeSpanId(utc: number): number {
+        const lastMonday = moment(utc).isoWeekday(1).toDate()
+        lastMonday.setUTCHours(0, 0, 0, 0)
 
-        const today =  now.getDay()
-        const daysLeft = 8 - today
-        const nextMonday =  new Date(utc + daysLeft * millisecondsInDay)
-        nextMonday.setUTCHours(0, 0, 0, 0)
-
-        return nextMonday.getTime()
+        return lastMonday.getTime()
     }
 
-    async saveMatches (matches: Matches, communityId: string, timeSpanId: string): Promise<void> {
+    async saveMatches(matches: Matches, communityId: string, timeSpanId: string): Promise<void> {
         const keys = Object.keys(matches)
 
         if (keys.length === 0) {
@@ -41,7 +36,7 @@ export class Matcher {
         }
     }
 
-    async calculateMatch (communityId: string, timeSpanId: string, applicantsIds: string[]): Promise<Matches> {
+    async calculateMatch(communityId: string, timeSpanId: string, applicantsIds: string[]): Promise<Matches> {
         const matchedInThisRoundIds: string[] = []
         const result: Matches = {}
 

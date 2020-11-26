@@ -523,7 +523,7 @@ export default describe("CommunityComponent", () => {
         // Arrange
         const { mock: spicedDatabaseMock, getCommunitiesIds, getMembers, getMatches, getUserByEmail } = givenSpicedDatabase()
         const { mock: mailComponentMock, sendTemplate } = givenMailComponent()
-        const { mock: formsApiMock, getAnswers } = givenFormsApi()
+        const { mock: formsApiMock } = givenFormsApi()
         const { mock: urlBuilder } = givenUrlBuilder()
         const { mock: matcher, getTimeSpanId, calculateMatch, saveMatches } = givenMatcher()
         const matchesGenerator = (communityId: string) => {
@@ -537,7 +537,8 @@ export default describe("CommunityComponent", () => {
                 case "communityId2": {
                     return {
                         "userId3": { matchedUserId: "userId4" },
-                        "userId4": { matchedUserId: "userId3" }
+                        "userId4": { matchedUserId: "userId3" },
+                        "userId5": { matchedUserId: "" }
                     }
                 }
             }
@@ -559,17 +560,22 @@ export default describe("CommunityComponent", () => {
                 case "communityId2": {
                     return {
                         "userId3": true,
-                        "userId4": true
+                        "userId4": true,
+                        "userId5": true
                     }
                 }
             }
         })
         getUserByEmail.mockImplementation((userId: string) => {
-            return Promise.resolve({
-                emailAddress: `${userId}@b.c`,
-                firstName: `${userId}f`,
-                lastName: `${userId}l`
-            })
+            if (userId) {
+                return Promise.resolve({
+                    emailAddress: `${userId}@b.c`,
+                    firstName: `${userId}f`,
+                    lastName: `${userId}l`
+                })
+            } else {
+                return Promise.resolve(null)
+            }
         })
         calculateMatch.mockImplementation(matchesGenerator)
         getMatches.mockImplementation(matchesGenerator)
@@ -578,7 +584,17 @@ export default describe("CommunityComponent", () => {
         const now = new Date(2020, 10, 25, 16, 59, 10)
 
         // Act Assert
-        await expect(communityComponent.monday(now)).resolves.toEqual(undefined)
+        await expect(communityComponent.monday(now)).resolves.toEqual({
+            "communityId1": {
+                "userId1": { "matchedUserId": "userId2" },
+                "userId2": { "matchedUserId": "userId1" }
+            },
+            "communityId2": {
+                "userId3": { "matchedUserId": "userId4" },
+                "userId4": { "matchedUserId": "userId3" },
+                "userId5": { "matchedUserId": "" }
+            }
+        })
 
         // Assert
         expect(getTimeSpanId).toBeCalledWith(now.getTime())
@@ -588,7 +604,7 @@ export default describe("CommunityComponent", () => {
         ])
         expect(calculateMatch.mock.calls).toEqual([
             ["communityId1", "timeSpanId", ["userId1", "userId2"]],
-            ["communityId2", "timeSpanId", ["userId3", "userId4"]]
+            ["communityId2", "timeSpanId", ["userId3", "userId4", "userId5"]]
         ])
         expect(saveMatches.mock.calls).toEqual([
             [matchesGenerator("communityId1"), "communityId1", "timeSpanId"],

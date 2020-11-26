@@ -67,7 +67,7 @@ export class SpicedDatabase {
         return key
     }
 
-    async getUserByEmail (email: string): Promise<User> {
+    async getUserByEmail (email: string): Promise<User| null> {
         const key = this.sha256(email)
 
         return await this.value(this.path.userByEmail(key))

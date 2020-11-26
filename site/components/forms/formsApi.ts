@@ -7,8 +7,12 @@ import { callGracefully } from "../../api/utils"
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const axios = require("axios") as AxiosStatic
 
+export interface IFormsApi {
+    getResponse (formId: string, responseId: string): Promise<FormResponse | null>
+    getAnswers (formId: string, responseId: string): Promise<FormAnswer[]>
+}
 
-export class FormsApi {
+export class FormsApi implements IFormsApi{
     log = new Logger("FormsApi")
 
     private async get (url: string, bodyParams?: unknown): Promise<AxiosResponse> {

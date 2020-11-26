@@ -1,27 +1,28 @@
-import { FormsApi } from "../forms/formsApi"
+import { IFormsApi } from "../forms/formsApi"
 import { Forms, MailChimp } from "../constants"
-import { MailComponent } from "../mail"
 import { Logger } from "../logger"
 import { FormsUtils } from "../forms/formsUtils"
 import { SpicedDatabase } from "../database/spicedDatabase"
 import { BaseError } from "../baseError"
-import { Community } from "../database/types"
+import { Community, Matches } from "../database/types"
 import { UrlBuilder } from "../urlBuilder"
 import { shuffleArray } from "../../api/utils"
 import { Matcher } from "./matcher"
+import { ICommunityComponent } from "./ICommunityComponent"
+import { IMailComponent } from "../mail/IMailComponent"
 
-type CreateCommunityResult = {
+export type CreateCommunityResult = {
     communityInvitationLink?: string,
     error?: BaseError
 }
 
-export class CommunityComponent {
+export class CommunityComponent implements ICommunityComponent {
 
     private log = new Logger("CommunityComponent")
 
     constructor(
-        private formsApi: FormsApi,
-        private mailComponent: MailComponent,
+        private formsApi: IFormsApi,
+        private mailComponent: IMailComponent,
         private spicedDatabase: SpicedDatabase,
         private urlBuilder: UrlBuilder,
         private matcher: Matcher
@@ -217,6 +218,10 @@ export class CommunityComponent {
             const user = await this.spicedDatabase.getUserByEmail(userId)
             const matchedUser = await this.spicedDatabase.getUserByEmail(match.matchedUserId)
 
+            if (!user || !matchedUser) {
+                continue
+            }
+
             await this.mailComponent.sendTemplate(
                 user.emailAddress,
                 "Wow! You've matched!",
@@ -236,15 +241,15 @@ export class CommunityComponent {
         }
     }
 
-    async monday(now: Date): Promise<void> {
+    async monday(now: Date): Promise<NodeJS.Dict<Matches>> {
         const timeSpanId = this.matcher.getTimeSpanId(now.getTime()).toString()
         const allCommunitiesIds = await this.spicedDatabase.getCommunitiesIds()
-
-        console.log(allCommunitiesIds)
-
         const ids = Object.keys(allCommunitiesIds)
+        const result: NodeJS.Dict<Matches> = {}
 
         for (const communityId of ids) {
+            /** TODO: Implement opt-in feature
+             * Match all community members for now */
             const members = await this.spicedDatabase.getMembers(communityId)
             const applicantsIds = Object.keys(members)
 
@@ -254,6 +259,10 @@ export class CommunityComponent {
 
             await this.matcher.saveMatches(matches, communityId, timeSpanId)
             await this.sendMatchEmails(communityId, timeSpanId)
+
+            result[communityId] = matches
         }
+
+        return result
     }
 }

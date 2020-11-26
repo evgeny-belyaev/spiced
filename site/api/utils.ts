@@ -1,11 +1,16 @@
 import { Logger } from "../components/logger"
 
+
 export function isServer (): boolean {
     return typeof window === "undefined" || typeof jest !== "undefined"
 }
 
 export function isTest (): boolean {
     return process.env["NODE_ENV"] === "test"
+}
+
+export function isIntegration (): boolean {
+    return process.env["SPICED_INTEGRATION"] === "integration"
 }
 
 export function sleep (ms: number): Promise<void> {

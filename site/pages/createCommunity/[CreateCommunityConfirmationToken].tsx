@@ -1,10 +1,8 @@
 import React from "react"
-import { Logger } from "../../components/logger"
 import { Alert, FormControl, InputGroup } from "react-bootstrap"
 
 import "bootstrap/dist/css/bootstrap.min.css"
 import serverEntryPoint, { Props } from "../../components/pages/createCommunity"
-
 
 
 export default (props: Props) => {

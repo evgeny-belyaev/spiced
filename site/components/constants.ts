@@ -1,4 +1,4 @@
-import { isServer } from "../api/utils"
+import { isIntegration, isServer } from "../api/utils"
 
 export const Forms = {
     accessToken: isServer() ? "CnLWx37r88w9NoqC5H3UrkVM1UDgNYVBt9VQi22aDURm" : "",
@@ -98,7 +98,7 @@ export const Database = {
 
 export const Url = {
     getBaseUrl (): string {
-        return process.env["NODE_ENV"] == "development" || process.env["NODE_ENV"] == "test" ?
+        return process.env["NODE_ENV"] == "development" || process.env["NODE_ENV"] == "test" || isIntegration() ?
             "http://localhost:5000" :
             "https://spiced-f9677.web.app"
         // "https://tiny-dolphin-96.loca.lt"

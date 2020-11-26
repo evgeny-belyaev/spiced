@@ -1,24 +1,25 @@
 import * as express from "express"
 import { ApiEndpoint } from "./ApiEndpoint"
 import { Fetcher } from "./fetcher"
-import { CommunityComponent } from "../components/logic/CommunityComponent"
 import { Forms } from "../components/constants"
 import { getTypeWormWebHookPath } from "../components/forms/formsUtils"
 import { WebHookAnswer, WebHookParams } from "../components/forms/types"
+import { ICommunityComponent } from "../components/logic/ICommunityComponent"
 
 
 export type CreateCommunityWebHookResponse = {
     url: string
 }
 
+
 export class CreateCommunityWebHookApi extends ApiEndpoint<WebHookParams, CreateCommunityWebHookResponse> {
     path = getTypeWormWebHookPath(Forms.createCommunity.name)
 
-    constructor (private communityComponent: CommunityComponent) {
+    constructor(private communityComponent: ICommunityComponent) {
         super()
     }
 
-    private validateInput (body: any) {
+    private validateInput(body: any) {
         const params = <WebHookParams>(body)
 
         let email, token
@@ -38,7 +39,7 @@ export class CreateCommunityWebHookApi extends ApiEndpoint<WebHookParams, Create
         }
     }
 
-    async handler (request: express.Request, response: express.Response<unknown>): Promise<void> {
+    async handler(request: express.Request, response: express.Response<unknown>): Promise<void> {
         // log.debug(JSON.stringify(request.body))
 
         const { token, email } = this.validateInput(request.body)
@@ -48,7 +49,7 @@ export class CreateCommunityWebHookApi extends ApiEndpoint<WebHookParams, Create
         response.status(200).end()
     }
 
-    async client (params: WebHookParams): Promise<CreateCommunityWebHookResponse> {
+    async client(params: WebHookParams): Promise<CreateCommunityWebHookResponse> {
         const response = await new Fetcher().post(this.path, params)
         return <CreateCommunityWebHookResponse>(await response.json())
     }

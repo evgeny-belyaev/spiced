@@ -1,6 +1,7 @@
 import { MailChimp } from "../constants"
 import { Logger } from "../logger"
 import { Mailchimp, MailchimpTx, SendResult, TemplateContent } from "./types"
+import { IMailComponent } from "./IMailComponent"
 
 declare function require<T>(name: string): T
 
@@ -17,8 +18,7 @@ const mailchimpTx = require<(key: string) => MailchimpTx>("@mailchimp/mailchimp_
 
 const log = new Logger("MailComponent")
 
-
-export class MailComponent {
+export class MailComponent implements IMailComponent{
     async ping(): Promise<unknown> {
         mailchimp.setConfig({
             apiKey: MailChimp.marketingAccessToken,

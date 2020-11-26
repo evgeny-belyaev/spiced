@@ -1,11 +1,12 @@
 import firebase from "firebase"
 import { Database } from "../constants"
 import { Logger } from "../logger"
+import { isIntegration } from "../../api/utils"
 
 const log = new Logger("dataProvider")
 
 function getFirebaseConfig() {
-    if (process.env["NODE_ENV"] == "development" || process.env["NODE_ENV"] == "test") {
+    if (process.env["NODE_ENV"] == "development" || process.env["NODE_ENV"] == "test" || isIntegration()) {
         return {
             databaseURL: "http://localhost:9000/?ns=spiced-f9677"
         }

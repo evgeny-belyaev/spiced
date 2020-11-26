@@ -8,10 +8,10 @@ export type FormAnswer = {
     field: {
         id: string,
         type: string,
-        title: string,
+        title?: string,
         ref: string
     },
-    type: "choice" | "choices" | "date" | "email" | "url" | "file_url" | "number" | "boolean" | "text" | "payment",
+    type: "choice" | "choices" | "date" | "email" | "url" | "file_url" | "number" | "boolean" | "text" | "payment" | "phone_number",
     choice?: {
         label: string,
         other: string
@@ -29,10 +29,15 @@ export type FormAnswer = {
     date?: string
 }
 type Item = {
+    landing_id: string,
+    token: string,
     response_id: string,
-    definition: {
-        fields: Field[]
-    },
+    landed_at: string,
+    submitted_at: string,
+    metadata: NodeJS.Dict<string>,
+    // definition: {
+    //     fields: Field[]
+    // },
     answers: FormAnswer[],
     hidden: NodeJS.Dict<string>,
     calculated: {
@@ -42,10 +47,10 @@ type Item = {
 export type FormResponse = {
     total_items: number,
     page_count: number,
-    _links: {
-        metrics: string,
-        reports: string
-    },
+    // _links: {
+    //     metrics: string,
+    //     reports: string
+    // },
     items: Item[]
 }
 

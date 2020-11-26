@@ -9,6 +9,9 @@ import { UrlBuilder } from "../../urlBuilder"
 import { Logger } from "../../logger"
 import { EntityAlreadyExists } from "../../database/entityAlreadyExists"
 import { Matcher } from "../../logic/matcher"
+import { isIntegration } from "../../../api/utils"
+import { ICommunityComponent } from "../../logic/ICommunityComponent"
+import { CommunityComponentIntegration } from "../../../integration/communityComponentIntegration"
 
 export type Props = {
     communityInvitationLink?: string,
@@ -19,7 +22,7 @@ const log = new Logger("CreateCommunityConfirmationPage")
 
 export const getServerSidePropsImpl = async (
     context: GetServerSidePropsContext,
-    communityComponent: CommunityComponent,
+    communityComponent: ICommunityComponent,
     urlBuilder: UrlBuilder
 ): Promise<GetServerSidePropsResult<Props>> => {
     try {
@@ -50,14 +53,18 @@ export const getServerSidePropsImpl = async (
     }
 }
 
-export default async (context: GetServerSidePropsContext): Promise<GetServerSidePropsResult<Props>> =>
-    getServerSidePropsImpl(
-        context,
+export default async (context: GetServerSidePropsContext): Promise<GetServerSidePropsResult<Props>> => {
+    const communityComponent = isIntegration() ?
+        new CommunityComponentIntegration() :
         new CommunityComponent(
             new FormsApi(),
             new MailComponent(),
             new SpicedDatabase(),
             new UrlBuilder(new TokenEncryptor()),
-            new Matcher(new SpicedDatabase())),
+            new Matcher(new SpicedDatabase()))
+    return getServerSidePropsImpl(
+        context,
+        communityComponent,
         new UrlBuilder(new TokenEncryptor())
     )
+}

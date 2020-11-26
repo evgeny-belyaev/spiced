@@ -166,6 +166,25 @@ export default describe("SpicedDatabase", () => {
         expect(result).toEqual(user)
     })
 
+
+    test("getUserByEmail no user", async () => {
+        const db = new SpicedDatabase()
+        const email = givenRandomString(20) + "@mail.com"
+        const user = {
+            firstName: "firstName",
+            lastName: "lastName:",
+            emailAddress: email,
+            phoneNumber: "phoneNumber",
+            website: "website"
+        }
+
+        // Act
+        const result = await db.getUserByEmail(email)
+
+        // Assert
+        expect(result).toEqual(null)
+    })
+
     test("createMember getMembers", async () => {
         // Arrangea
         const db = new SpicedDatabase()
