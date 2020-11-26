@@ -1,5 +1,7 @@
+import { isTest } from "../../api/utils"
+
 export class SpicedDatabasePathHelper {
-    private root = "v1"
+    private root = isTest() ? "test" : "v1"
 
     private byId = "byId"
     private byUserId = "byUserId"

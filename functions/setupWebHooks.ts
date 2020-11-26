@@ -13,7 +13,7 @@ const config: Configuration = {
         functionsBaseUrl: "https://us-central1-spiced-f9677.cloudfunctions.net"
     },
     local: {
-        functionsBaseUrl: "https://soft-otter-11.loca.lt/spiced-f9677/us-central1"
+        functionsBaseUrl: "https://neat-turtle-10.loca.lt/spiced-f9677/us-central1"
     }
 }
 

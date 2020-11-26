@@ -115,6 +115,7 @@ export function givenSpicedDatabase () {
     const setPreviouslyMatched = jest.fn()
     const getCommunitiesIds = jest.fn()
     const getMatches = jest.fn()
+    const getUserById = jest.fn()
 
     return {
         mock: jest.fn<SpicedDatabase>(() => ({
@@ -129,7 +130,8 @@ export function givenSpicedDatabase () {
             setMatchedCommunity,
             setPreviouslyMatched,
             getCommunitiesIds,
-            getMatches
+            getMatches,
+            getUserById
         })),
 
         createCommunity,
@@ -143,7 +145,8 @@ export function givenSpicedDatabase () {
         setMatchedCommunity,
         setPreviouslyMatched,
         getCommunitiesIds,
-        getMatches
+        getMatches,
+        getUserById
     }
 }
 

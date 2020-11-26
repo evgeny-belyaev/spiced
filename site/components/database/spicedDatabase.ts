@@ -67,6 +67,10 @@ export class SpicedDatabase {
         return key
     }
 
+    async getUserById (id: string): Promise<User| null> {
+        return await this.value(this.path.userByEmail(id))
+    }
+
     async getUserByEmail (email: string): Promise<User| null> {
         const key = this.sha256(email)
 
@@ -77,7 +81,7 @@ export class SpicedDatabase {
         await this.set(this.path.memberByCommunityIdByUserId(communityId, userId), true)
     }
 
-    async getMembers (communityId: string): Promise<Members> {
+    async getMembers (communityId: string): Promise<Members | null> {
         return await this.value(this.path.membersByCommunityId(communityId))
     }
 

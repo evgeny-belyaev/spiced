@@ -203,55 +203,91 @@ export class CommunityComponent implements ICommunityComponent {
     }
 
     private async sendMatchEmails(communityId: string, timeSpanId: string): Promise<void> {
+        this.log.debug(`Going to send match mails for communityId=${communityId} for timeSpanId=${timeSpanId}`)
+
         const matches = await this.spicedDatabase.getMatches(communityId, timeSpanId)
-        const usersIds = Object.keys(matches)
+        const usersIds = matches ? Object.keys(matches) : []
         const mailTemplate = MailChimp.Templates.matched
 
         for (const userId of usersIds) {
             const match = matches[userId]
+
+            this.log.debug(JSON.stringify({ matches, match }))
+
             if (!match) {
                 continue
             }
 
             console.log(userId)
+            const user = await this.spicedDatabase.getUserById(userId)
 
-            const user = await this.spicedDatabase.getUserByEmail(userId)
-            const matchedUser = await this.spicedDatabase.getUserByEmail(match.matchedUserId)
-
-            if (!user || !matchedUser) {
+            if (!user) {
                 continue
             }
 
-            await this.mailComponent.sendTemplate(
-                user.emailAddress,
-                "Wow! You've matched!",
-                MailChimp.from,
-                mailTemplate.name,
-                [
-                    {
-                        name: mailTemplate.fields.matchedUserName,
-                        content: matchedUser.firstName + " " + matchedUser.lastName
-                    },
-                    {
-                        name: mailTemplate.fields.matchedUserEmail,
-                        content: matchedUser.emailAddress
-                    }
-                ]
-            )
+            if (match.matchedUserId) {
+                const matchedUser = await this.spicedDatabase.getUserById(match.matchedUserId)
+
+                this.log.debug(JSON.stringify({ user, matchedUser }))
+
+                if (!matchedUser) {
+                    continue
+                }
+
+                const response = await this.mailComponent.sendTemplate(
+                    user.emailAddress,
+                    "Wow! You've matched!",
+                    MailChimp.from,
+                    mailTemplate.name,
+                    [
+                        {
+                            name: mailTemplate.fields.matchedUserName,
+                            content: matchedUser.firstName + " " + matchedUser.lastName
+                        },
+                        {
+                            name: mailTemplate.fields.matchedUserEmail,
+                            content: matchedUser.emailAddress
+                        }
+                    ]
+                )
+
+                this.log.debug(response)
+
+            } else {
+                const response = await this.mailComponent.sendTemplate(
+                    user.emailAddress,
+                    "Wow! You've matched!",
+                    MailChimp.from,
+                    mailTemplate.name,
+                    [
+                        {
+                            name: mailTemplate.fields.matchedUserName,
+                            content: "We cant find match for you =("
+                        },
+                        {
+                            name: mailTemplate.fields.matchedUserEmail,
+                            content: ""
+                        }
+                    ]
+                )
+
+                this.log.debug(response)
+            }
         }
     }
 
     async monday(now: Date): Promise<NodeJS.Dict<Matches>> {
-        const timeSpanId = this.matcher.getTimeSpanId(now.getTime()).toString()
+        // const timeSpanId = this.matcher.getTimeSpanId(now.getTime()).toString()
+        const timeSpanId = now.getTime().toString()
         const allCommunitiesIds = await this.spicedDatabase.getCommunitiesIds()
-        const ids = Object.keys(allCommunitiesIds)
+        const ids = allCommunitiesIds ? Object.keys(allCommunitiesIds) : []
         const result: NodeJS.Dict<Matches> = {}
 
         for (const communityId of ids) {
             /** TODO: Implement opt-in feature
              * Match all community members for now */
             const members = await this.spicedDatabase.getMembers(communityId)
-            const applicantsIds = Object.keys(members)
+            const applicantsIds = members ? Object.keys(members) : []
 
             const matches = await this.matcher.calculateMatch(communityId, timeSpanId,
                 shuffleArray(applicantsIds)

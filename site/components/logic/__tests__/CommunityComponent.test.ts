@@ -521,7 +521,7 @@ export default describe("CommunityComponent", () => {
 
     test("monday", async () => {
         // Arrange
-        const { mock: spicedDatabaseMock, getCommunitiesIds, getMembers, getMatches, getUserByEmail } = givenSpicedDatabase()
+        const { mock: spicedDatabaseMock, getCommunitiesIds, getMembers, getMatches, getUserById } = givenSpicedDatabase()
         const { mock: mailComponentMock, sendTemplate } = givenMailComponent()
         const { mock: formsApiMock } = givenFormsApi()
         const { mock: urlBuilder } = givenUrlBuilder()
@@ -566,7 +566,7 @@ export default describe("CommunityComponent", () => {
                 }
             }
         })
-        getUserByEmail.mockImplementation((userId: string) => {
+        getUserById.mockImplementation((userId: string) => {
             if (userId) {
                 return Promise.resolve({
                     emailAddress: `${userId}@b.c`,
@@ -649,6 +649,16 @@ export default describe("CommunityComponent", () => {
                     },
                     {
                         "content": "userId3@b.c",
+                        "name": mailTemplate.fields.matchedUserEmail
+                    }
+                ]],
+                ["userId5@b.c", subject, MailChimp.from, mailTemplate.name, [
+                    {
+                        "content": "We cant find match for you =(",
+                        "name": mailTemplate.fields.matchedUserName
+                    },
+                    {
+                        "content": "",
                         "name": mailTemplate.fields.matchedUserEmail
                     }
                 ]]
