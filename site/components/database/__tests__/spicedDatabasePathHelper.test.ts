@@ -27,5 +27,10 @@ export default describe("SpicedDatabasePathHelper", () => {
 
         expect(pathHelper.matchedCommunity("TIMESPANID", "COMMUNITYID")).toEqual("test/matches/byTimeSpanId/TIMESPANID/communityIds/COMMUNITYID")
         expect(pathHelper.matchedCommunitiesIds("TIMESPANID")).toEqual("test/matches/byTimeSpanId/TIMESPANID/communityIds")
+
+        expect(pathHelper.optInCommunities("TIMESPANID")).toEqual("test/optIns/byTimeSpanId/TIMESPANID/communitiesIds")
+        expect(pathHelper.optInCommunitiesIds("TIMESPANID", "COMMUNITYID")).toEqual("test/optIns/byTimeSpanId/TIMESPANID/communitiesIds/COMMUNITYID")
+        expect(pathHelper.optIn("TIMESPANID", "COMMUNITYID", "USERID")).toEqual("test/optIns/byTimeSpanId/TIMESPANID/byCommunityId/COMMUNITYID/byUserId/USERID")
+        expect(pathHelper.optInUsers("TIMESPANID", "COMMUNITYID")).toEqual("test/optIns/byTimeSpanId/TIMESPANID/byCommunityId/COMMUNITYID/byUserId")
     })
 })

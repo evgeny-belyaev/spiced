@@ -14,8 +14,9 @@ export type Community = {
 }
 
 export type CommunitiesIds = NodeJS.Dict<boolean>
+export type UsersIds = NodeJS.Dict<boolean>
 
-export type MatchedCommunities = NodeJS.Dict<MatchedCommunity>
+export type MatchedCommunities = NodeJS.Dict<MatchedCommunity> // Key is communityId
 
 export type MatchedCommunity = boolean
 
@@ -35,8 +36,8 @@ export type PreviousMatch = {
 export type Members = NodeJS.Dict<boolean>
 
 
-/*
-const dbExample = {
+
+export const dbExample = {
     v1: {
         users: {
             byEmail: {
@@ -112,18 +113,22 @@ const dbExample = {
             byTimeSpanId: {
                 "4543523523": {
                     toTs: "67867867867",
-                    listOfCommunityIds: { // communities with opted-in users
+                    communitiesIds: { // communities with opted-in users
                         "communityId1": true,
                         "communityId2": true
                     },
                     byCommunityId: {
                         "communityId1": {
-                            "userId1": true,
-                            "userId2": true
+                            byUserId: {
+                                "userId1": true,
+                                "userId2": true
+                            }
                         },
                         "communityId2": {
-                            "userId1": false,
-                            "userId2": true
+                            byUserId: {
+                                "userId1": true,
+                                "userId2": true
+                            }
                         }
                     }
                 }
@@ -156,4 +161,4 @@ const dbExample = {
         }
     }
 }
-*/
+

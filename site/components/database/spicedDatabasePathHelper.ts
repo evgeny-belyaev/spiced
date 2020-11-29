@@ -29,4 +29,9 @@ export class SpicedDatabasePathHelper {
 
     matchedCommunity = (timeSpanId: string, communityId: string) => `${this.root}/matches/${this.byTimeSpanId}/${timeSpanId}/communityIds/${communityId}`
     matchedCommunitiesIds = (timeSpanId: string) => `${this.root}/matches/${this.byTimeSpanId}/${timeSpanId}/communityIds`
+
+    optInCommunities = (timeSpanId: string) => `${this.root}/optIns/${this.byTimeSpanId}/${timeSpanId}/communitiesIds`
+    optInCommunitiesIds = (timeSpanId: string, communityId: string) => `${this.root}/optIns/${this.byTimeSpanId}/${timeSpanId}/communitiesIds/${communityId}`
+    optIn = (timeSpanId: string, communityId: string, userId: string) => `${this.root}/optIns/${this.byTimeSpanId}/${timeSpanId}/${this.byCommunityId}/${communityId}/${this.byUserId}/${userId}`
+    optInUsers = (timeSpanId: string, communityId: string) => `${this.root}/optIns/${this.byTimeSpanId}/${timeSpanId}/${this.byCommunityId}/${communityId}/${this.byUserId}`
 }

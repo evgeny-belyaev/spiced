@@ -206,7 +206,7 @@ export default describe("SpicedDatabase", () => {
     })
 
     test("createMember getMembers", async () => {
-        // Arrangea
+        // Arrange
         const db = new SpicedDatabase()
         const communityId = givenRandomString()
         const userId1 = givenRandomString()
@@ -219,10 +219,13 @@ export default describe("SpicedDatabase", () => {
         const result = await db.getMembers(communityId)
 
         // Assert
-        expect(Object.keys(result)).toContain(userId1)
-        expect(Object.keys(result)).toContain(userId2)
+        expect(result).not.toBeNull()
+        if (result) {
+            expect(Object.keys(result)).toContain(userId1)
+            expect(Object.keys(result)).toContain(userId2)
 
-        expect(Object.values(result)).toEqual([true, true])
+            expect(Object.values(result)).toEqual([true, true])
+        }
     })
 
     test("setPreviouslyMatched", async () => {
@@ -350,5 +353,58 @@ export default describe("SpicedDatabase", () => {
         expect(Object.keys(result).length).toEqual(2)
         expect(result).toHaveProperty(communityId1, true)
         expect(result).toHaveProperty(communityId2, true)
+    })
+
+    test("setOptIn", async () => {
+        // Arrange
+        const db = new SpicedDatabase()
+        const communityId = givenRandomString(10) + "communityId"
+        const userId = givenRandomString(10) + "userId"
+        const timeSpanId = givenRandomString(10) + "timespanId"
+
+        // Act Assert
+        await expect(db.setOptIn(communityId, userId, timeSpanId)).resolves.toEqual(undefined)
+    })
+
+    test("getOptedInCommunities", async () => {
+        // Arrange
+        const db = new SpicedDatabase()
+        const communityId1 = givenRandomString(10) + "communityId1"
+        const communityId2 = givenRandomString(10) + "communityId2"
+        const userId = givenRandomString(10) + "userId"
+        const timeSpanId = givenRandomString(10) + "timespanId"
+
+        await db.setOptIn(communityId1, userId, timeSpanId)
+        await db.setOptIn(communityId2, userId, timeSpanId)
+
+        // Act
+        const result = await db.getOptedInCommunities(timeSpanId)
+
+        // Assert
+        expect(result).toEqual({
+            [communityId1]: true,
+            [communityId2]: true
+        })
+    })
+
+    test("getOptedInUsers", async () => {
+        // Arrange
+        const db = new SpicedDatabase()
+        const communityId = givenRandomString(10) + "communityId"
+        const userId1 = givenRandomString(10) + "userId1"
+        const userId2 = givenRandomString(10) + "userId2"
+        const timeSpanId = givenRandomString(10) + "timespanId"
+
+        await db.setOptIn(communityId, userId1, timeSpanId)
+        await db.setOptIn(communityId, userId2, timeSpanId)
+
+        // Act
+        const result = await db.getOptedInUsers(timeSpanId,communityId)
+
+        // Assert
+        expect(result).toEqual({
+            [userId1]: true,
+            [userId2]: true
+        })
     })
 })
