@@ -26,12 +26,24 @@ export type SendResult = {
     _id: string
 }
 
+export type RenderTemplate = {
+    template_name: string,
+    template_content: TemplateContent[]
+}
+
+export type RenderResult = {
+    html: string
+}
+
 export type MailchimpTx = {
     users: {
         ping: () => Promise<string>
     },
     messages: {
         sendTemplate: (body: Template) => Promise<SendResult[]>
+    },
+    templates: {
+        render: (template: RenderTemplate) => Promise<RenderResult>
     }
 }
 

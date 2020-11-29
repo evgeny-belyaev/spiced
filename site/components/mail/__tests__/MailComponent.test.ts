@@ -4,7 +4,6 @@ import { MailComponent } from "../index"
 const mockedAxios = require("axios") as jest.Mocked<typeof Axios>
 
 jest.mock("axios")
-
 export default describe("MailComponent", () => {
     // test("Should ping", async () => {
     //     const mail = new MailComponent()

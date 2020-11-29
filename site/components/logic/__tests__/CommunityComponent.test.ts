@@ -521,7 +521,7 @@ export default describe("CommunityComponent", () => {
 
     test("monday", async () => {
         // Arrange
-        const { mock: spicedDatabaseMock, getCommunitiesIds, getMembers, getMatches, getUserById } = givenSpicedDatabase()
+        const { mock: spicedDatabaseMock, getCommunitiesIds, getMembers, getMatches, getUserById, getCommunityById } = givenSpicedDatabase()
         const { mock: mailComponentMock, sendTemplate } = givenMailComponent()
         const { mock: formsApiMock } = givenFormsApi()
         const { mock: urlBuilder } = givenUrlBuilder()
@@ -544,6 +544,9 @@ export default describe("CommunityComponent", () => {
             }
         }
 
+        getCommunityById.mockImplementation((communityId: string) => ({
+            title: `title${communityId}`
+        }))
         getTimeSpanId.mockImplementation(() => ("timeSpanId"))
         getCommunitiesIds.mockImplementation(() => (Promise.resolve({
             "communityId1": true,
@@ -571,7 +574,8 @@ export default describe("CommunityComponent", () => {
                 return Promise.resolve({
                     emailAddress: `${userId}@b.c`,
                     firstName: `${userId}f`,
-                    lastName: `${userId}l`
+                    lastName: `${userId}l`,
+                    phoneNumber: `${userId}p`,
                 })
             } else {
                 return Promise.resolve(null)
@@ -614,54 +618,37 @@ export default describe("CommunityComponent", () => {
         const mailTemplate = MailChimp.Templates.matched
         const subject = "Wow! You've matched!"
 
+        function givenContent(name: string, email: string, phoneNumber: string, communityTitle: string) {
+            return [
+                {
+                    "content": name,
+                    "name": mailTemplate.fields.matchedUserName
+                }, {
+                    "content": email,
+                    "name": mailTemplate.fields.matchedUserEmail
+                },
+                {
+                    name: mailTemplate.fields.matchedUserPhone,
+                    content: phoneNumber
+                },
+                {
+                    name: mailTemplate.fields.communityTitle,
+                    content: communityTitle
+                }
+            ]
+        }
+
         expect(sendTemplate.mock.calls).toEqual([
-                ["userId1@b.c", subject, MailChimp.from, mailTemplate.name, [
-                    {
-                        "content": "userId2f userId2l",
-                        "name": mailTemplate.fields.matchedUserName
-                    }, {
-                        "content": "userId2@b.c",
-                        "name": mailTemplate.fields.matchedUserEmail
-                    }
-                ]],
-                ["userId2@b.c", subject, MailChimp.from, mailTemplate.name, [
-                    {
-                        "content": "userId1f userId1l",
-                        "name": mailTemplate.fields.matchedUserName
-                    }, {
-                        "content": "userId1@b.c",
-                        "name": mailTemplate.fields.matchedUserEmail
-                    }
-                ]],
-                ["userId3@b.c", subject, MailChimp.from, mailTemplate.name, [
-                    {
-                        "content": "userId4f userId4l",
-                        "name": mailTemplate.fields.matchedUserName
-                    }, {
-                        "content": "userId4@b.c",
-                        "name": mailTemplate.fields.matchedUserEmail
-                    }
-                ]],
-                ["userId4@b.c", subject, MailChimp.from, mailTemplate.name, [
-                    {
-                        "content": "userId3f userId3l",
-                        "name": mailTemplate.fields.matchedUserName
-                    },
-                    {
-                        "content": "userId3@b.c",
-                        "name": mailTemplate.fields.matchedUserEmail
-                    }
-                ]],
-                ["userId5@b.c", subject, MailChimp.from, mailTemplate.name, [
-                    {
-                        "content": "We cant find match for you =(",
-                        "name": mailTemplate.fields.matchedUserName
-                    },
-                    {
-                        "content": "",
-                        "name": mailTemplate.fields.matchedUserEmail
-                    }
-                ]]
+                ["userId1@b.c", subject, MailChimp.from, mailTemplate.name,
+                    givenContent("userId2f userId2l", "userId2@b.c", "userId2p", "titlecommunityId1")],
+                ["userId2@b.c", subject, MailChimp.from, mailTemplate.name,
+                    givenContent("userId1f userId1l", "userId1@b.c", "userId1p", "titlecommunityId1")],
+                ["userId3@b.c", subject, MailChimp.from, mailTemplate.name,
+                    givenContent("userId4f userId4l", "userId4@b.c", "userId4p", "titlecommunityId2")],
+                ["userId4@b.c", subject, MailChimp.from, mailTemplate.name,
+                    givenContent("userId3f userId3l", "userId3@b.c", "userId3p", "titlecommunityId2")],
+                ["userId5@b.c", subject, MailChimp.from, mailTemplate.name,
+                    givenContent("We cant find match for you =(", "", "", "titlecommunityId2")]
             ]
         )
     })

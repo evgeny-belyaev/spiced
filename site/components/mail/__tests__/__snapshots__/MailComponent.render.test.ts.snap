@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MailComponent renderTemplate: communityCreated 1`] = `
+"<div>
+          Wow! You've created community: <span>communityTitle</span>
+      </div>    
+      <div>
+      Here is invitation link: <span>communityInvitationLink</span>
+    </div>"
+`;
+
+exports[`MailComponent renderTemplate: communityJoined 1`] = `
+"<div>
+          Wow! You've joined to: <span>communityTitle</span>
+      </div>"
+`;
+
+exports[`MailComponent renderTemplate: createCommunityConfirmation 1`] = `
+"<div>Here is community confirmation url: <span>createCommunityConfirmationUrl</span>
+    </div>"
+`;
+
+exports[`MailComponent renderTemplate: joinCommunityConfirmation 1`] = `
+"<div>
+    To join the community please follow this link : <span>joinCommunityConfirmationUrl</span></div>"
+`;
+
+exports[`MailComponent renderTemplate: matched 1`] = `
+"<h2>communityTitle</h2>
+<div>
+    You've matched with <span>matchedUserName</span></div>
+    
+<div>
+    Contact email: <span>matchedUserEmail</span></div>
+    
+<div>
+    Contact phone: <span>matchedUserPhone</span></div>"
+`;

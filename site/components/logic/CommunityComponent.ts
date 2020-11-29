@@ -206,6 +206,12 @@ export class CommunityComponent implements ICommunityComponent {
         this.log.debug(`Going to send match mails for communityId=${communityId} for timeSpanId=${timeSpanId}`)
 
         const matches = await this.spicedDatabase.getMatches(communityId, timeSpanId)
+        const community = await this.spicedDatabase.getCommunityById(communityId)
+
+        if (!community) {
+            throw new Error("Invalid argument")
+        }
+
         const usersIds = matches ? Object.keys(matches) : []
         const mailTemplate = MailChimp.Templates.matched
 
@@ -247,12 +253,19 @@ export class CommunityComponent implements ICommunityComponent {
                         {
                             name: mailTemplate.fields.matchedUserEmail,
                             content: matchedUser.emailAddress
+                        },
+                        {
+                            name: mailTemplate.fields.matchedUserPhone,
+                            content: matchedUser.phoneNumber
+                        },
+                        {
+                            name: mailTemplate.fields.communityTitle,
+                            content: community.title
                         }
                     ]
                 )
 
                 this.log.debug(response)
-
             } else {
                 const response = await this.mailComponent.sendTemplate(
                     user.emailAddress,
@@ -267,6 +280,14 @@ export class CommunityComponent implements ICommunityComponent {
                         {
                             name: mailTemplate.fields.matchedUserEmail,
                             content: ""
+                        },
+                        {
+                            name: mailTemplate.fields.matchedUserPhone,
+                            content: ""
+                        },
+                        {
+                            name: mailTemplate.fields.communityTitle,
+                            content: community.title
                         }
                     ]
                 )
@@ -277,8 +298,8 @@ export class CommunityComponent implements ICommunityComponent {
     }
 
     async monday(now: Date): Promise<NodeJS.Dict<Matches>> {
-        // const timeSpanId = this.matcher.getTimeSpanId(now.getTime()).toString()
-        const timeSpanId = now.getTime().toString()
+        const timeSpanId = this.matcher.getTimeSpanId(now.getTime()).toString()
+        // const timeSpanId = now.getTime().toString()
         const allCommunitiesIds = await this.spicedDatabase.getCommunitiesIds()
         const ids = allCommunitiesIds ? Object.keys(allCommunitiesIds) : []
         const result: NodeJS.Dict<Matches> = {}
@@ -300,5 +321,13 @@ export class CommunityComponent implements ICommunityComponent {
         }
 
         return result
+    }
+
+    async sendOptInRequest(now: Date) : Promise<void> {
+        return
+    }
+
+    async optIn(timeSpanId: string, communityId: string, userId: string): Promise<void> {
+        return
     }
 }

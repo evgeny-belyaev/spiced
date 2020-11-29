@@ -1,6 +1,6 @@
 import { MailChimp } from "../constants"
 import { Logger } from "../logger"
-import { Mailchimp, MailchimpTx, SendResult, TemplateContent } from "./types"
+import { Mailchimp, MailchimpTx, RenderResult, SendResult, TemplateContent } from "./types"
 import { IMailComponent } from "./IMailComponent"
 
 declare function require<T>(name: string): T
@@ -66,6 +66,18 @@ export class MailComponent implements IMailComponent{
                     email: emailAddress
                 }]
             },
+            template_name: templateName,
+            template_content: content
+        })
+
+        return response
+    }
+
+    async renderTemplate(
+        templateName: string,
+        content: TemplateContent[]
+    ): Promise<RenderResult> {
+        const response = await mailchimpTx.templates.render({
             template_name: templateName,
             template_content: content
         })

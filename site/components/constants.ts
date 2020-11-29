@@ -85,7 +85,9 @@ export const MailChimp = {
             name: "matched",
             fields: {
                 matchedUserName: "matchedUserName",
-                matchedUserEmail: "matchedUserEmail"
+                matchedUserEmail: "matchedUserEmail",
+                matchedUserPhone: "matchedUserPhone",
+                communityTitle: "communityTitle"
             }
         },
     }
