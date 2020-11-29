@@ -242,7 +242,7 @@ export class CommunityComponent implements ICommunityComponent {
 
                 const response = await this.mailComponent.sendTemplate(
                     user.emailAddress,
-                    "Wow! You've matched!",
+                    `Wow! You've matched in ${community.title}!`,
                     MailChimp.from,
                     mailTemplate.name,
                     [
@@ -269,7 +269,7 @@ export class CommunityComponent implements ICommunityComponent {
             } else {
                 const response = await this.mailComponent.sendTemplate(
                     user.emailAddress,
-                    "Wow! You've matched!",
+                    `Wow! You've matched in ${community.title}!`,
                     MailChimp.from,
                     mailTemplate.name,
                     [
@@ -323,7 +323,7 @@ export class CommunityComponent implements ICommunityComponent {
         return result
     }
 
-    async sendOptInRequest(now: Date) : Promise<void> {
+    async sendOptInRequest(now: Date): Promise<void> {
         return
     }
 
