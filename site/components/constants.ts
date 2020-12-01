@@ -1,4 +1,4 @@
-import { isIntegration, isServer } from "../api/utils"
+import { isDevelopment, isIntegration, isServer, isTest } from "../api/utils"
 
 export const Forms = {
     accessToken: isServer() ? "CnLWx37r88w9NoqC5H3UrkVM1UDgNYVBt9VQi22aDURm" : "",
@@ -35,7 +35,7 @@ export const Forms = {
         }
     },
 
-    getResponsesUrl (formId: string, includedResponsesIds: string[]): string {
+    getResponsesUrl(formId: string, includedResponsesIds: string[]): string {
         if (includedResponsesIds.length == 0) {
             throw Error("Invalid argument: includedResponsesIds")
         }
@@ -68,7 +68,7 @@ export const MailChimp = {
                 joinCommunityConfirmationUrl: "joinCommunityConfirmationUrl"
             }
         },
-        communityJoined :{
+        communityJoined: {
             name: "communityJoined",
             fields: {
                 communityTitle: "communityTitle"
@@ -81,7 +81,7 @@ export const MailChimp = {
                 communityInvitationLink: "communityInvitationLink"
             }
         },
-        matched :{
+        matched: {
             name: "matched",
             fields: {
                 matchedUserName: "matchedUserName",
@@ -90,6 +90,14 @@ export const MailChimp = {
                 communityTitle: "communityTitle"
             }
         },
+        optIn: {
+            name: "optIn",
+            fields: {
+                communityTitle: "communityTitle",
+                yesUrl: "yesUrl",
+                noUrl: "noUrl"
+            }
+        }
     }
 }
 
@@ -99,10 +107,12 @@ export const Database = {
 }
 
 export const Url = {
-    getBaseUrl (): string {
-        return process.env["NODE_ENV"] == "development" || process.env["NODE_ENV"] == "test" || isIntegration() ?
-            "http://localhost:5000" :
-            "https://spiced-f9677.web.app"
-        // "https://tiny-dolphin-96.loca.lt"
+    getBaseUrl(): string {
+        if (isDevelopment() || isTest() || isIntegration()) {
+            return "http://localhost:5000"
+        } else {
+            return "https://spiced-f9677.web.app"
+            // return "https://tiny-dolphin-96.loca.lt"
+        }
     }
 }

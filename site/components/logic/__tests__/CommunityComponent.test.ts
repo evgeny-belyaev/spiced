@@ -521,11 +521,19 @@ export default describe("CommunityComponent", () => {
 
     test("monday", async () => {
         // Arrange
-        const { mock: spicedDatabaseMock, getCommunitiesIds, getMembers, getMatches, getUserById, getCommunityById } = givenSpicedDatabase()
+        const {
+            mock: spicedDatabaseMock,
+            getCommunitiesIds,
+            getMatches,
+            getUserById,
+            getCommunityById,
+            getOptedInCommunities,
+            getOptedInUsers
+        } = givenSpicedDatabase()
         const { mock: mailComponentMock, sendTemplate } = givenMailComponent()
         const { mock: formsApiMock } = givenFormsApi()
         const { mock: urlBuilder } = givenUrlBuilder()
-        const { mock: matcher, getTimeSpanId, calculateMatch, saveMatches } = givenMatcher()
+        const { mock: matcher, calculateMatch, saveMatches } = givenMatcher()
         const matchesGenerator = (communityId: string) => {
             switch (communityId) {
                 case "communityId1": {
@@ -544,20 +552,25 @@ export default describe("CommunityComponent", () => {
             }
         }
 
+        getOptedInCommunities.mockImplementation(() => ({
+            "communityId1": true,
+            "communityId2": true
+        }))
         getCommunityById.mockImplementation((communityId: string) => ({
             title: `title${communityId}`
         }))
-        getTimeSpanId.mockImplementation(() => ("timeSpanId"))
         getCommunitiesIds.mockImplementation(() => (Promise.resolve({
             "communityId1": true,
             "communityId2": true
         })))
-        getMembers.mockImplementation((communityId: string) => {
+        getOptedInUsers.mockImplementation((timeSpanId: string, communityId: string) => {
             switch (communityId) {
                 case "communityId1": {
                     return {
                         "userId1": true,
-                        "userId2": true
+                        "userId2": true,
+                        "userId6": false,
+                        "userId7": false
                     }
                 }
                 case "communityId2": {
@@ -575,7 +588,7 @@ export default describe("CommunityComponent", () => {
                     emailAddress: `${userId}@b.c`,
                     firstName: `${userId}f`,
                     lastName: `${userId}l`,
-                    phoneNumber: `${userId}p`,
+                    phoneNumber: `${userId}p`
                 })
             } else {
                 return Promise.resolve(null)
@@ -588,7 +601,7 @@ export default describe("CommunityComponent", () => {
         const now = new Date(2020, 10, 25, 16, 59, 10)
 
         // Act Assert
-        await expect(communityComponent.monday(now)).resolves.toEqual({
+        await expect(communityComponent.monday("timeSpanId")).resolves.toEqual({
             "communityId1": {
                 "userId1": { "matchedUserId": "userId2" },
                 "userId2": { "matchedUserId": "userId1" }
@@ -601,10 +614,9 @@ export default describe("CommunityComponent", () => {
         })
 
         // Assert
-        expect(getTimeSpanId).toBeCalledWith(now.getTime())
-        expect(getMembers.mock.calls).toEqual([
-            ["communityId1"],
-            ["communityId2"]
+        expect(getOptedInUsers.mock.calls).toEqual([
+            ["timeSpanId", "communityId1"],
+            ["timeSpanId", "communityId2"]
         ])
         expect(calculateMatch.mock.calls).toEqual([
             ["communityId1", "timeSpanId", ["userId1", "userId2"]],
@@ -650,6 +662,138 @@ export default describe("CommunityComponent", () => {
                     givenContent("userId3f userId3l", "userId3@b.c", "userId3p", "titlecommunityId2")],
                 ["userId5@b.c", subject2, MailChimp.from, mailTemplate.name,
                     givenContent("We cant find match for you =(", "", "", "titlecommunityId2")]
+            ]
+        )
+    })
+
+    test("sendOptInRequest", async () => {
+        // Arrange
+        const {
+            mock: spicedDatabaseMock,
+            getCommunitiesIds,
+            getMembers,
+            getMatches,
+            getUserById,
+            getCommunityById
+        } = givenSpicedDatabase()
+        const { mock: mailComponentMock, sendTemplate } = givenMailComponent()
+        const { mock: formsApiMock } = givenFormsApi()
+        const { mock: urlBuilder, getOptInConfirmationUrl } = givenUrlBuilder()
+        const { mock: matcher, getNextTimeSpanId } = givenMatcher()
+
+        const mailTemplate = MailChimp.Templates.optIn
+        const now = new Date(2020, 10, 25, 16, 59, 10)
+        const communityComponent = new CommunityComponent(formsApiMock(), mailComponentMock(), spicedDatabaseMock(), urlBuilder(), matcher())
+
+        getCommunityById.mockImplementation((communityId: string) => ({
+            title: `title${communityId}`
+        }))
+        getNextTimeSpanId.mockImplementation(() => ("nextTimeSpanId"))
+        getCommunitiesIds.mockImplementation(() => (Promise.resolve({
+            "communityId1": true,
+            "communityId2": true
+        })))
+        getMembers.mockImplementation((communityId: string) => {
+            switch (communityId) {
+                case "communityId1": {
+                    return {
+                        "userId1": true,
+                        "userId2": true
+                    }
+                }
+                case "communityId2": {
+                    return {
+                        "userId3": true,
+                        "userId4": true,
+                        "userId5": true
+                    }
+                }
+            }
+        })
+        getUserById.mockImplementation((userId: string) => {
+            if (userId) {
+                return Promise.resolve({
+                    emailAddress: `${userId}@b.c`,
+                    firstName: `${userId}f`,
+                    lastName: `${userId}l`,
+                    phoneNumber: `${userId}p`
+                })
+            } else {
+                return Promise.resolve(null)
+            }
+        })
+        getOptInConfirmationUrl.mockImplementation((communityId: string, timeSpanId: string, userId: string, optIn: boolean) => (
+            `${communityId}${timeSpanId}${userId}${optIn ? "true" : "false"}`
+        ))
+
+        // Act
+        await expect(communityComponent.sendOptInRequest(now)).resolves.toEqual(undefined)
+
+        // Assert
+        expect(getCommunityById.mock.calls).toEqual([
+            ["communityId1"],
+            ["communityId2"]
+        ])
+        expect(getMembers.mock.calls).toEqual([
+            ["communityId1"],
+            ["communityId2"]
+        ])
+        expect(getUserById.mock.calls).toEqual([
+            ["userId1"],
+            ["userId2"],
+            ["userId3"],
+            ["userId4"],
+            ["userId5"]
+        ])
+
+        expect(getOptInConfirmationUrl.mock.calls).toEqual([
+            ["communityId1", "nextTimeSpanId", "userId1", true],
+            ["communityId1", "nextTimeSpanId", "userId1", false],
+
+            ["communityId1", "nextTimeSpanId", "userId2", true],
+            ["communityId1", "nextTimeSpanId", "userId2", false],
+
+            ["communityId2", "nextTimeSpanId", "userId3", true],
+            ["communityId2", "nextTimeSpanId", "userId3", false],
+
+            ["communityId2", "nextTimeSpanId", "userId4", true],
+            ["communityId2", "nextTimeSpanId", "userId4", false],
+
+            ["communityId2", "nextTimeSpanId", "userId5", true],
+            ["communityId2", "nextTimeSpanId", "userId5", false]
+        ])
+
+        function givenContent(communityTitle: string, noUrl: string, yesUrl: string) {
+            return [
+                {
+                    name: mailTemplate.fields.communityTitle,
+                    content: communityTitle
+                },
+                {
+                    name: mailTemplate.fields.yesUrl,
+                    content: yesUrl
+                },
+                {
+                    name: mailTemplate.fields.noUrl,
+                    content: noUrl
+                }
+            ]
+        }
+
+        const subject1 = "Would you like to match next week in titlecommunityId1?"
+        const subject2 = "Would you like to match next week in titlecommunityId2?"
+
+        expect(sendTemplate.mock.calls).toEqual([
+                ["userId1@b.c", subject1, MailChimp.from, mailTemplate.name,
+                    givenContent("titlecommunityId1", "communityId1nextTimeSpanIduserId1false", "communityId1nextTimeSpanIduserId1true")],
+                ["userId2@b.c", subject1, MailChimp.from, mailTemplate.name,
+                    givenContent("titlecommunityId1", "communityId1nextTimeSpanIduserId2false", "communityId1nextTimeSpanIduserId2true")],
+                ["userId3@b.c", subject2, MailChimp.from, mailTemplate.name,
+                    givenContent("titlecommunityId2", "communityId2nextTimeSpanIduserId3false", "communityId2nextTimeSpanIduserId3true")],
+                ["userId4@b.c", subject2, MailChimp.from, mailTemplate.name,
+                    givenContent("titlecommunityId2", "communityId2nextTimeSpanIduserId4false", "communityId2nextTimeSpanIduserId4true")],
+                ["userId5@b.c", subject2, MailChimp.from, mailTemplate.name,
+                    givenContent("titlecommunityId2", "communityId2nextTimeSpanIduserId5false", "communityId2nextTimeSpanIduserId5true")]
             ]
         )
     })

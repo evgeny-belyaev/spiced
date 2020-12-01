@@ -1,13 +1,10 @@
 import { GetServerSidePropsContext, GetServerSidePropsResult } from "next"
-import { CommunityComponent } from "../../logic/CommunityComponent"
-import { SpicedDatabase } from "../../database/spicedDatabase"
 import { Logger } from "../../logger"
 import { TokenEncryptor } from "../../TokenEncryptor"
-import { FormsApi } from "../../forms/formsApi"
-import { MailComponent } from "../../mail"
 import { UrlBuilder } from "../../urlBuilder"
 import { EntityAlreadyExists } from "../../database/entityAlreadyExists"
-import { Matcher } from "../../logic/matcher"
+import { ICommunityComponent } from "../../logic/ICommunityComponent"
+import { createCommunityComponent } from "../../logic/CreateCommunityComponent"
 
 export type Props = {
     communityTitle?: string,
@@ -19,7 +16,7 @@ const log = new Logger("CommunityInvitationPage")
 
 export const getServerSidePropsImpl = async (
     context: GetServerSidePropsContext,
-    communityComponent: CommunityComponent,
+    communityComponent: ICommunityComponent,
     urlBuilder: UrlBuilder
 ): Promise<GetServerSidePropsResult<Props>> => {
     try {
@@ -63,12 +60,7 @@ export const getServerSidePropsImpl = async (
 export default async (context: GetServerSidePropsContext): Promise<GetServerSidePropsResult<Props>> => {
     return getServerSidePropsImpl(
         context,
-        new CommunityComponent(
-            new FormsApi(),
-            new MailComponent(),
-            new SpicedDatabase(),
-            new UrlBuilder(new TokenEncryptor()),
-            new Matcher(new SpicedDatabase())),
+        createCommunityComponent(),
         new UrlBuilder(new TokenEncryptor())
     )
 }

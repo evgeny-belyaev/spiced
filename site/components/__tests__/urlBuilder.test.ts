@@ -1,4 +1,10 @@
-import { CreateCommunityConfirmationToken, InvitationToken, JoinConfirmationToken, UrlBuilder } from "../urlBuilder"
+import {
+    CreateCommunityConfirmationToken,
+    InvitationToken,
+    JoinConfirmationToken,
+    OptInToken,
+    UrlBuilder
+} from "../urlBuilder"
 import { givenGetServerSidePropsContext, givenTokenEncryptor } from "../testUtils"
 import { Url } from "../constants"
 
@@ -92,5 +98,37 @@ export default describe("UrlBuilder", () => {
         // Assert
         expect(decrypt).toBeCalledWith("encrypted")
         expect(token).toEqual(new JoinConfirmationToken("communityId", "777"))
+    })
+
+
+    test("getOptInConfirmationUrl", () => {
+        // Arrange
+        const { mock: tokenEncryptor, encrypt } = givenTokenEncryptor()
+        const urlBuilder = new UrlBuilder(tokenEncryptor())
+
+        // Act
+        const url = urlBuilder.getOptInConfirmationUrl("communityId", "777", "userId", true)
+
+        // Assert
+        expect(encrypt).toBeCalledWith("{\"communityId\":\"communityId\",\"timeSpanId\":\"777\",\"userId\":\"userId\",\"optIn\":true}")
+        expect(url).toEqual(`${Url.getBaseUrl()}/optin/encrypted`)
+    })
+
+    test("getOptInToken", () => {
+        // Arrange
+        const { mock: tokenEncryptor, decrypt } = givenTokenEncryptor()
+        const urlBuilder = new UrlBuilder(tokenEncryptor())
+        const context = givenGetServerSidePropsContext({
+            OptInToken: "encrypted"
+        })
+
+        decrypt.mockImplementation(() =>("{\"communityId\":\"communityId\",\"timeSpanId\":\"777\",\"userId\":\"userId\",\"optIn\":false}"))
+
+        // Act
+        const token = urlBuilder.getOptInToken(context)
+
+        // Assert
+        expect(decrypt).toBeCalledWith("encrypted")
+        expect(token).toEqual(new OptInToken("communityId", "777", "userId", false))
     })
 })

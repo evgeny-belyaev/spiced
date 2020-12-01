@@ -3,7 +3,9 @@ import { Fetcher } from "./fetcher"
 import * as express from "express"
 import { ICommunityComponent } from "../components/logic/ICommunityComponent"
 
-type MatchApiParams = unknown
+type MatchApiParams = {
+    timeSpanId: string
+}
 
 type MatchApiResponse = unknown
 
@@ -20,8 +22,14 @@ export class MatchApi extends ApiEndpoint<MatchApiParams, MatchApiResponse> {
     }
 
     async handler(request: express.Request, response: express.Response): Promise<void> {
-        const result = await this.communityComponent.monday(new Date())
+        const params = <MatchApiParams>(request.query)
 
-        response.status(200).json(result)
+        if (!params || !params.timeSpanId) {
+            response.status(500).json({error: "timeSpanId is empty or invalid"})
+        } else {
+            const result = await this.communityComponent.monday(params.timeSpanId)
+
+            response.status(200).json(result)
+        }
     }
 }

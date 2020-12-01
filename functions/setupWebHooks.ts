@@ -3,6 +3,7 @@ import { Forms } from "../site/components/constants"
 import { getTypeWormWebHookPath } from "../site/components/forms/formsUtils"
 
 type Environment = {
+    name: string,
     functionsBaseUrl: string
 }
 
@@ -10,10 +11,12 @@ type Configuration = NodeJS.Dict<Environment>
 
 const config: Configuration = {
     production: {
+        name: "production",
         functionsBaseUrl: "https://us-central1-spiced-f9677.cloudfunctions.net"
     },
     local: {
-        functionsBaseUrl: "https://neat-turtle-10.loca.lt/spiced-f9677/us-central1"
+        name: "local",
+        functionsBaseUrl: "https://smooth-goose-57.loca.lt/spiced-f9677/us-central1"
     }
 }
 
@@ -25,7 +28,8 @@ type Response = {
 }
 
 async function createWebHook (formId: string, hookName: string, env: Environment) {
-    const url = `https://api.typeform.com/forms/${formId}/webhooks/${hookName}`
+    const tag = `${hookName}-${env.name}`
+    const url = `https://api.typeform.com/forms/${formId}/webhooks/${tag}`
 
     try {
         const hookPath = getTypeWormWebHookPath(hookName)

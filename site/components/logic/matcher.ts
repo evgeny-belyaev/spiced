@@ -2,8 +2,9 @@ import { SpicedDatabase } from "../database/spicedDatabase"
 import { Logger } from "../logger"
 import { Matches } from "../database/types"
 import moment from "moment"
+import { IMatcher } from "./IMatcher"
 
-export class Matcher {
+export class Matcher implements IMatcher {
     constructor(private spicedDatabase: SpicedDatabase) {
     }
 
@@ -15,6 +16,14 @@ export class Matcher {
 
         return lastMonday.getTime()
     }
+
+    getNextTimeSpanId(utc: number): number {
+        const lastMonday = moment(utc).isoWeekday(1).add(1, "week").toDate()
+        lastMonday.setUTCHours(0, 0, 0, 0)
+
+        return lastMonday.getTime()
+    }
+
 
     async saveMatches(matches: Matches, communityId: string, timeSpanId: string): Promise<void> {
         const keys = Object.keys(matches)

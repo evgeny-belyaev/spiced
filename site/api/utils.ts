@@ -5,6 +5,10 @@ export function isServer (): boolean {
     return typeof window === "undefined" || typeof jest !== "undefined"
 }
 
+export function isDevelopment (): boolean {
+    return process.env["NODE_ENV"] === "development"
+}
+
 export function isTest (): boolean {
     return process.env["NODE_ENV"] === "test"
 }

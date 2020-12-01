@@ -57,7 +57,7 @@ function creteJoinFormResponse(responseId: string) : FormResponse {
                             "type": "email"
                         },
                         "type": "email",
-                        "email": `${responseId}_${idx}@mail.com`
+                        "email": `${responseId}@mail.com`
                     },
                     {
                         "field": {

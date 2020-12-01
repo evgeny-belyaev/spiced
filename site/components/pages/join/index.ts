@@ -1,15 +1,9 @@
 import { GetServerSidePropsContext, GetServerSidePropsResult } from "next"
-import { CommunityComponent } from "../../logic/CommunityComponent"
 import { TokenEncryptor } from "../../TokenEncryptor"
-import { FormsApi } from "../../forms/formsApi"
-import { MailComponent } from "../../mail"
-import { SpicedDatabase } from "../../database/spicedDatabase"
 import { Logger } from "../../logger"
 import { UrlBuilder } from "../../urlBuilder"
-import { Matcher } from "../../logic/matcher"
-import { isIntegration } from "../../../api/utils"
-import { CommunityComponentIntegration } from "../../../integration/communityComponentIntegration"
 import { ICommunityComponent } from "../../logic/ICommunityComponent"
+import { createCommunityComponent } from "../../logic/CreateCommunityComponent"
 
 export type Props = {
     communityTitle?: string,
@@ -55,14 +49,7 @@ export async function getServerSidePropsImpl(
 
 
 export default async (context: GetServerSidePropsContext): Promise<GetServerSidePropsResult<Props>> => {
-    const communityComponent = isIntegration() ?
-        new CommunityComponentIntegration() :
-        new CommunityComponent(
-            new FormsApi(),
-            new MailComponent(),
-            new SpicedDatabase(),
-            new UrlBuilder(new TokenEncryptor()),
-            new Matcher(new SpicedDatabase()))
+    const communityComponent = createCommunityComponent()
     return getServerSidePropsImpl(
         context,
         communityComponent,

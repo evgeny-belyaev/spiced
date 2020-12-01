@@ -3,24 +3,24 @@ import { CommunityComponent, CreateCommunityResult } from "../components/logic/C
 import { SpicedDatabase } from "../components/database/spicedDatabase"
 import { UrlBuilder } from "../components/urlBuilder"
 import { TokenEncryptor } from "../components/TokenEncryptor"
-import { Matcher } from "../components/logic/matcher"
 import { Community, Matches } from "../components/database/types"
 import { FormsApiIntegration } from "./formsApiIntegration"
 import { Logger } from "../components/logger"
 import { MailComponentIntegration } from "./mailComponentIntegration"
+import { MatcherIntegration } from "./matcherIntegration"
 
 const log = new Logger("CommunityComponentIntegration")
 
 const formsApi = new FormsApiIntegration()
 const mailComponent = new MailComponentIntegration()
+const matcher = new MatcherIntegration()
 
 const realComponent = new CommunityComponent(
     formsApi,
     mailComponent,
     new SpicedDatabase(),
     new UrlBuilder(new TokenEncryptor()),
-    new Matcher(new SpicedDatabase()))
-
+    matcher)
 
 export class CommunityComponentIntegration implements ICommunityComponent {
     async createCommunity(formsResponseId: string): Promise<CreateCommunityResult> {
@@ -35,8 +35,8 @@ export class CommunityComponentIntegration implements ICommunityComponent {
         return await realComponent.joinCommunity(communityId, formResponseId)
     }
 
-    async monday(now: Date): Promise<NodeJS.Dict<Matches>> {
-        return await realComponent.monday(now)
+    async monday(timeSpanId: string): Promise<NodeJS.Dict<Matches>> {
+        return await realComponent.monday(timeSpanId)
     }
 
     sendCreateCommunityConfirmationEmail(formResponseId: string, email: string): Promise<void> {
@@ -49,4 +49,11 @@ export class CommunityComponentIntegration implements ICommunityComponent {
         return Promise.resolve()
     }
 
+    async sendOptInRequest(now: Date): Promise<void> {
+        return await realComponent.sendOptInRequest(now)
+    }
+
+    async optIn(timeSpanId: string, communityId: string, userId: string, optIn: boolean): Promise<void> {
+        return await realComponent.optIn(timeSpanId, communityId, userId, optIn)
+    }
 }

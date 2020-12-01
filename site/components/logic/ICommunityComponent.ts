@@ -12,5 +12,9 @@ export interface ICommunityComponent {
 
     joinCommunity(communityId: string, formResponseId: string): Promise<Community | null>
 
-    monday(now: Date): Promise<NodeJS.Dict<Matches>>
+    monday(timeSpanId: string): Promise<NodeJS.Dict<Matches>>
+
+    sendOptInRequest(now: Date): Promise<void>
+
+    optIn(timeSpanId: string, communityId: string, userId: string, optIn: boolean): Promise<void>
 }

@@ -16,6 +16,8 @@ export const givenUrlBuilder = () => {
     const getInvitationToken = jest.fn()
     const getJoinCommunityConfirmationUrl = jest.fn()
     const getCommunityInvitationUrl = jest.fn()
+    const getOptInConfirmationUrl = jest.fn()
+    const getOptInToken = jest.fn()
 
     return {
         mock: jest.fn<UrlBuilder>(() => ({
@@ -24,7 +26,9 @@ export const givenUrlBuilder = () => {
             getJoinConfirmationToken,
             getInvitationToken,
             getJoinCommunityConfirmationUrl,
-            getCommunityInvitationUrl
+            getCommunityInvitationUrl,
+            getOptInConfirmationUrl,
+            getOptInToken
         })),
 
         getCreateCommunityConfirmationUrl,
@@ -32,7 +36,9 @@ export const givenUrlBuilder = () => {
         getJoinConfirmationToken,
         getInvitationToken,
         getJoinCommunityConfirmationUrl,
-        getCommunityInvitationUrl
+        getCommunityInvitationUrl,
+        getOptInConfirmationUrl,
+        getOptInToken
     }
 }
 
@@ -42,6 +48,7 @@ export const givenCommunityComponent = () => {
     const sendJoinCommunityConfirmationEmail = jest.fn()
     const sendCreateCommunityConfirmationEmail = jest.fn()
     const joinCommunityByEncryptedToken = jest.fn()
+    const optIn = jest.fn()
 
     return {
         mock: jest.fn<CommunityComponent>(() => ({
@@ -49,14 +56,16 @@ export const givenCommunityComponent = () => {
             findCommunityById,
             sendJoinCommunityConfirmationEmail,
             sendCreateCommunityConfirmationEmail,
-            joinCommunity: joinCommunityByEncryptedToken
+            joinCommunity: joinCommunityByEncryptedToken,
+            optIn
         })),
 
         createCommunity,
         findCommunityById,
         sendJoinCommunityConfirmationEmail,
         sendCreateCommunityConfirmationEmail,
-        joinCommunityByEncryptedToken
+        joinCommunityByEncryptedToken,
+        optIn
     }
 }
 
@@ -116,6 +125,8 @@ export function givenSpicedDatabase () {
     const getCommunitiesIds = jest.fn()
     const getMatches = jest.fn()
     const getUserById = jest.fn()
+    const getOptedInCommunities = jest.fn()
+    const getOptedInUsers = jest.fn()
 
     return {
         mock: jest.fn<SpicedDatabase>(() => ({
@@ -131,7 +142,9 @@ export function givenSpicedDatabase () {
             setPreviouslyMatched,
             getCommunitiesIds,
             getMatches,
-            getUserById
+            getUserById,
+            getOptedInCommunities,
+            getOptedInUsers
         })),
 
         createCommunity,
@@ -146,7 +159,9 @@ export function givenSpicedDatabase () {
         setPreviouslyMatched,
         getCommunitiesIds,
         getMatches,
-        getUserById
+        getUserById,
+        getOptedInCommunities,
+        getOptedInUsers
     }
 }
 
@@ -166,17 +181,20 @@ export const givenMatcher = () => {
     const calculateMatch = jest.fn()
     const getTimeSpanId = jest.fn()
     const saveMatches = jest.fn()
+    const getNextTimeSpanId = jest.fn()
 
     return {
         mock: jest.fn<Matcher>(() => ({
             calculateMatch,
             getTimeSpanId,
-            saveMatches
+            saveMatches,
+            getNextTimeSpanId
         })),
 
         calculateMatch,
         getTimeSpanId,
-        saveMatches
+        saveMatches,
+        getNextTimeSpanId
     }
 }
 

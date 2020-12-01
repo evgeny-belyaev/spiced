@@ -104,4 +104,29 @@ export default describe("MailComponent", () => {
         // Assert
         expect(result.html).toMatchSnapshot()
     })
+
+    test("renderTemplate: optIn", async () => {
+        // Arrange
+        const mail = new MailComponent()
+        const mailTemplate = MailChimp.Templates.optIn
+
+        // Act
+        const result = await mail.renderTemplate(mailTemplate.name, [
+            {
+                name: mailTemplate.fields.communityTitle,
+                content: "communityTitle"
+            },
+            {
+                name: mailTemplate.fields.yesUrl,
+                content: "<a href=\"yesUrl\">Yes</a>"
+            },
+            {
+                name: mailTemplate.fields.noUrl,
+                content: "<a href=\"noUrl\">No</a>"
+            }
+        ])
+
+        // Assert
+        expect(result.html).toMatchSnapshot()
+    })
 })

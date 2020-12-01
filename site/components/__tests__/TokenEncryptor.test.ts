@@ -1,7 +1,7 @@
 import { TokenEncryptor } from "../TokenEncryptor"
 import crypto from "crypto"
 
-describe("TokenEncryptor", () => {
+export default describe("TokenEncryptor", () => {
     test("Should encrypt-decrypt", (): void => {
         const encryptor = new TokenEncryptor()
 
@@ -32,6 +32,17 @@ describe("TokenEncryptor", () => {
         // Assert
         expect(res1).not.toEqual(res2)
     })
-})
 
-export {}
+    test("Should return empty string for wrong data", () => {
+        // Arrange
+        const encryptor = new TokenEncryptor()
+        const encrypted = encryptor.encrypt("data")
+
+        // Act
+        const decrypted = encryptor.decrypt("bla")
+
+        // Assert
+        expect(decrypted).toEqual("")
+
+    })
+})

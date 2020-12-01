@@ -110,6 +110,9 @@ export const dbExample = {
         },
 
         optIns: {
+            timeSpansIds: {
+                "4543523523": true
+            },
             byTimeSpanId: {
                 "4543523523": {
                     toTs: "67867867867",
@@ -121,7 +124,7 @@ export const dbExample = {
                         "communityId1": {
                             byUserId: {
                                 "userId1": true,
-                                "userId2": true
+                                "userId2": false
                             }
                         },
                         "communityId2": {

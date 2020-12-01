@@ -6,12 +6,15 @@ import { UrlBuilder } from "../components/urlBuilder"
 import { TokenEncryptor } from "../components/TokenEncryptor"
 import { SpicedDatabase } from "../components/database/spicedDatabase"
 
-const log = new Logger("integration")
-const baseFunctionsUrl = "http://localhost:5001/spiced-f9677/us-central1/api"
-const baseSiteUrl = "http://localhost:5000"
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const axios = require("axios") as AxiosStatic
+const log = new Logger("integration")
+
+
+const baseFunctionsUrl = "http://localhost:5001/spiced-f9677/us-central1/api"
+const baseSiteUrl = "http://localhost:5000"
+
 
 async function createCommunity(formResponseId: string) {
     const url = baseFunctionsUrl + getTypeWormWebHookPath(Forms.createCommunity.name)
@@ -81,20 +84,55 @@ async function confirmJoin(createFormResponseId: string, joinFormResponseId: str
 async function match() {
     const url = baseFunctionsUrl + "/match"
 
-    log.debug(`POST ${url}`)
+    log.debug(`GET ${url}`)
+
+    await axios.get(url)
+}
+
+async function confirmOptIn(timeSpanId: string, communityId: string, userId: string, optIn: boolean) {
+    const urlBuilder = new UrlBuilder(new TokenEncryptor())
+    const url = urlBuilder.getOptInConfirmationUrl(communityId, timeSpanId, userId, optIn)
+
+    log.debug(`GET ${url}`)
 
     await axios.get(url)
 }
 
 async function run(): Promise<void> {
-    const numberOfCommunities = 10
-    const numberOfUsers = 10
+    const numberOfCommunities = 2
+    const numberOfUsers = 4
+    const timeSpanId = new Date().getTime().toString()
 
-    for (let communityId = 0; communityId < numberOfCommunities; communityId++) {
-        await confirmCommunityCreation(communityId.toString())
+    for (let communityIndex = 0; communityIndex < numberOfCommunities; communityIndex++) {
+        await confirmCommunityCreation(communityIndex.toString())
 
-        for (let userId = 0; userId < numberOfUsers; userId++) {
-            await confirmJoin(communityId.toString(), userId.toString())
+        for (let userIndex = 0; userIndex < numberOfUsers; userIndex++) {
+            await confirmJoin(communityIndex.toString(), userIndex.toString())
+        }
+    }
+
+    const spicedDatabase = new SpicedDatabase()
+
+    for (let communityIndex = 0; communityIndex < numberOfCommunities; communityIndex++) {
+        const communityId = await spicedDatabase.getCommunityIdByTypeFormResponseId(communityIndex.toString())
+
+        if (!communityId) {
+            continue
+        }
+
+        for (let userIndex = 0; userIndex < numberOfUsers; userIndex++) {
+            const user = await spicedDatabase.getUserByEmail(`${userIndex}@mail.com`)
+
+            if (!user) {
+                continue
+            }
+
+            await confirmOptIn(
+                timeSpanId,
+                communityId,
+                spicedDatabase.getUserId(user.emailAddress),
+                0 === userIndex % 2 && 0 === communityIndex % 2
+            )
         }
     }
 

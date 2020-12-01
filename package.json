@@ -18,7 +18,7 @@
     "test": "jest --silent",
     "testdebug": "jest",
     "test coverage": "jest --coverage",
-    "testwatch": "npm test -- --watch --maxWorkers 4",
+    "testwatch": "npm test -- --watch --maxWorkers 4 --coverage",
     "tunnel-functions": "npx localtunnel --port 5001",
     "tunnel-site": "npx localtunnel --port 5000",
     "setup-hooks": "ts-node functions/setupWebHooks.ts",

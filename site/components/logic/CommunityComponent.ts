@@ -7,9 +7,9 @@ import { BaseError } from "../baseError"
 import { Community, Matches } from "../database/types"
 import { UrlBuilder } from "../urlBuilder"
 import { shuffleArray } from "../../api/utils"
-import { Matcher } from "./matcher"
 import { ICommunityComponent } from "./ICommunityComponent"
 import { IMailComponent } from "../mail/IMailComponent"
+import { IMatcher } from "./IMatcher"
 
 export type CreateCommunityResult = {
     communityInvitationLink?: string,
@@ -25,7 +25,7 @@ export class CommunityComponent implements ICommunityComponent {
         private mailComponent: IMailComponent,
         private spicedDatabase: SpicedDatabase,
         private urlBuilder: UrlBuilder,
-        private matcher: Matcher
+        private matcher: IMatcher
     ) {
     }
 
@@ -224,7 +224,6 @@ export class CommunityComponent implements ICommunityComponent {
                 continue
             }
 
-            console.log(userId)
             const user = await this.spicedDatabase.getUserById(userId)
 
             if (!user) {
@@ -240,7 +239,7 @@ export class CommunityComponent implements ICommunityComponent {
                     continue
                 }
 
-                const response = await this.mailComponent.sendTemplate(
+                await this.mailComponent.sendTemplate(
                     user.emailAddress,
                     `Wow! You've matched in ${community.title}!`,
                     MailChimp.from,
@@ -264,10 +263,8 @@ export class CommunityComponent implements ICommunityComponent {
                         }
                     ]
                 )
-
-                this.log.debug(response)
             } else {
-                const response = await this.mailComponent.sendTemplate(
+                await this.mailComponent.sendTemplate(
                     user.emailAddress,
                     `Wow! You've matched in ${community.title}!`,
                     MailChimp.from,
@@ -291,24 +288,26 @@ export class CommunityComponent implements ICommunityComponent {
                         }
                     ]
                 )
-
-                this.log.debug(response)
             }
         }
     }
 
-    async monday(now: Date): Promise<NodeJS.Dict<Matches>> {
-        const timeSpanId = this.matcher.getTimeSpanId(now.getTime()).toString()
-        // const timeSpanId = now.getTime().toString()
-        const allCommunitiesIds = await this.spicedDatabase.getCommunitiesIds()
-        const ids = allCommunitiesIds ? Object.keys(allCommunitiesIds) : []
+    async monday(timeSpanId: string): Promise<NodeJS.Dict<Matches>> {
+        const optedInCommunitiesIds = await this.spicedDatabase.getOptedInCommunities(timeSpanId)
+        const ids = optedInCommunitiesIds ? Object.keys(optedInCommunitiesIds) : []
         const result: NodeJS.Dict<Matches> = {}
 
+        this.log.debug(optedInCommunitiesIds)
+
         for (const communityId of ids) {
-            /** TODO: Implement opt-in feature
-             * Match all community members for now */
-            const members = await this.spicedDatabase.getMembers(communityId)
-            const applicantsIds = members ? Object.keys(members) : []
+            const optedInAnswers = await this.spicedDatabase.getOptedInUsers(timeSpanId, communityId)
+            if (!optedInAnswers) {
+                continue
+            }
+
+            const keys = Object.keys(optedInAnswers)
+            // Get members who answered "yes"
+            const applicantsIds = keys.filter((userId) => optedInAnswers[userId] === true)
 
             const matches = await this.matcher.calculateMatch(communityId, timeSpanId,
                 shuffleArray(applicantsIds)
@@ -324,10 +323,55 @@ export class CommunityComponent implements ICommunityComponent {
     }
 
     async sendOptInRequest(now: Date): Promise<void> {
-        return
+        const allCommunitiesIds = await this.spicedDatabase.getCommunitiesIds()
+        const ids = allCommunitiesIds ? Object.keys(allCommunitiesIds) : []
+        const mailTemplate = MailChimp.Templates.optIn
+        const timeSpanId = this.matcher.getNextTimeSpanId(now.getTime()).toString()
+
+        for (const communityId of ids) {
+            const community = await this.spicedDatabase.getCommunityById(communityId)
+            if (!community) {
+                throw new Error("Invalid argument")
+            }
+
+            const members = await this.spicedDatabase.getMembers(communityId)
+            const membersIds = members ? Object.keys(members) : []
+
+            for (const memberId of membersIds) {
+                const user = await this.spicedDatabase.getUserById(memberId)
+
+                if (!user) {
+                    continue
+                }
+
+                const yesUrl = this.urlBuilder.getOptInConfirmationUrl(communityId, timeSpanId, memberId, true)
+                const noUrl = this.urlBuilder.getOptInConfirmationUrl(communityId, timeSpanId, memberId, false)
+
+                await this.mailComponent.sendTemplate(
+                    user.emailAddress,
+                    `Would you like to match next week in ${community.title}?`,
+                    MailChimp.from,
+                    mailTemplate.name,
+                    [
+                        {
+                            name: mailTemplate.fields.communityTitle,
+                            content: community.title
+                        },
+                        {
+                            name: mailTemplate.fields.yesUrl,
+                            content: yesUrl
+                        },
+                        {
+                            name: mailTemplate.fields.noUrl,
+                            content: noUrl
+                        }
+                    ]
+                )
+            }
+        }
     }
 
-    async optIn(timeSpanId: string, communityId: string, userId: string): Promise<void> {
-        return
+    async optIn(timeSpanId: string, communityId: string, userId: string, optIn: boolean): Promise<void> {
+        await this.spicedDatabase.setOptIn(communityId, userId, timeSpanId, optIn)
     }
 }

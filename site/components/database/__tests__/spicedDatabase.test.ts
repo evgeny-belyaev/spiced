@@ -363,7 +363,7 @@ export default describe("SpicedDatabase", () => {
         const timeSpanId = givenRandomString(10) + "timespanId"
 
         // Act Assert
-        await expect(db.setOptIn(communityId, userId, timeSpanId)).resolves.toEqual(undefined)
+        await expect(db.setOptIn(communityId, userId, timeSpanId, true)).resolves.toEqual(undefined)
     })
 
     test("getOptedInCommunities", async () => {
@@ -374,16 +374,15 @@ export default describe("SpicedDatabase", () => {
         const userId = givenRandomString(10) + "userId"
         const timeSpanId = givenRandomString(10) + "timespanId"
 
-        await db.setOptIn(communityId1, userId, timeSpanId)
-        await db.setOptIn(communityId2, userId, timeSpanId)
+        await db.setOptIn(communityId1, userId, timeSpanId, true)
+        await db.setOptIn(communityId2, userId, timeSpanId, false)
 
         // Act
         const result = await db.getOptedInCommunities(timeSpanId)
 
         // Assert
         expect(result).toEqual({
-            [communityId1]: true,
-            [communityId2]: true
+            [communityId1]: true
         })
     })
 
@@ -395,8 +394,8 @@ export default describe("SpicedDatabase", () => {
         const userId2 = givenRandomString(10) + "userId2"
         const timeSpanId = givenRandomString(10) + "timespanId"
 
-        await db.setOptIn(communityId, userId1, timeSpanId)
-        await db.setOptIn(communityId, userId2, timeSpanId)
+        await db.setOptIn(communityId, userId1, timeSpanId, true)
+        await db.setOptIn(communityId, userId2, timeSpanId, false)
 
         // Act
         const result = await db.getOptedInUsers(timeSpanId,communityId)
@@ -404,7 +403,7 @@ export default describe("SpicedDatabase", () => {
         // Assert
         expect(result).toEqual({
             [userId1]: true,
-            [userId2]: true
+            [userId2]: false
         })
     })
 })

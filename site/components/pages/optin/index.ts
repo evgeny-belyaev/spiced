@@ -1,54 +1,46 @@
-// This gets called on every request
 import { GetServerSidePropsContext, GetServerSidePropsResult } from "next"
 import { TokenEncryptor } from "../../TokenEncryptor"
-import { UrlBuilder } from "../../urlBuilder"
 import { Logger } from "../../logger"
-import { EntityAlreadyExists } from "../../database/entityAlreadyExists"
+import { UrlBuilder } from "../../urlBuilder"
 import { ICommunityComponent } from "../../logic/ICommunityComponent"
 import { createCommunityComponent } from "../../logic/CreateCommunityComponent"
 
 export type Props = {
-    communityInvitationLink?: string,
+    optIn?: boolean,
     error?: string
 }
 
-const log = new Logger("CreateCommunityConfirmationPage")
+const log = new Logger("OptInPage")
 
-export const getServerSidePropsImpl = async (
+export async function getServerSidePropsImpl(
     context: GetServerSidePropsContext,
     communityComponent: ICommunityComponent,
     urlBuilder: UrlBuilder
-): Promise<GetServerSidePropsResult<Props>> => {
+): Promise<GetServerSidePropsResult<Props>> {
     try {
-        const token = urlBuilder.getCreateCommunityConfirmationToken(context)
-        const result = await communityComponent.createCommunity(token.formsResponseId)
+        const token = urlBuilder.getOptInToken(context)
+        await communityComponent.optIn(token.timeSpanId, token.communityId, token.userId, token.optIn)
 
         return {
             props: {
-                communityInvitationLink: result.communityInvitationLink
+                optIn: token.optIn
             }
         }
     } catch (x) {
         log.error(x)
 
-        if (x instanceof EntityAlreadyExists) {
-            return {
-                props: {
-                    error: "Community already exists"
-                }
-            }
-        }
-
         return {
             props: {
-                error: "Unknown error"
+                error: "Can't opt in"
             }
         }
     }
 }
 
+
 export default async (context: GetServerSidePropsContext): Promise<GetServerSidePropsResult<Props>> => {
     const communityComponent = createCommunityComponent()
+
     return getServerSidePropsImpl(
         context,
         communityComponent,

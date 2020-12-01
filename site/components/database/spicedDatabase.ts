@@ -80,8 +80,12 @@ export class SpicedDatabase {
         return await this.value(this.path.userByEmail(id))
     }
 
+    getUserId(email: string): string {
+        return this.sha256(email)
+    }
+
     async getUserByEmail(email: string): Promise<User | null> {
-        const key = this.sha256(email)
+        const key = this.getUserId(email)
 
         return await this.value(this.path.userByEmail(key))
     }
@@ -120,9 +124,12 @@ export class SpicedDatabase {
         return await this.value(this.path.matches(timeSpanId, communityId))
     }
 
-    async setOptIn(communityId: string, userId: string, timeSpanId: string): Promise<void> {
-        await this.set(this.path.optInCommunitiesIds(timeSpanId, communityId), true)
-        await this.set(this.path.optIn(timeSpanId, communityId, userId), true)
+    async setOptIn(communityId: string, userId: string, timeSpanId: string, optIn: boolean): Promise<void> {
+        await this.set(this.path.optIn(timeSpanId, communityId, userId), optIn)
+
+        if (optIn) {
+            await this.set(this.path.optInCommunitiesIds(timeSpanId, communityId), true)
+        }
     }
 
     async getOptedInCommunities(timeSpanId: string): Promise<CommunitiesIds | null> {

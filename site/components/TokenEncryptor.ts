@@ -29,20 +29,22 @@ export class TokenEncryptor {
     }
 
     decrypt (ciphertext: string): string {
-        console.log(ciphertext)
+        try {
+            const encrypted = Buffer.from(ciphertext, encoding)
+            const salt = encrypted.slice(0, saltLength)
 
-        const encrypted = Buffer.from(ciphertext, encoding)
-        const salt = encrypted.slice(0, saltLength)
+            const iv = encrypted.slice(saltLength, saltLength + ivLen)
+            const key = crypto.pbkdf2Sync(password, salt, iterations, keyLength, digest)
 
-        const iv = encrypted.slice(saltLength, saltLength + ivLen)
-        const key = crypto.pbkdf2Sync(password, salt, iterations, keyLength, digest)
+            const decipher = crypto.createDecipheriv(algorithm, key, iv)
+            decipher.write(encrypted.slice(saltLength + ivLen))
+            decipher.end()
 
-        const decipher = crypto.createDecipheriv(algorithm, key, iv)
-        decipher.write(encrypted.slice(saltLength + ivLen))
-        decipher.end()
+            const decrypted = decipher.read() as Uint8Array
 
-        const decrypted = decipher.read() as Uint8Array
-
-        return decrypted.toString()
+            return decrypted.toString()
+        } catch (e) {
+            return ""
+        }
     }
 }

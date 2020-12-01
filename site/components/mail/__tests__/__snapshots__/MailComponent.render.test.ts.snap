@@ -36,3 +36,15 @@ exports[`MailComponent renderTemplate: matched 1`] = `
 <div>
     Contact phone: <span>matchedUserPhone</span></div>"
 `;
+
+exports[`MailComponent renderTemplate: optIn 1`] = `
+"<h2>communityTitle</h2>
+<div>
+    Would you like to match in <span>communityTitle</span></div>
+    
+<div>
+    Click here to answer yes: <span><a href=\\"yesUrl\\">Yes</a></span></div>
+    
+<div>
+    Click here to answer no: <span><a href=\\"noUrl\\">No</a></span></div>"
+`;
