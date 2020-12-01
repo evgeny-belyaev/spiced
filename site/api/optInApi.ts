@@ -20,8 +20,10 @@ export class OptInApi extends ApiEndpoint<OptInApiParams, OptInApiResponse> {
     }
 
     async handler(request: express.Request, response: express.Response): Promise<void> {
-        const result = await this.communityComponent.sendOptInRequest(new Date())
+        const timeSpanId = await this.communityComponent.sendOptInRequest(new Date())
 
-        response.status(200).json(result)
+        response.status(200).json({
+            timeSpanId
+        })
     }
 }

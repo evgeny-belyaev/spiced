@@ -49,7 +49,7 @@ export class CommunityComponentIntegration implements ICommunityComponent {
         return Promise.resolve()
     }
 
-    async sendOptInRequest(now: Date): Promise<void> {
+    async sendOptInRequest(now: Date): Promise<string> {
         return await realComponent.sendOptInRequest(now)
     }
 

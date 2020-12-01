@@ -322,7 +322,7 @@ export class CommunityComponent implements ICommunityComponent {
         return result
     }
 
-    async sendOptInRequest(now: Date): Promise<void> {
+    async sendOptInRequest(now: Date): Promise<string> {
         const allCommunitiesIds = await this.spicedDatabase.getCommunitiesIds()
         const ids = allCommunitiesIds ? Object.keys(allCommunitiesIds) : []
         const mailTemplate = MailChimp.Templates.optIn
@@ -369,6 +369,8 @@ export class CommunityComponent implements ICommunityComponent {
                 )
             }
         }
+
+        return timeSpanId
     }
 
     async optIn(timeSpanId: string, communityId: string, userId: string, optIn: boolean): Promise<void> {

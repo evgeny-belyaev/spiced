@@ -727,7 +727,7 @@ export default describe("CommunityComponent", () => {
         ))
 
         // Act
-        await expect(communityComponent.sendOptInRequest(now)).resolves.toEqual(undefined)
+        await expect(communityComponent.sendOptInRequest(now)).resolves.toEqual("nextTimeSpanId")
 
         // Assert
         expect(getCommunityById.mock.calls).toEqual([
