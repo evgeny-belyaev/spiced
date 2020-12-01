@@ -49,8 +49,8 @@ export class CommunityComponentIntegration implements ICommunityComponent {
         return Promise.resolve()
     }
 
-    async sendOptInRequest(now: Date): Promise<string> {
-        return await realComponent.sendOptInRequest(now)
+    async sendOptInRequest(timeSpanId: string): Promise<string> {
+        return await realComponent.sendOptInRequest(timeSpanId)
     }
 
     async optIn(timeSpanId: string, communityId: string, userId: string, optIn: boolean): Promise<void> {

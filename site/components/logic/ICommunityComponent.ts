@@ -14,7 +14,7 @@ export interface ICommunityComponent {
 
     monday(timeSpanId: string): Promise<NodeJS.Dict<Matches>>
 
-    sendOptInRequest(now: Date): Promise<string>
+    sendOptInRequest(timeSpanId: string): Promise<string>
 
     optIn(timeSpanId: string, communityId: string, userId: string, optIn: boolean): Promise<void>
 }

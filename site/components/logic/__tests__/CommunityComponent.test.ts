@@ -679,16 +679,15 @@ export default describe("CommunityComponent", () => {
         const { mock: mailComponentMock, sendTemplate } = givenMailComponent()
         const { mock: formsApiMock } = givenFormsApi()
         const { mock: urlBuilder, getOptInConfirmationUrl } = givenUrlBuilder()
-        const { mock: matcher, getNextTimeSpanId } = givenMatcher()
+        const { mock: matcher } = givenMatcher()
 
         const mailTemplate = MailChimp.Templates.optIn
-        const now = new Date(2020, 10, 25, 16, 59, 10)
         const communityComponent = new CommunityComponent(formsApiMock(), mailComponentMock(), spicedDatabaseMock(), urlBuilder(), matcher())
 
         getCommunityById.mockImplementation((communityId: string) => ({
             title: `title${communityId}`
         }))
-        getNextTimeSpanId.mockImplementation(() => ("nextTimeSpanId"))
+
         getCommunitiesIds.mockImplementation(() => (Promise.resolve({
             "communityId1": true,
             "communityId2": true
@@ -727,7 +726,7 @@ export default describe("CommunityComponent", () => {
         ))
 
         // Act
-        await expect(communityComponent.sendOptInRequest(now)).resolves.toEqual("nextTimeSpanId")
+        await expect(communityComponent.sendOptInRequest("nextTimeSpanId")).resolves.toEqual("nextTimeSpanId")
 
         // Assert
         expect(getCommunityById.mock.calls).toEqual([
