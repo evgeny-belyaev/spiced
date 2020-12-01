@@ -23,7 +23,7 @@ export class OptInApi extends ApiEndpoint<OptInApiParams, OptInApiResponse> {
         const timeSpanId = await this.communityComponent.sendOptInRequest(new Date())
 
         response.status(200).json({
-            timeSpanId
+            matchUrl: "https://us-central1-spiced-f9677.cloudfunctions.net/api/match?timeSpanId=" + timeSpanId
         })
     }
 }
