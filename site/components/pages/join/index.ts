@@ -4,6 +4,7 @@ import { Logger } from "../../logger"
 import { UrlBuilder } from "../../urlBuilder"
 import { ICommunityComponent } from "../../logic/ICommunityComponent"
 import { createCommunityComponent } from "../../logic/CreateCommunityComponent"
+import { EntityAlreadyExists } from "../../database/entityAlreadyExists"
 
 export type Props = {
     communityTitle?: string,
@@ -38,11 +39,19 @@ export async function getServerSidePropsImpl(
         }
 
     } catch (x) {
-        log.error(x)
+        if (x instanceof EntityAlreadyExists) {
+            return {
+                props: {
+                    error: "You have already joined"
+                }
+            }
+        } else {
+            log.error(x)
 
-        return {
-            props: {
-                error: "Cant' find community"
+            return {
+                props: {
+                    error: "Cant' find community"
+                }
             }
         }
     }

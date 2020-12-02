@@ -19,19 +19,19 @@ const mailchimpTx = require<(key: string) => MailchimpTx>("@mailchimp/mailchimp_
 const log = new Logger("MailComponent")
 
 export class MailComponent implements IMailComponent{
-    async ping(): Promise<unknown> {
-        mailchimp.setConfig({
-            apiKey: MailChimp.marketingAccessToken,
-            server: MailChimp.server
-        })
-
-        return await mailchimp.ping.get()
-    }
-
-    async pingTx(): Promise<string> {
-        const response = await mailchimpTx.users.ping()
-        return response
-    }
+    // async ping(): Promise<unknown> {
+    //     mailchimp.setConfig({
+    //         apiKey: MailChimp.marketingAccessToken,
+    //         server: MailChimp.server
+    //     })
+    //
+    //     return await mailchimp.ping.get()
+    // }
+    //
+    // async pingTx(): Promise<string> {
+    //     const response = await mailchimpTx.users.ping()
+    //     return response
+    // }
 
     async addContact(email: string, firstName: string, lastName: string): Promise<string | undefined> {
         try {

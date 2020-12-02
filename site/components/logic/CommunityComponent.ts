@@ -10,6 +10,7 @@ import { shuffleArray } from "../../api/utils"
 import { ICommunityComponent } from "./ICommunityComponent"
 import { IMailComponent } from "../mail/IMailComponent"
 import { IMatcher } from "./IMatcher"
+import { EntityAlreadyExists } from "../database/entityAlreadyExists"
 
 export type CreateCommunityResult = {
     communityInvitationLink?: string,
@@ -175,6 +176,10 @@ export class CommunityComponent implements ICommunityComponent {
 
         const emailAddress = utils.getEmail(memberEmailAddress)
 
+        if (await this.hasAlreadyJoined(emailAddress, communityId)) {
+            throw new EntityAlreadyExists("User has already joined")
+        }
+
         const userId = await this.spicedDatabase.createUser({
             firstName: utils.getText(memberFirstName),
             lastName: utils.getText(memberLastName),
@@ -203,6 +208,14 @@ export class CommunityComponent implements ICommunityComponent {
         )
 
         return community
+    }
+
+    private async hasAlreadyJoined(email: string, communityId: string): Promise<boolean> {
+        const members = await this.spicedDatabase.getMembers(communityId)
+        const membersIds = members ? Object.keys(members) : []
+        const userId = this.spicedDatabase.getUserId(email)
+
+        return membersIds.includes(userId)
     }
 
     private async sendMatchEmails(communityId: string, timeSpanId: string): Promise<void> {

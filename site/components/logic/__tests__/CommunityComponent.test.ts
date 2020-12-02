@@ -500,6 +500,46 @@ export default describe("CommunityComponent", () => {
         expect(optIn).toBeCalledWith("123", communityId, "userIdHash", true)
     })
 
+    test("joinCommunity: already joined", async () => {
+        // Arrange
+        const { mock: spicedDatabaseMock, getCommunityById, createUser, createMember, getMembers, getUserId } = givenSpicedDatabase()
+        const { mock: mailComponentMock, sendTemplate } = givenMailComponent()
+        const { mock: formsApiMock, getAnswers } = givenFormsApi()
+        const { mock: urlBuilder } = givenUrlBuilder()
+        const { mock: matcher, getNextTimeSpanId } = givenMatcher()
+        const optIn = jest.fn()
+
+        getCommunityById.mockImplementation(() => ({
+            title: "title"
+        }))
+        getAnswers.mockImplementation(() => answersJoin)
+
+        getMembers.mockImplementation(() => ({
+            "userIdHash": true
+        }))
+        getUserId.mockImplementation(() => "userIdHash")
+
+        const communityComponent = new CommunityComponent(formsApiMock(), mailComponentMock(), spicedDatabaseMock(), urlBuilder(), matcher())
+        communityComponent.optIn = optIn
+
+        const communityId = "communityId"
+        const formResponseId = "formResponseId"
+        const now = Date.UTC(2020, 10, 25, 16, 59, 10, 123)
+
+        // Act
+        await expect(communityComponent.joinCommunity(communityId, formResponseId, now))
+            .rejects.toEqual(new EntityAlreadyExists("User has already joined"))
+
+        // Assert
+        expect(getCommunityById).toBeCalledWith(communityId)
+        expect(getAnswers).toBeCalledWith(Forms.joinCommunity.formId, formResponseId)
+        expect(createUser).toHaveBeenCalledTimes(0)
+        expect(createMember).toHaveBeenCalledTimes(0)
+        expect(sendTemplate).toHaveBeenCalledTimes(0)
+        expect(optIn).toHaveBeenCalledTimes(0)
+    })
+
+
     test("joinCommunity, should throw if no community", async () => {
         // Arrange
         const { mock: spicedDatabaseMock, getCommunityById, createUser, createMember } = givenSpicedDatabase()
