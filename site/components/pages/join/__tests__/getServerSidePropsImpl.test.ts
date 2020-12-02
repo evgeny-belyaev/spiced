@@ -24,7 +24,8 @@ export default describe("getServerSidePropsImpl", () => {
         )
 
         // Assert
-        expect(joinCommunityByEncryptedToken).toBeCalledWith("communityKey", "a@b.c")
+        expect(joinCommunityByEncryptedToken).toBeCalledWith("communityKey", "a@b.c", expect.any(Number))
+
         expect(props).toEqual({
             props: {
                 communityTitle: "title"

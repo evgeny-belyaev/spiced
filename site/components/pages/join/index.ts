@@ -19,8 +19,9 @@ export async function getServerSidePropsImpl(
     urlBuilder: UrlBuilder
 ): Promise<GetServerSidePropsResult<Props>> {
     try {
+        const now = new Date().getTime()
         const token = urlBuilder.getJoinConfirmationToken(context)
-        const community = await communityComponent.joinCommunity(token.communityId, token.formResponseId)
+        const community = await communityComponent.joinCommunity(token.communityId, token.formResponseId, now)
 
         if (community == null) {
             return {

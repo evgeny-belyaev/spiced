@@ -5,7 +5,7 @@ exports[`MailComponent renderTemplate: communityCreated 1`] = `
           Wow! You've created community: <span>communityTitle</span>
       </div>    
       <div>
-      Here is invitation link: <span>communityInvitationLink</span>
+      Here is invitation link: <span><a href=\\"https://a.b.com/\\">https://a.b.com/</a></span>
     </div>"
 `;
 
@@ -16,13 +16,13 @@ exports[`MailComponent renderTemplate: communityJoined 1`] = `
 `;
 
 exports[`MailComponent renderTemplate: createCommunityConfirmation 1`] = `
-"<div>Here is community confirmation url: <span>createCommunityConfirmationUrl</span>
+"<div>Here is community confirmation url: <span><a href=\\"https://a.b.com/\\">https://a.b.com/</a></span>
     </div>"
 `;
 
 exports[`MailComponent renderTemplate: joinCommunityConfirmation 1`] = `
 "<div>
-    To join the community please follow this link : <span>joinCommunityConfirmationUrl</span></div>"
+    To join the community please follow this link : <span><a href=\\"https://a.b.com/\\">https://a.b.com/</a></span></div>"
 `;
 
 exports[`MailComponent renderTemplate: matched 1`] = `
@@ -43,8 +43,8 @@ exports[`MailComponent renderTemplate: optIn 1`] = `
     Would you like to match in <span>communityTitle</span></div>
     
 <div>
-    Click here to answer yes: <span><a href=\\"yesUrl\\">Yes</a></span></div>
+    Click here to answer yes: <span><a href=\\"https://a.b.com/yes\\">https://a.b.com/yes</a></span></div>
     
 <div>
-    Click here to answer no: <span><a href=\\"noUrl\\">No</a></span></div>"
+    Click here to answer no: <span><a href=\\"https://a.b.com/no\\">https://a.b.com/no</a></span></div>"
 `;

@@ -10,7 +10,7 @@ export interface ICommunityComponent {
 
     createCommunity(formsResponseId: string): Promise<CreateCommunityResult>
 
-    joinCommunity(communityId: string, formResponseId: string): Promise<Community | null>
+    joinCommunity(communityId: string, formResponseId: string, utc: number): Promise<Community | null>
 
     monday(timeSpanId: string): Promise<NodeJS.Dict<Matches>>
 

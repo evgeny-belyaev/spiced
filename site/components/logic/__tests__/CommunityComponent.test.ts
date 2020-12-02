@@ -2,6 +2,7 @@ import { CommunityComponent } from "../CommunityComponent"
 import { Forms, MailChimp } from "../../constants"
 import { givenFormsApi, givenMailComponent, givenMatcher, givenSpicedDatabase, givenUrlBuilder } from "../../testUtils"
 import { EntityAlreadyExists } from "../../database/entityAlreadyExists"
+import exp from "constants"
 
 const answersJoin = [
     {
@@ -450,7 +451,8 @@ export default describe("CommunityComponent", () => {
         const { mock: mailComponentMock, sendTemplate } = givenMailComponent()
         const { mock: formsApiMock, getAnswers } = givenFormsApi()
         const { mock: urlBuilder } = givenUrlBuilder()
-        const { mock: matcher } = givenMatcher()
+        const { mock: matcher, getNextTimeSpanId } = givenMatcher()
+        const optIn = jest.fn()
 
         getCommunityById.mockImplementation(() => ({
             title: "title"
@@ -459,14 +461,17 @@ export default describe("CommunityComponent", () => {
 
         createUser.mockImplementation(() => Promise.resolve("userIdHash"))
         createMember.mockImplementation(() => Promise.resolve())
-
+        getNextTimeSpanId.mockImplementation(() => 123)
 
         const communityComponent = new CommunityComponent(formsApiMock(), mailComponentMock(), spicedDatabaseMock(), urlBuilder(), matcher())
+        communityComponent.optIn = optIn
+
         const communityId = "communityId"
         const formResponseId = "formResponseId"
+        const now = Date.UTC(2020, 10, 25, 16, 59, 10, 123)
 
         // Act
-        const result = await communityComponent.joinCommunity(communityId, formResponseId)
+        const result = await communityComponent.joinCommunity(communityId, formResponseId, now)
 
         // Assert
         expect(getCommunityById).toBeCalledWith(communityId)
@@ -491,6 +496,8 @@ export default describe("CommunityComponent", () => {
                 }
             ]
         )
+        expect(getNextTimeSpanId).toBeCalledWith(now)
+        expect(optIn).toBeCalledWith("123", communityId, "userIdHash", true)
     })
 
     test("joinCommunity, should throw if no community", async () => {
@@ -499,18 +506,20 @@ export default describe("CommunityComponent", () => {
         const { mock: mailComponentMock, sendTemplate } = givenMailComponent()
         const { mock: formsApiMock, getAnswers } = givenFormsApi()
         const { mock: urlBuilder } = givenUrlBuilder()
-        const { mock: matcher } = givenMatcher()
+        const { mock: matcher, getNextTimeSpanId } = givenMatcher()
+
 
         getCommunityById.mockImplementation(() => null)
 
         const communityComponent = new CommunityComponent(formsApiMock(), mailComponentMock(), spicedDatabaseMock(), urlBuilder(), matcher())
         const communityId = "communityId"
         const formResponseId = "formResponseId"
+        const now = Date.UTC(2020, 10, 25, 16, 59, 10, 123)
 
         // Act
         // Assert
         await expect(async () => {
-            await communityComponent.joinCommunity(communityId, formResponseId)
+            await communityComponent.joinCommunity(communityId, formResponseId, now)
         }).rejects.toThrowError("Invalid argument")
 
         expect(sendTemplate).toHaveBeenCalledTimes(0)

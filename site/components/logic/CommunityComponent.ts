@@ -156,7 +156,7 @@ export class CommunityComponent implements ICommunityComponent {
         }
     }
 
-    async joinCommunity(communityId: string, formResponseId: string): Promise<Community | null> {
+    async joinCommunity(communityId: string, formResponseId: string, utc: number): Promise<Community | null> {
         const community = await this.spicedDatabase.getCommunityById(communityId)
 
         if (!community) {
@@ -184,6 +184,9 @@ export class CommunityComponent implements ICommunityComponent {
         })
 
         await this.spicedDatabase.createMember(communityId, userId)
+
+        const nextTimeSpanId = this.matcher.getNextTimeSpanId(utc).toString()
+        await this.optIn(nextTimeSpanId, communityId, userId, true)
 
         const mailTemplate = MailChimp.Templates.communityJoined
         await this.mailComponent.sendTemplate(

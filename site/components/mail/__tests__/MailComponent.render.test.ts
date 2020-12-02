@@ -3,6 +3,11 @@ import { MailChimp } from "../../constants"
 
 jest.unmock("axios")
 
+function getLinkMarkup(suffix = "") {
+    const invitationLink = "https://a.b.com/" + suffix
+    return `<a href="${invitationLink}">${invitationLink}</a>`
+}
+
 export default describe("MailComponent", () => {
     test("renderTemplate: matched", async () => {
         // Arrange
@@ -42,7 +47,7 @@ export default describe("MailComponent", () => {
         const result = await mail.renderTemplate(mailTemplate.name, [
             {
                 name: mailTemplate.fields.communityInvitationLink,
-                content: "communityInvitationLink"
+                content: getLinkMarkup()
             },
             {
                 name: mailTemplate.fields.communityTitle,
@@ -80,7 +85,7 @@ export default describe("MailComponent", () => {
         const result = await mail.renderTemplate(mailTemplate.name, [
             {
                 name: mailTemplate.fields.joinCommunityConfirmationUrl,
-                content: "joinCommunityConfirmationUrl"
+                content: getLinkMarkup()
             }
         ])
 
@@ -97,7 +102,7 @@ export default describe("MailComponent", () => {
         const result = await mail.renderTemplate(mailTemplate.name, [
             {
                 name: mailTemplate.fields.createCommunityConfirmationUrl,
-                content: "createCommunityConfirmationUrl"
+                content: getLinkMarkup()
             }
         ])
 
@@ -118,11 +123,11 @@ export default describe("MailComponent", () => {
             },
             {
                 name: mailTemplate.fields.yesUrl,
-                content: "<a href=\"yesUrl\">Yes</a>"
+                content: getLinkMarkup("yes")
             },
             {
                 name: mailTemplate.fields.noUrl,
-                content: "<a href=\"noUrl\">No</a>"
+                content: getLinkMarkup("no")
             }
         ])
 

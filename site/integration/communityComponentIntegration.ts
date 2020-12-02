@@ -31,8 +31,8 @@ export class CommunityComponentIntegration implements ICommunityComponent {
         return await realComponent.findCommunityById(communityId)
     }
 
-    async joinCommunity(communityId: string, formResponseId: string): Promise<Community | null> {
-        return await realComponent.joinCommunity(communityId, formResponseId)
+    async joinCommunity(communityId: string, formResponseId: string, utc: number): Promise<Community | null> {
+        return await realComponent.joinCommunity(communityId, formResponseId, utc)
     }
 
     async monday(timeSpanId: string): Promise<NodeJS.Dict<Matches>> {
