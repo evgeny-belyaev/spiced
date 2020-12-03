@@ -2,6 +2,7 @@ import { ApiEndpoint } from "./ApiEndpoint"
 import { Fetcher } from "./fetcher"
 import * as express from "express"
 import { ICommunityComponent } from "../components/logic/ICommunityComponent"
+import { IMatcher } from "../components/logic/IMatcher"
 
 type OptInApiParams = unknown
 
@@ -10,7 +11,10 @@ type OptInApiResponse = unknown
 export class OptInApi extends ApiEndpoint<OptInApiParams, OptInApiResponse> {
     path = "/optin"
 
-    constructor(private communityComponent: ICommunityComponent) {
+    constructor(
+        private communityComponent: ICommunityComponent,
+        private matcher: IMatcher
+    ) {
         super()
     }
 
@@ -20,11 +24,11 @@ export class OptInApi extends ApiEndpoint<OptInApiParams, OptInApiResponse> {
     }
 
     async handler(request: express.Request, response: express.Response): Promise<void> {
-        // const timeSpanId = this.matcher.getNextTimeSpanId(now.getTime()).toString()
-        const timeSpanId = await this.communityComponent.sendOptInRequest(new Date().getTime().toString())
+        const utc = new Date().getTime()
+        const timeSpanId = this.matcher.getNextTimeSpanId(utc).toString()
 
-        response.status(200).json({
-            matchUrl: "https://us-central1-spiced-f9677.cloudfunctions.net/api/match?timeSpanId=" + timeSpanId
-        })
+        await this.communityComponent.sendOptInRequest(timeSpanId)
+
+        response.status(200)
     }
 }

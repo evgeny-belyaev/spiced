@@ -6,11 +6,12 @@ import { SpicedDatabase } from "../database/spicedDatabase"
 import { BaseError } from "../baseError"
 import { Community, Matches } from "../database/types"
 import { UrlBuilder } from "../urlBuilder"
-import { shuffleArray } from "../../api/utils"
 import { ICommunityComponent } from "./ICommunityComponent"
 import { IMailComponent } from "../mail/IMailComponent"
 import { IMatcher } from "./IMatcher"
 import { EntityAlreadyExists } from "../database/entityAlreadyExists"
+import { templateField } from "../mail"
+import { shuffleArray } from "../../api/utils"
 
 export type CreateCommunityResult = {
     communityInvitationLink?: string,
@@ -261,22 +262,13 @@ export class CommunityComponent implements ICommunityComponent {
                     MailChimp.from,
                     mailTemplate.name,
                     [
-                        {
-                            name: mailTemplate.fields.matchedUserName,
-                            content: matchedUser.firstName + " " + matchedUser.lastName
-                        },
-                        {
-                            name: mailTemplate.fields.matchedUserEmail,
-                            content: matchedUser.emailAddress
-                        },
-                        {
-                            name: mailTemplate.fields.matchedUserPhone,
-                            content: matchedUser.phoneNumber
-                        },
-                        {
-                            name: mailTemplate.fields.communityTitle,
-                            content: community.title
-                        }
+                        templateField(mailTemplate.fields.userFirstName, user.firstName),
+                        templateField(mailTemplate.fields.matchedUserEmail, matchedUser.emailAddress),
+                        templateField(mailTemplate.fields.matchedUserPhone, matchedUser.phoneNumber),
+                        templateField(mailTemplate.fields.matchedUserFirstName, matchedUser.firstName),
+                        templateField(mailTemplate.fields.matchedUserLastName, matchedUser.lastName),
+                        templateField(mailTemplate.fields.matchedUserProfileUrl, matchedUser.website),
+                        templateField(mailTemplate.fields.communityTitle, community.title)
                     ]
                 )
             } else {
@@ -286,22 +278,16 @@ export class CommunityComponent implements ICommunityComponent {
                     MailChimp.from,
                     mailTemplate.name,
                     [
-                        {
-                            name: mailTemplate.fields.matchedUserName,
-                            content: "We cant find match for you =("
-                        },
-                        {
-                            name: mailTemplate.fields.matchedUserEmail,
-                            content: ""
-                        },
-                        {
-                            name: mailTemplate.fields.matchedUserPhone,
-                            content: ""
-                        },
-                        {
-                            name: mailTemplate.fields.communityTitle,
-                            content: community.title
-                        }
+
+                        templateField(mailTemplate.fields.userFirstName, user.firstName),
+                        templateField(mailTemplate.fields.matchedUserEmail, ""),
+                        templateField(mailTemplate.fields.matchedUserPhone, ""),
+                        templateField(mailTemplate.fields.matchedUserFirstName, "We cant find match for you =("),
+                        templateField(mailTemplate.fields.matchedUserLastName, ""),
+                        templateField(mailTemplate.fields.matchedUserProfileUrl, ""),
+                        templateField(mailTemplate.fields.communityTitle, community.title)
+
+
                     ]
                 )
             }

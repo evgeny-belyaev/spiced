@@ -16,7 +16,7 @@ const config: Configuration = {
     },
     local: {
         name: "local",
-        functionsBaseUrl: "https://smooth-goose-57.loca.lt/spiced-f9677/us-central1"
+        functionsBaseUrl: "https://massive-stingray-89.loca.lt/spiced-f9677/us-central1"
     }
 }
 
@@ -46,7 +46,7 @@ async function createWebHook (formId: string, hookName: string, env: Environment
 
         const data = result.data as Response
 
-        console.log(`${data.url}`)
+        console.log(`${tag} ${data.url}`)
     } catch (x) {
         console.error(x)
     }

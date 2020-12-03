@@ -17,7 +17,7 @@ export default describe("MailComponent", () => {
         // Act
         const result = await mail.renderTemplate(mailTemplate.name, [
             {
-                name: mailTemplate.fields.matchedUserName,
+                name: mailTemplate.fields.matchedUserFirstName,
                 content: "matchedUserName"
             },
             {

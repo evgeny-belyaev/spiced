@@ -2,7 +2,7 @@ import { CommunityComponent } from "../CommunityComponent"
 import { Forms, MailChimp } from "../../constants"
 import { givenFormsApi, givenMailComponent, givenMatcher, givenSpicedDatabase, givenUrlBuilder } from "../../testUtils"
 import { EntityAlreadyExists } from "../../database/entityAlreadyExists"
-import exp from "constants"
+import { templateField } from "../../mail"
 
 const answersJoin = [
     {
@@ -502,7 +502,14 @@ export default describe("CommunityComponent", () => {
 
     test("joinCommunity: already joined", async () => {
         // Arrange
-        const { mock: spicedDatabaseMock, getCommunityById, createUser, createMember, getMembers, getUserId } = givenSpicedDatabase()
+        const {
+            mock: spicedDatabaseMock,
+            getCommunityById,
+            createUser,
+            createMember,
+            getMembers,
+            getUserId
+        } = givenSpicedDatabase()
         const { mock: mailComponentMock, sendTemplate } = givenMailComponent()
         const { mock: formsApiMock, getAnswers } = givenFormsApi()
         const { mock: urlBuilder } = givenUrlBuilder()
@@ -637,7 +644,8 @@ export default describe("CommunityComponent", () => {
                     emailAddress: `${userId}@b.c`,
                     firstName: `${userId}f`,
                     lastName: `${userId}l`,
-                    phoneNumber: `${userId}p`
+                    phoneNumber: `${userId}p`,
+                    website: `${userId}w`
                 })
             } else {
                 return Promise.resolve(null)
@@ -680,37 +688,40 @@ export default describe("CommunityComponent", () => {
         const subject1 = "Wow! You've matched in titlecommunityId1!"
         const subject2 = "Wow! You've matched in titlecommunityId2!"
 
-        function givenContent(name: string, email: string, phoneNumber: string, communityTitle: string) {
+        function givenContent(firstName: string, matchedFirstName: string, matchedLastName: string, email: string, phoneNumber: string, communityTitle: string, website: string) {
             return [
-                {
-                    "content": name,
-                    "name": mailTemplate.fields.matchedUserName
-                }, {
-                    "content": email,
-                    "name": mailTemplate.fields.matchedUserEmail
-                },
-                {
-                    name: mailTemplate.fields.matchedUserPhone,
-                    content: phoneNumber
-                },
-                {
-                    name: mailTemplate.fields.communityTitle,
-                    content: communityTitle
-                }
+                templateField(mailTemplate.fields.userFirstName, firstName),
+                templateField(mailTemplate.fields.matchedUserEmail, email),
+                templateField(mailTemplate.fields.matchedUserPhone, phoneNumber),
+                templateField(mailTemplate.fields.matchedUserFirstName, matchedFirstName),
+                templateField(mailTemplate.fields.matchedUserLastName, matchedLastName),
+                templateField(mailTemplate.fields.matchedUserProfileUrl, website),
+                templateField(mailTemplate.fields.communityTitle, communityTitle)
             ]
         }
 
         expect(sendTemplate.mock.calls).toEqual([
                 ["userId1@b.c", subject1, MailChimp.from, mailTemplate.name,
-                    givenContent("userId2f userId2l", "userId2@b.c", "userId2p", "titlecommunityId1")],
+                    givenContent("userId1f", "userId2f", "userId2l", "userId2@b.c",
+                        "userId2p", "titlecommunityId1", "userId2w")
+
+                ],
                 ["userId2@b.c", subject1, MailChimp.from, mailTemplate.name,
-                    givenContent("userId1f userId1l", "userId1@b.c", "userId1p", "titlecommunityId1")],
+                    givenContent("userId2f", "userId1f", "userId1l", "userId1@b.c",
+                        "userId1p", "titlecommunityId1", "userId1w")
+                ],
                 ["userId3@b.c", subject2, MailChimp.from, mailTemplate.name,
-                    givenContent("userId4f userId4l", "userId4@b.c", "userId4p", "titlecommunityId2")],
+                    givenContent("userId3f", "userId4f", "userId4l", "userId4@b.c",
+                        "userId4p", "titlecommunityId2", "userId4w")
+                ],
                 ["userId4@b.c", subject2, MailChimp.from, mailTemplate.name,
-                    givenContent("userId3f userId3l", "userId3@b.c", "userId3p", "titlecommunityId2")],
+                    givenContent("userId4f", "userId3f", "userId3l", "userId3@b.c",
+                        "userId3p", "titlecommunityId2", "userId3w")
+                ],
                 ["userId5@b.c", subject2, MailChimp.from, mailTemplate.name,
-                    givenContent("We cant find match for you =(", "", "", "titlecommunityId2")]
+                    givenContent("userId5f", "We cant find match for you =(", "", "",
+                        "", "titlecommunityId2", "")
+                ]
             ]
         )
     })

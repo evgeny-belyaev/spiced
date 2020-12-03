@@ -2,6 +2,7 @@ import { ApiEndpoint } from "./ApiEndpoint"
 import { Fetcher } from "./fetcher"
 import * as express from "express"
 import { ICommunityComponent } from "../components/logic/ICommunityComponent"
+import { IMatcher } from "../components/logic/IMatcher"
 
 type MatchApiParams = {
     timeSpanId: string
@@ -12,7 +13,10 @@ type MatchApiResponse = unknown
 export class MatchApi extends ApiEndpoint<MatchApiParams, MatchApiResponse> {
     path = "/match"
 
-    constructor(private communityComponent: ICommunityComponent) {
+    constructor(
+        private communityComponent: ICommunityComponent,
+        private matcher: IMatcher
+    ) {
         super()
     }
 
@@ -22,14 +26,11 @@ export class MatchApi extends ApiEndpoint<MatchApiParams, MatchApiResponse> {
     }
 
     async handler(request: express.Request, response: express.Response): Promise<void> {
-        const params = <MatchApiParams>(request.query)
+        const utc = new Date().getTime()
+        const timeSpanId = this.matcher.getTimeSpanId(utc).toString()
 
-        if (!params || !params.timeSpanId) {
-            response.status(500).json({error: "timeSpanId is empty or invalid"})
-        } else {
-            const result = await this.communityComponent.monday(params.timeSpanId)
+        const result = await this.communityComponent.monday(timeSpanId)
 
-            response.status(200).json(result)
-        }
+        response.status(200).json(result)
     }
 }

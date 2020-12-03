@@ -18,7 +18,11 @@ const mailchimpTx = require<(key: string) => MailchimpTx>("@mailchimp/mailchimp_
 
 const log = new Logger("MailComponent")
 
-export class MailComponent implements IMailComponent{
+export function templateField(name: string, content: string) {
+    return { name, content }
+}
+
+export class MailComponent implements IMailComponent {
     // async ping(): Promise<unknown> {
     //     mailchimp.setConfig({
     //         apiKey: MailChimp.marketingAccessToken,

@@ -84,9 +84,15 @@ export const MailChimp = {
         matched: {
             name: "matched",
             fields: {
-                matchedUserName: "matchedUserName",
+                userFirstName: "userFirstName",
+
                 matchedUserEmail: "matchedUserEmail",
                 matchedUserPhone: "matchedUserPhone",
+
+                matchedUserFirstName: "matchedUserFirstName",
+                matchedUserLastName: "matchedUserLastName",
+
+                matchedUserProfileUrl: "matchedUserProfileUrl",
                 communityTitle: "communityTitle"
             }
         },
@@ -111,8 +117,8 @@ export const Url = {
         if (isDevelopment() || isTest() || isIntegration()) {
             return "http://localhost:5000"
         } else {
-            return "https://spiced-f9677.web.app"
-            // return "https://tiny-dolphin-96.loca.lt"
+            // return "https://spiced-f9677.web.app"
+            return "https://tiny-liger-40.loca.lt"
         }
     }
 }
