@@ -3,8 +3,8 @@ import { TypeForm } from "../../components/forms/TypeForm"
 import { Forms } from "../../components/constants"
 import serverEntryPoint, { Props } from "../../components/pages/invitation"
 import { Alert } from "react-bootstrap"
+import { SpicedPage } from "../../components/SpicedPage"
 
-import "bootstrap/dist/css/bootstrap.min.css"
 
 export default (props: Props) => {
     const hiddenFields = [
@@ -20,18 +20,22 @@ export default (props: Props) => {
 
     if (props.error) {
         return (
-            <Alert variant="warning">
-                {props.error}
-            </Alert>
+            <SpicedPage>
+                <Alert variant="warning">
+                    {props.error}
+                </Alert>
+            </SpicedPage>
         )
     } else {
-        return <TypeForm
-            typeformId={Forms.joinCommunity.formId}
-            elementId="join_community_form"
-            hiddenFields={hiddenFields}
-            style={{
-                height: "500px"
-            }}/>
+        return <SpicedPage>
+            <TypeForm
+                typeformId={Forms.joinCommunity.formId}
+                elementId="join_community_form"
+                hiddenFields={hiddenFields}
+                style={{
+                    height: "500px"
+                }}/>
+        </SpicedPage>
     }
 }
 

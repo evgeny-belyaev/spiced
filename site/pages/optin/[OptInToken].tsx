@@ -1,24 +1,24 @@
 import serverEntryPoint, { Props } from "../../components/pages/optin"
 import { Alert } from "react-bootstrap"
 import React from "react"
-
-import "bootstrap/dist/css/bootstrap.min.css"
+import { SpicedPage } from "../../components/SpicedPage"
 
 export default (props: Props) => {
     if (props.error) {
-        return (
+        return <SpicedPage>
             <Alert variant="warning">
                 {props.error}
             </Alert>
-        )
+        </SpicedPage>
+
     } else {
         const message = props.optIn ? "You have opted in for matching next week!" : "You have canceled matching next week!"
 
-        return (
+        return <SpicedPage>
             <Alert variant="success">
                 {message}
             </Alert>
-        )
+        </SpicedPage>
     }
 }
 

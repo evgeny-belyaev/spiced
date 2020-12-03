@@ -117,8 +117,8 @@ export const Url = {
         if (isDevelopment() || isTest() || isIntegration()) {
             return "http://localhost:5000"
         } else {
-            // return "https://spiced-f9677.web.app"
-            return "https://tiny-liger-40.loca.lt"
+            return "https://tmixed.co"
+            //return "https://tiny-liger-40.loca.lt"
         }
     }
 }
