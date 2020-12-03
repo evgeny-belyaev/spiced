@@ -1,6 +1,4 @@
 import React from "react"
-
-import "bootstrap/dist/css/bootstrap.min.css"
 import Head from "next/head"
 
 import "bootstrap/dist/css/bootstrap.min.css"
