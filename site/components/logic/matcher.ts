@@ -97,8 +97,6 @@ export class Matcher implements IMatcher {
                 }
 
                 // this.log.debug(`Match is ${JSON.stringify(m)}`)
-
-                break
             }
         }
 

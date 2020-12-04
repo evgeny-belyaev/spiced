@@ -13,6 +13,15 @@ export type Community = {
     creatorUserId: string
 }
 
+export type StatType = "MatchProtocol" | "CommunityJoin"
+
+export type StatEntry = {
+    ts: number,
+    type: StatType,
+    message: string,
+    payload?: unknown
+}
+
 export type CommunitiesIds = NodeJS.Dict<boolean>
 export type UsersIds = NodeJS.Dict<boolean>
 

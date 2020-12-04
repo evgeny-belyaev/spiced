@@ -129,6 +129,53 @@ export default describe("Matcher", () => {
         })
     })
 
+    test("Matching shouldn't stop after first looser", async () => {
+        // Arrange
+        const { mock: spicedDatabase, getPreviouslyMatched } = givenSpicedDatabase()
+        getPreviouslyMatched.mockImplementation((userId: string) => {
+            switch (userId) {
+                case "1" :
+                    return matchesFromArray([])
+                case "2":
+                    return matchesFromArray(["3", "4"])
+                case "3":
+                    return matchesFromArray(["2", "5"])
+                case "4":
+                    return matchesFromArray(["2", "5", "6"])
+                default:
+                    return matchesFromArray([])
+            }
+        })
+
+        const matcher = new Matcher(spicedDatabase())
+
+        // Act
+        // The looser is 3
+        const match = await matcher.calculateMatch("communityId", "1", [
+            "1", "6", "3", "2", "5"
+        ])
+
+        // Assert
+        expect(match).toEqual({
+            "1": {
+                matchedUserId: "6"
+            },
+            "3": {
+                matchedUserId: ""
+            },
+            "6": {
+                matchedUserId: "1"
+            },
+            "2": {
+                matchedUserId: "5"
+            },
+            "5": {
+                matchedUserId: "2"
+            }
+        })
+    })
+
+
     test("fourth match: simple match. exhausted community", async () => {
         // Arrange
         const { mock: spicedDatabase, getPreviouslyMatched } = givenSpicedDatabase()
@@ -155,7 +202,20 @@ export default describe("Matcher", () => {
         ])
 
         // Assert
-        expect(match).toEqual({})
+        expect(match).toEqual({
+            "1": {
+                matchedUserId: ""
+            },
+            "2": {
+                matchedUserId: ""
+            },
+            "3": {
+                matchedUserId: ""
+            },
+            "4": {
+                matchedUserId: ""
+            }
+        })
     })
 
     test("first match: uneven number of applicants", async () => {

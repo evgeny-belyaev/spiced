@@ -21,13 +21,15 @@ function getFirebaseConfig() {
 export const getFirebaseDatabase = async (): Promise<firebase.database.Database> => {
     if (firebase.apps.length === 0) {
         firebase.initializeApp(getFirebaseConfig())
-        try {
-            await firebase.auth().signInWithEmailAndPassword(Database.user, Database.password)
-            log.debug("Firebase app created")
-        } catch(x) {
-            log.error(x)
-        }
 
+        if (!(isDevelopment() || isTest() || isIntegration())) {
+            try {
+                await firebase.auth().signInWithEmailAndPassword(Database.user, Database.password)
+                log.debug("Firebase app created")
+            } catch (x) {
+                log.error(x)
+            }
+        }
     }
 
     return firebase.database()

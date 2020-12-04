@@ -128,6 +128,7 @@ export function givenSpicedDatabase () {
     const getOptedInCommunities = jest.fn()
     const getOptedInUsers = jest.fn()
     const getUserId = jest.fn()
+    const pushStat = jest.fn()
 
 
     return {
@@ -147,7 +148,8 @@ export function givenSpicedDatabase () {
             getUserById,
             getOptedInCommunities,
             getOptedInUsers,
-            getUserId
+            getUserId,
+            pushStat
         })),
 
         createCommunity,
@@ -165,7 +167,8 @@ export function givenSpicedDatabase () {
         getUserById,
         getOptedInCommunities,
         getOptedInUsers,
-        getUserId
+        getUserId,
+        pushStat
     }
 }
 

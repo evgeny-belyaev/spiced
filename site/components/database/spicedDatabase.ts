@@ -7,6 +7,8 @@ import {
     Matches,
     Members,
     PreviousMatches,
+    StatEntry,
+    StatType,
     User,
     UsersIds
 } from "./types"
@@ -102,7 +104,7 @@ export class SpicedDatabase {
     }
 
     async setPreviouslyMatched(userId: string, matchedUserId: string, communityId: string, timeSpanId: string): Promise<void> {
-        await this.set(this.path.matchedBeforeUser(userId, matchedUserId, communityId),{
+        await this.set(this.path.matchedBeforeUser(userId, matchedUserId, communityId), {
             timeSpanId: timeSpanId
         })
     }
@@ -137,5 +139,21 @@ export class SpicedDatabase {
 
     async getOptedInUsers(timeSpanId: string, communityId: string): Promise<UsersIds | null> {
         return await this.value(this.path.optInUsers(timeSpanId, communityId))
+    }
+
+    private async setStat(entry: StatEntry): Promise<string> {
+        const ref = await this.ref(this.path.stats())
+        const newEntryRef = await ref.push(entry)
+
+        return newEntryRef.key!
+    }
+
+    async pushStat(type: StatType, payload: unknown = false, message = ""): Promise<void> {
+        await this.setStat({
+            ts: new Date().getTime(),
+            type,
+            message,
+            payload
+        })
     }
 }

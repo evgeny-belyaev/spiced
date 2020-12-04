@@ -278,7 +278,6 @@ export class CommunityComponent implements ICommunityComponent {
                     MailChimp.from,
                     mailTemplate.name,
                     [
-
                         templateField(mailTemplate.fields.userFirstName, user.firstName),
                         templateField(mailTemplate.fields.matchedUserEmail, ""),
                         templateField(mailTemplate.fields.matchedUserPhone, ""),
@@ -286,8 +285,6 @@ export class CommunityComponent implements ICommunityComponent {
                         templateField(mailTemplate.fields.matchedUserLastName, ""),
                         templateField(mailTemplate.fields.matchedUserProfileUrl, ""),
                         templateField(mailTemplate.fields.communityTitle, community.title)
-
-
                     ]
                 )
             }

@@ -7,13 +7,13 @@ import { Community, Matches } from "../components/database/types"
 import { FormsApiIntegration } from "./formsApiIntegration"
 import { Logger } from "../components/logger"
 import { MailComponentIntegration } from "./mailComponentIntegration"
-import { MatcherIntegration } from "./matcherIntegration"
+import { Matcher } from "../components/logic/matcher"
 
 const log = new Logger("CommunityComponentIntegration")
 
 const formsApi = new FormsApiIntegration()
 const mailComponent = new MailComponentIntegration()
-const matcher = new MatcherIntegration()
+const matcher = new Matcher(new SpicedDatabase())
 
 const realComponent = new CommunityComponent(
     formsApi,

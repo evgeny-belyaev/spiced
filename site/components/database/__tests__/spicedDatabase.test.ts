@@ -398,12 +398,24 @@ export default describe("SpicedDatabase", () => {
         await db.setOptIn(communityId, userId2, timeSpanId, false)
 
         // Act
-        const result = await db.getOptedInUsers(timeSpanId,communityId)
+        const result = await db.getOptedInUsers(timeSpanId, communityId)
 
         // Assert
         expect(result).toEqual({
             [userId1]: true,
             [userId2]: false
         })
+    })
+
+    test("setStat", async () => {
+        // Arrange
+        const db = new SpicedDatabase()
+
+        // Act
+        await db.pushStat("MatchProtocol")
+        await db.pushStat("MatchProtocol", { a: 5 })
+        await db.pushStat("MatchProtocol", { a: 5 }, "message")
+
+        // Assert
     })
 })
