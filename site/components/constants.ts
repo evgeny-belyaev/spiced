@@ -48,7 +48,7 @@ export const Forms = {
 }
 
 export const MailChimp = {
-    from: "contact@wowyougotamatch.com",
+    from: "no-reply@tmixed.co",
 
     marketingAccessToken: isServer() ? "5ef474ca75d706884cc1b905dd8cf091-us2" : "",
     transactionalAccessToken: isServer() ? "AOOq73pypJb5533oSKdqEw" : "",
