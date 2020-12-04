@@ -19,12 +19,16 @@ const log = new Logger("database")
 export class SpicedDatabase {
     private path = new SpicedDatabasePathHelper()
 
-    private ref = (path: string) => getFirebaseDatabase().ref(path)
-    private value = async <T>(path: string): Promise<T> =>
-        (await this.ref(path).once("value")).val() as T
+    private ref = async (path: string) => (await getFirebaseDatabase()).ref(path)
+    private value = async <T>(path: string): Promise<T> => {
+        const ref = await this.ref(path)
+        return (await ref.once("value")).val() as T
+    }
+
 
     private set = async <T>(path: string, value: T): Promise<void> => {
-        await this.ref(path).set(value)
+        const ref = await this.ref(path)
+        await ref.set(value)
     }
 
     private sha256 = (data: string) => crypto.createHash("sha256").update(data).digest("hex")
@@ -37,13 +41,13 @@ export class SpicedDatabase {
             throw new EntityAlreadyExists(`Community with ${community.typeFormResponseId} already exists`)
         }
 
-        const newCommunityRef = await this.ref(this.path.communitiesById())
-            .push(community)
+        const ref = await this.ref(this.path.communitiesById())
+        const newCommunityRef = await ref.push(community)
 
         const communityId = newCommunityRef.key!
 
-        await this.ref(this.path.communityIdByTypeFormResponseId(community.typeFormResponseId)).set(communityId)
-        await this.ref(this.path.communityId(communityId)).set(true)
+        await this.set(this.path.communityIdByTypeFormResponseId(community.typeFormResponseId), communityId)
+        await this.set(this.path.communityId(communityId), true)
 
         return communityId
     }
@@ -53,10 +57,7 @@ export class SpicedDatabase {
             return null
         }
 
-        const dataSnapshot = await this.ref(this.path.communityById(communityId))
-            .once("value")
-
-        return <Community>dataSnapshot.val()
+        return this.value(this.path.communityById(communityId))
     }
 
     async getCommunitiesIds(): Promise<CommunitiesIds> {
@@ -64,9 +65,7 @@ export class SpicedDatabase {
     }
 
     async getCommunityIdByTypeFormResponseId(typeFormResponseId: string): Promise<string | null> {
-        const dataSnapshot = await this.ref(this.path.communityIdByTypeFormResponseId(typeFormResponseId)).once("value")
-
-        return dataSnapshot.val() as string
+        return this.value(this.path.communityIdByTypeFormResponseId(typeFormResponseId))
     }
 
     async createUser(user: User): Promise<string> {
@@ -103,13 +102,13 @@ export class SpicedDatabase {
     }
 
     async setPreviouslyMatched(userId: string, matchedUserId: string, communityId: string, timeSpanId: string): Promise<void> {
-        await this.ref(this.path.matchedBeforeUser(userId, matchedUserId, communityId)).set({
+        await this.set(this.path.matchedBeforeUser(userId, matchedUserId, communityId),{
             timeSpanId: timeSpanId
         })
     }
 
     async setMatchedCommunity(communityId: string, timeSpanId: string): Promise<void> {
-        await this.ref(this.path.matchedCommunity(timeSpanId, communityId)).set(true)
+        await this.set(this.path.matchedCommunity(timeSpanId, communityId), true)
     }
 
     async getMatchedCommunities(timeSpanId: string): Promise<MatchedCommunities> {
@@ -117,7 +116,7 @@ export class SpicedDatabase {
     }
 
     async setMatches(communityId: string, timeSpanId: string, matches: Matches): Promise<void> {
-        await this.ref(this.path.matches(timeSpanId, communityId)).set(matches)
+        await this.set(this.path.matches(timeSpanId, communityId), matches)
     }
 
     async getMatches(communityId: string, timeSpanId: string): Promise<Matches> {

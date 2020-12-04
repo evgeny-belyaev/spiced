@@ -109,6 +109,8 @@ export const MailChimp = {
 
 export const Database = {
     accessToken: isServer() ? "AIzaSyAsoRfHyVtfB0VE-t3eSfgpoEi0FLsXnH0" : "",
+    user: isServer() ? "ugene.software@gmail.com" : "",
+    password: isServer() ? "dB96813e8!d1e84af03_26Cb317$E1f5e094?" : "",
     url: isServer() ? "https://spiced-f9677.firebaseio.com/" : ""
 }
 
