@@ -3,19 +3,23 @@ import { Forms, MailChimp } from "../constants"
 import { Logger } from "../logger"
 import { FormsUtils } from "../forms/formsUtils"
 import { SpicedDatabase } from "../database/spicedDatabase"
-import { BaseError } from "../baseError"
 import { Community, Matches } from "../database/types"
 import { UrlBuilder } from "../urlBuilder"
 import { ICommunityComponent } from "./ICommunityComponent"
 import { IMailComponent } from "../mail/IMailComponent"
 import { IMatcher } from "./IMatcher"
-import { EntityAlreadyExists } from "../database/entityAlreadyExists"
 import { templateField } from "../mail"
 import { shuffleArray } from "../../api/utils"
 
 export type CreateCommunityResult = {
-    communityInvitationLink?: string,
-    error?: BaseError
+    communityTitle: string,
+    communityInvitationLink: string,
+    alreadyExist?: boolean
+}
+
+export type JoinCommunityResult = {
+    communityTitle: string,
+    alreadyJoined?: boolean
 }
 
 export class CommunityComponent implements ICommunityComponent {
@@ -152,72 +156,90 @@ export class CommunityComponent implements ICommunityComponent {
     }
 
     async createCommunity(formsResponseId: string): Promise<CreateCommunityResult> {
-        const item = await this.formsApi.getAnswers(
-            Forms.createCommunity.formId,
-            formsResponseId
-        )
+        const alreadyExistsId = await this.spicedDatabase.getCommunityIdByTypeFormResponseId(formsResponseId)
 
-        const answers = item && item.answers ? item.answers : []
+        if (alreadyExistsId) {
+            const invitationLink = this.urlBuilder.getCommunityInvitationUrl(alreadyExistsId)
+            const community = await this.spicedDatabase.getCommunityById(alreadyExistsId)
 
-        this.log.debug("Form answers are", answers)
+            if (!community) {
+                throw new Error("Invalid argument")
+            }
 
-        const utils = new FormsUtils()
+            return {
+                communityTitle: community.title,
+                communityInvitationLink: invitationLink,
+                alreadyExist: true
+            }
+        } else {
+            const item = await this.formsApi.getAnswers(
+                Forms.createCommunity.formId,
+                formsResponseId
+            )
 
-        const firstName = utils.getAnswerById(answers, Forms.createCommunity.answers.creatorFirstName)
-        const lastName = utils.getAnswerById(answers, Forms.createCommunity.answers.creatorLastName)
-        const communityTitle = utils.getAnswerById(answers, Forms.createCommunity.answers.communityTitle)
-        const communityPublicLink = utils.getAnswerById(answers, Forms.createCommunity.answers.communityPublicLink)
-        const creatorEmailAddress = utils.getAnswerById(answers, Forms.createCommunity.answers.creatorEmailAddress)
-        const creatorPhoneNumber = utils.getAnswerById(answers, Forms.createCommunity.answers.creatorPhoneNumber)
-        const creatorWebsite = utils.getAnswerById(answers, Forms.createCommunity.answers.creatorWebsite)
+            const answers = item && item.answers ? item.answers : []
 
-        const emailAddress = utils.getEmail(creatorEmailAddress)
-        const title = utils.getText(communityTitle)
+            this.log.debug("Form answers are", answers)
 
-        const userId = await this.spicedDatabase.createUser({
-            firstName: utils.getText(firstName),
-            lastName: utils.getText(lastName),
-            emailAddress: emailAddress,
-            phoneNumber: utils.getPhoneNumber(creatorPhoneNumber),
-            website: utils.getUrl(creatorWebsite)
-        })
+            const utils = new FormsUtils()
 
-        const communityId = await this.spicedDatabase.createCommunity({
-            title: title,
-            publicLink: utils.getUrl(communityPublicLink),
-            typeFormResponseId: formsResponseId,
-            creatorUserId: userId
-        })
+            const firstName = utils.getAnswerById(answers, Forms.createCommunity.answers.creatorFirstName)
+            const lastName = utils.getAnswerById(answers, Forms.createCommunity.answers.creatorLastName)
+            const communityTitle = utils.getAnswerById(answers, Forms.createCommunity.answers.communityTitle)
+            const communityPublicLink = utils.getAnswerById(answers, Forms.createCommunity.answers.communityPublicLink)
+            const creatorEmailAddress = utils.getAnswerById(answers, Forms.createCommunity.answers.creatorEmailAddress)
+            const creatorPhoneNumber = utils.getAnswerById(answers, Forms.createCommunity.answers.creatorPhoneNumber)
+            const creatorWebsite = utils.getAnswerById(answers, Forms.createCommunity.answers.creatorWebsite)
 
-        await this.spicedDatabase.createMember(communityId, userId)
+            const emailAddress = utils.getEmail(creatorEmailAddress)
+            const title = utils.getText(communityTitle)
 
-        const invitationLink = this.urlBuilder.getCommunityInvitationUrl(communityId)
-        const invitationLinkMarkup = `<a href="${invitationLink}">${invitationLink}</a>`
-        const mailTemplate = MailChimp.Templates.communityCreated
+            const userId = await this.spicedDatabase.createUser({
+                firstName: utils.getText(firstName),
+                lastName: utils.getText(lastName),
+                emailAddress: emailAddress,
+                phoneNumber: utils.getPhoneNumber(creatorPhoneNumber),
+                website: utils.getUrl(creatorWebsite)
+            })
 
-        await this.mailComponent.sendTemplate(
-            emailAddress,
-            "Community created",
-            MailChimp.from,
-            mailTemplate.name,
-            [
-                {
-                    name: mailTemplate.fields.communityTitle,
-                    content: title
-                },
-                {
-                    name: mailTemplate.fields.communityInvitationLink,
-                    content: invitationLinkMarkup
-                }
-            ]
-        )
+            const communityId = await this.spicedDatabase.createCommunity({
+                title: title,
+                publicLink: utils.getUrl(communityPublicLink),
+                typeFormResponseId: formsResponseId,
+                creatorUserId: userId
+            })
 
-        return {
-            communityInvitationLink: invitationLink
+            await this.spicedDatabase.createMember(communityId, userId)
+
+            const invitationLink = this.urlBuilder.getCommunityInvitationUrl(communityId)
+            const invitationLinkMarkup = `<a href="${invitationLink}">${invitationLink}</a>`
+            const mailTemplate = MailChimp.Templates.communityCreated
+
+            await this.mailComponent.sendTemplate(
+                emailAddress,
+                "Community created",
+                MailChimp.from,
+                mailTemplate.name,
+                [
+                    {
+                        name: mailTemplate.fields.communityTitle,
+                        content: title
+                    },
+                    {
+                        name: mailTemplate.fields.communityInvitationLink,
+                        content: invitationLinkMarkup
+                    }
+                ]
+            )
+
+            return {
+                communityTitle: title,
+                communityInvitationLink: invitationLink
+            }
         }
     }
 
-    async joinCommunity(communityId: string, formResponseId: string, utc: number): Promise<Community | null> {
+    async joinCommunity(communityId: string, formResponseId: string, utc: number): Promise<JoinCommunityResult> {
         const community = await this.spicedDatabase.getCommunityById(communityId)
 
         if (!community) {
@@ -238,43 +260,48 @@ export class CommunityComponent implements ICommunityComponent {
         const emailAddress = utils.getEmail(memberEmailAddress)
 
         if (await this.hasAlreadyJoined(emailAddress, communityId)) {
-            throw new EntityAlreadyExists("User has already joined")
+            return {
+                communityTitle: community.title,
+                alreadyJoined: true
+            }
+        } else {
+            const userFirstName = utils.getText(memberFirstName)
+
+            const userId = await this.spicedDatabase.createUser({
+                firstName: userFirstName,
+                lastName: utils.getText(memberLastName),
+                phoneNumber: utils.getPhoneNumber(memberPhoneNumber),
+                website: utils.getUrl(memberWebsite),
+                emailAddress: emailAddress
+            })
+
+            await this.spicedDatabase.createMember(communityId, userId)
+
+            const nextTimeSpanId = this.matcher.getNextTimeSpanId(utc).toString()
+            await this.optIn(nextTimeSpanId, communityId, userId, true)
+
+            const mailTemplate = MailChimp.Templates.communityJoined
+            await this.mailComponent.sendTemplate(
+                emailAddress,
+                "You've successfully joined",
+                MailChimp.from,
+                mailTemplate.name,
+                [
+                    {
+                        name: mailTemplate.fields.userFirstName,
+                        content: userFirstName
+                    },
+                    {
+                        name: mailTemplate.fields.communityTitle,
+                        content: community.title
+                    }
+                ]
+            )
+
+            return {
+                communityTitle: community.title
+            }
         }
-
-        const userFirstName = utils.getText(memberFirstName)
-
-        const userId = await this.spicedDatabase.createUser({
-            firstName: userFirstName,
-            lastName: utils.getText(memberLastName),
-            phoneNumber: utils.getPhoneNumber(memberPhoneNumber),
-            website: utils.getUrl(memberWebsite),
-            emailAddress: emailAddress
-        })
-
-        await this.spicedDatabase.createMember(communityId, userId)
-
-        const nextTimeSpanId = this.matcher.getNextTimeSpanId(utc).toString()
-        await this.optIn(nextTimeSpanId, communityId, userId, true)
-
-        const mailTemplate = MailChimp.Templates.communityJoined
-        await this.mailComponent.sendTemplate(
-            emailAddress,
-            "You've successfully joined",
-            MailChimp.from,
-            mailTemplate.name,
-            [
-                {
-                    name: mailTemplate.fields.userFirstName,
-                    content: userFirstName
-                },
-                {
-                    name: mailTemplate.fields.communityTitle,
-                    content: community.title
-                }
-            ]
-        )
-
-        return community
     }
 
     private async hasAlreadyJoined(email: string, communityId: string): Promise<boolean> {

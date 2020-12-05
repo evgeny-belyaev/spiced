@@ -1,7 +1,6 @@
 import { givenCommunityComponent, givenGetServerSidePropsContext, givenUrlBuilder } from "../../../testUtils"
 import { getServerSidePropsImpl } from "../index"
 import { JoinConfirmationToken } from "../../../urlBuilder"
-import { EntityAlreadyExists } from "../../../database/entityAlreadyExists"
 
 
 export default describe("getServerSidePropsImpl", () => {
@@ -14,7 +13,8 @@ export default describe("getServerSidePropsImpl", () => {
         getJoinConfirmationToken.mockImplementation(() => (new JoinConfirmationToken("communityKey", "a@b.c")))
 
         joinCommunityByEncryptedToken.mockImplementation(() => ({
-            title: "title"
+            communityTitle: "title",
+            alreadyJoined: undefined
         }))
 
         // Act
@@ -29,7 +29,8 @@ export default describe("getServerSidePropsImpl", () => {
 
         expect(props).toEqual({
             props: {
-                communityTitle: "title"
+                communityTitle: "title",
+                alreadyJoined: undefined
             }
         })
     })
@@ -42,9 +43,10 @@ export default describe("getServerSidePropsImpl", () => {
 
         getJoinConfirmationToken.mockImplementation(() => (new JoinConfirmationToken("communityKey", "a@b.c")))
 
-        joinCommunityByEncryptedToken.mockImplementation(() => {
-            throw new EntityAlreadyExists("")
-        })
+        joinCommunityByEncryptedToken.mockImplementation(() => ({
+            communityTitle: "title",
+            alreadyJoined: true
+        }))
 
         // Act
         const props = await getServerSidePropsImpl(
@@ -58,7 +60,8 @@ export default describe("getServerSidePropsImpl", () => {
 
         expect(props).toEqual({
             props: {
-                error: "You have already joined"
+                communityTitle: "title",
+                alreadyJoined: true
             }
         })
     })

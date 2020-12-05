@@ -4,15 +4,15 @@ import { Logger } from "../../logger"
 import { UrlBuilder } from "../../urlBuilder"
 import { ICommunityComponent } from "../../logic/ICommunityComponent"
 import { createCommunityComponent } from "../../logic/CreateCommunityComponent"
-import { EntityAlreadyExists } from "../../database/entityAlreadyExists"
+import { PageProps } from "../utils"
 
-export type Props = {
+export interface Props extends PageProps {
+    alreadyJoined?: boolean,
     communityTitle?: string,
     error?: string
 }
 
 const log = new Logger("JoinCommunityPage")
-
 
 export async function getServerSidePropsImpl(
     context: GetServerSidePropsContext,
@@ -22,36 +22,21 @@ export async function getServerSidePropsImpl(
     try {
         const now = new Date().getTime()
         const token = urlBuilder.getJoinConfirmationToken(context)
-        const community = await communityComponent.joinCommunity(token.communityId, token.formResponseId, now)
+        const result = await communityComponent.joinCommunity(token.communityId, token.formResponseId, now)
 
-        if (community == null) {
-            return {
-                props: {
-                    error: "Cant' join community"
-                }
-            }
-        } else {
-            return {
-                props: {
-                    communityTitle: community.title
-                }
+        return {
+            props: {
+                communityTitle: result.communityTitle,
+                alreadyJoined: result.alreadyJoined
             }
         }
 
     } catch (x) {
-        if (x instanceof EntityAlreadyExists) {
-            return {
-                props: {
-                    error: "You have already joined"
-                }
-            }
-        } else {
-            log.error(x)
+        log.error(x)
 
-            return {
-                props: {
-                    error: "Cant' find community"
-                }
+        return {
+            props: {
+                error: "Cant' find community"
             }
         }
     }

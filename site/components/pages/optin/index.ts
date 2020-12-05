@@ -4,8 +4,9 @@ import { Logger } from "../../logger"
 import { UrlBuilder } from "../../urlBuilder"
 import { ICommunityComponent } from "../../logic/ICommunityComponent"
 import { createCommunityComponent } from "../../logic/CreateCommunityComponent"
+import { PageProps } from "../utils"
 
-export type Props = {
+export interface Props extends PageProps {
     optIn?: boolean,
     error?: string
 }

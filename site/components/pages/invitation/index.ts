@@ -41,14 +41,6 @@ export const getServerSidePropsImpl = async (
     } catch (x) {
         log.error(x)
 
-        if (x instanceof EntityAlreadyExists) {
-            return {
-                props: {
-                    error: "Community already exists"
-                }
-            }
-        }
-
         return {
             props: {
                 error: "Cant' find community"

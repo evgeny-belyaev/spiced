@@ -1,5 +1,5 @@
 import { Community, Matches } from "../database/types"
-import { CreateCommunityResult } from "./CommunityComponent"
+import { CreateCommunityResult, JoinCommunityResult } from "./CommunityComponent"
 
 export interface ICommunityComponent {
     sendJoinCommunityConfirmationEmail(formResponseId: string, email: string): Promise<void>
@@ -10,7 +10,7 @@ export interface ICommunityComponent {
 
     createCommunity(formsResponseId: string): Promise<CreateCommunityResult>
 
-    joinCommunity(communityId: string, formResponseId: string, utc: number): Promise<Community | null>
+    joinCommunity(communityId: string, formResponseId: string, utc: number): Promise<JoinCommunityResult>
 
     monday(timeSpanId: string): Promise<NodeJS.Dict<Matches>>
 

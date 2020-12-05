@@ -1,5 +1,5 @@
 import { ICommunityComponent } from "../components/logic/ICommunityComponent"
-import { CommunityComponent, CreateCommunityResult } from "../components/logic/CommunityComponent"
+import { CommunityComponent, CreateCommunityResult, JoinCommunityResult } from "../components/logic/CommunityComponent"
 import { SpicedDatabase } from "../components/database/spicedDatabase"
 import { UrlBuilder } from "../components/urlBuilder"
 import { TokenEncryptor } from "../components/TokenEncryptor"
@@ -31,7 +31,7 @@ export class CommunityComponentIntegration implements ICommunityComponent {
         return await realComponent.findCommunityById(communityId)
     }
 
-    async joinCommunity(communityId: string, formResponseId: string, utc: number): Promise<Community | null> {
+    async joinCommunity(communityId: string, formResponseId: string, utc: number): Promise<JoinCommunityResult> {
         return await realComponent.joinCommunity(communityId, formResponseId, utc)
     }
 

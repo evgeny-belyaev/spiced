@@ -3,6 +3,7 @@ import { Forms, MailChimp } from "../../constants"
 import { givenFormsApi, givenMailComponent, givenMatcher, givenSpicedDatabase, givenUrlBuilder } from "../../testUtils"
 import { EntityAlreadyExists } from "../../database/entityAlreadyExists"
 import { templateField } from "../../mail"
+import exp from "constants"
 
 const answersJoin = {
     answers: [
@@ -409,7 +410,13 @@ export default describe("CommunityComponent", () => {
 
     test("createCommunity", async () => {
         // Arrange
-        const { mock: spicedDatabaseMock, createCommunity, createUser, createMember } = givenSpicedDatabase()
+        const {
+            mock: spicedDatabaseMock,
+            createCommunity,
+            createUser,
+            createMember,
+            getCommunityIdByTypeFormResponseId
+        } = givenSpicedDatabase()
         const { mock: mailComponentMock, sendTemplate } = givenMailComponent()
         const { mock: formsApiMock, getAnswers } = givenFormsApi()
         const { mock: urlBuilder, getCommunityInvitationUrl } = givenUrlBuilder()
@@ -420,6 +427,7 @@ export default describe("CommunityComponent", () => {
         createCommunity.mockImplementation(() => Promise.resolve("communityId"))
         getCommunityInvitationUrl.mockImplementation(() => ("url"))
         getAnswers.mockImplementation(() => answersCreate)
+        getCommunityIdByTypeFormResponseId.mockImplementation(() => null)
 
         const communityComponent = new CommunityComponent(formsApiMock(), mailComponentMock(), spicedDatabaseMock(), urlBuilder(), matcher())
 
@@ -461,29 +469,58 @@ export default describe("CommunityComponent", () => {
         )
 
         expect(result).toEqual({
-            communityInvitationLink: "url"
+            communityTitle: "community title",
+            communityInvitationLink: "url",
+            alreadyExist: undefined
         })
 
     })
 
-    test("should return error if community already exists", async () => {
+    test("should handle correctly if community already exists", async () => {
         // Arrange
-        const { mock: spicedDatabaseMock, createCommunity } = givenSpicedDatabase()
-        const { mock: urlBuilder } = givenUrlBuilder()
+        const {
+            mock: spicedDatabaseMock,
+            createCommunity,
+            createUser,
+            createMember,
+            getCommunityIdByTypeFormResponseId,
+            getCommunityById
+        } = givenSpicedDatabase()
         const { mock: mailComponentMock, sendTemplate } = givenMailComponent()
         const { mock: formsApiMock, getAnswers } = givenFormsApi()
+        const { mock: urlBuilder, getCommunityInvitationUrl } = givenUrlBuilder()
         const { mock: matcher } = givenMatcher()
 
+        createUser.mockImplementation(() => Promise.resolve("userIdHash"))
+        createMember.mockImplementation(() => Promise.resolve())
+        createCommunity.mockImplementation(() => Promise.resolve("communityId"))
+        getCommunityInvitationUrl.mockImplementation(() => ("url"))
         getAnswers.mockImplementation(() => answersCreate)
-        createCommunity.mockImplementation(() => {
-            throw new EntityAlreadyExists("")
-        })
+        getCommunityIdByTypeFormResponseId.mockImplementation(() => "existedCommunityId")
+        getCommunityById.mockImplementation(() => ({
+            title: "existedTitle"
+        }))
 
         const communityComponent = new CommunityComponent(formsApiMock(), mailComponentMock(), spicedDatabaseMock(), urlBuilder(), matcher())
 
         // Act
-        await expect(communityComponent.createCommunity("encrypted"))
-            .rejects.toBeInstanceOf(EntityAlreadyExists)
+        const result = await communityComponent.createCommunity("formResponseId")
+
+        // Assert
+        expect(getCommunityInvitationUrl).toBeCalledWith("existedCommunityId")
+        expect(getCommunityById).toBeCalledWith("existedCommunityId")
+
+        expect(getAnswers).toHaveBeenCalledTimes(0)
+        expect(createUser).toHaveBeenCalledTimes(0)
+        expect(createCommunity).toHaveBeenCalledTimes(0)
+        expect(createMember).toHaveBeenCalledTimes(0)
+        expect(sendTemplate).toHaveBeenCalledTimes(0)
+
+        expect(result).toEqual({
+            communityTitle: "existedTitle",
+            communityInvitationLink: "url",
+            alreadyExist: true
+        })
     })
 
     test("findCommunityByCommunityKey", async () => {
@@ -598,8 +635,7 @@ export default describe("CommunityComponent", () => {
         const now = Date.UTC(2020, 10, 25, 16, 59, 10, 123)
 
         // Act
-        await expect(communityComponent.joinCommunity(communityId, formResponseId, now))
-            .rejects.toEqual(new EntityAlreadyExists("User has already joined"))
+        const result = await communityComponent.joinCommunity(communityId, formResponseId, now)
 
         // Assert
         expect(getCommunityById).toBeCalledWith(communityId)
@@ -608,6 +644,11 @@ export default describe("CommunityComponent", () => {
         expect(createMember).toHaveBeenCalledTimes(0)
         expect(sendTemplate).toHaveBeenCalledTimes(0)
         expect(optIn).toHaveBeenCalledTimes(0)
+
+        expect(result).toEqual({
+            communityTitle: "title",
+            alreadyJoined: true
+        })
     })
 
 

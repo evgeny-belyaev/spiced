@@ -1,12 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-
-</head>
-<body cellpadding="0" cellspacing="0"
-      style="padding: 0; margin: 0; border: 0; width:100%; -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; background-color: #efefef;">
-<!--allrecords-->
-<table id="allrecords" data-tilda-email="yes" data-tilda-project-id="3341502" data-tilda-page-id="15719596"
+const before = `
+    <table id="allrecords" data-tilda-email="yes" data-tilda-project-id="3341502" data-tilda-page-id="15719596"
        data-tilda-page-alias="" cellpadding="0" cellspacing="0"
        style="width:100%; border-collapse:collapse; border-spacing:0; padding:0; margin:0; border:0;">
     <tr>
@@ -59,56 +52,9 @@
                     </td>
                 </tr>
             </table><!--/record--><!--record_mail-->
-            <table id="rec257342936" style="width:100%; border-collapse:collapse; border-spacing:0; margin:0; border:0;"
-                   cellpadding="0" cellspacing="0" data-record-type="323">
-                <tr>
-                    <td style="padding-left:15px; padding-right:15px; ">
-                        <table id="recin257342936" class="r"
-                               style="margin: 0 auto;background-color:#ffffff;border-spacing: 0;width:600px;"
-                               align="center">
-                            <tr>
-                                <td style="padding-top:30px;padding-bottom:15px;padding-left:30px;padding-right:30px;">
-                                    <table valign="top" border="0" cellpadding="0" cellspacing="0" width="100%"
-                                           style="width: 100%;">
-                                        <tr>
-                                            <td style="text-align: left; padding: 0 0 0;">
-                                                <div style="margin-right: auto; font-family: Helvetica Neue, Helvetica, Arial, sans-serif; color:#222222;font-size:28px;font-weight:bold;">
-                                                    $COMMUNITY has been created
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-            </table><!--/record--><!--record_mail-->
-            <table id="rec257342937" style="width:100%; border-collapse:collapse; border-spacing:0; margin:0; border:0;"
-                   cellpadding="0" cellspacing="0" data-record-type="329">
-                <tr>
-                    <td style="padding-left:15px; padding-right:15px; ">
-                        <table id="recin257342937" class="r"
-                               style="margin: 0 auto;background-color:#ffffff;border-spacing: 0;width:600px;"
-                               align="center">
-                            <tr>
-                                <td style="padding-top:15px;padding-bottom:15px;padding-left:30px;padding-right:30px;">
-                                    <table border="0" cellpadding="0" cellspacing="0" width="100%" style="width: 100%;">
-                                        <tr>
-                                            <td style="text-align: left; padding: 0 0 0;">
-                                                <div style="margin-right: auto; font-family: Helvetica Neue, Helvetica, Arial, sans-serif; color:#444444;font-size:20px;line-height:1.45;">
-                                                    That's all, thank you! <br/>Here is an invitation link: $LINK
-                                                    <br/><br/>Prepare to launch tmixed in your community!<br/>Just
-                                                    publish a post with the link and you are all set up!<br/></div>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-            </table><!--/record--><!--record_mail-->
+`
+
+const after = `
             <table id="rec257342938" style="width:100%; border-collapse:collapse; border-spacing:0; margin:0; border:0;"
                    cellpadding="0" cellspacing="0" data-record-type="627">
                 <tr>
@@ -121,9 +67,6 @@
                                         <tr>
                                             <td style="text-align: center; padding-top: 25px;">
                                                 <div style="margin: 0 auto; font-weight: normal; font-family: Helvetica Neue, Helvetica, Arial, sans-serif; color:#a1a1a1;font-size:14px;">
-                                                    You can unsubscribe from this letter anytime <a href="[unsubscribe]"
-                                                                                                    style="color:#327dd0 !important;"
-                                                                                                    rel="color:#327dd0 !important;">here</a>
                                                 </div>
                                             </td>
                                         </tr>
@@ -136,6 +79,25 @@
             </table><!--/record--> </td>
     </tr>
 </table><!--/allrecords-->
+`
 
-</body>
-</html>
+export function replaceAll(str: string, find: string, replace: string) {
+    return str.replace(new RegExp(find, "g"), replace)
+}
+
+export function shitRenderPage(content: string, d: NodeJS.Dict<string> = {}) {
+    const keys = Object.keys(d)
+
+    for (const key of keys) {
+        const replacement = d[key]
+
+        if (replacement) {
+            content = replaceAll(content, key, replacement)
+        }
+    }
+    return before + content + after
+}
+
+export interface PageProps {
+    error?: string
+}

@@ -3,12 +3,14 @@ import { GetServerSidePropsContext, GetServerSidePropsResult } from "next"
 import { TokenEncryptor } from "../../TokenEncryptor"
 import { UrlBuilder } from "../../urlBuilder"
 import { Logger } from "../../logger"
-import { EntityAlreadyExists } from "../../database/entityAlreadyExists"
 import { ICommunityComponent } from "../../logic/ICommunityComponent"
 import { createCommunityComponent } from "../../logic/CreateCommunityComponent"
+import { PageProps } from "../utils"
 
-export type Props = {
+export interface Props extends PageProps {
+    communityTitle?: string,
     communityInvitationLink?: string,
+    alreadyExist?: boolean,
     error?: string
 }
 
@@ -25,19 +27,14 @@ export const getServerSidePropsImpl = async (
 
         return {
             props: {
-                communityInvitationLink: result.communityInvitationLink
+                communityInvitationLink: result.communityInvitationLink,
+                communityTitle: result.communityTitle,
+                alreadyExist: result.alreadyExist
             }
         }
+
     } catch (x) {
         log.error(x)
-
-        if (x instanceof EntityAlreadyExists) {
-            return {
-                props: {
-                    error: "Community already exists"
-                }
-            }
-        }
 
         return {
             props: {
