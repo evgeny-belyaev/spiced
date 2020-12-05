@@ -38,21 +38,48 @@ export class CommunityComponent implements ICommunityComponent {
 
         this.log.debug(`Getting response for form ${Forms.joinCommunity.formId}, formResponseId=${formResponseId}`)
 
-        const response = await this.formsApi.getResponse(Forms.joinCommunity.formId, formResponseId)
+        const item = await this.formsApi.getAnswers(
+            Forms.joinCommunity.formId,
+            formResponseId
+        )
+        const answers = item && item.answers ? item.answers : []
+        const hidden = item && item.hidden ? item.hidden : {}
 
-        this.log.debug("Response: " + JSON.stringify(response))
+        this.log.debug("Form answers are", answers, hidden)
 
-        const communityId =
-            response && response.items && response.items.length ?
-                response.items[0].hidden[Forms.joinCommunity.hiddenFields.communityId] : undefined
+        const utils = new FormsUtils()
+
+        const firstName = utils.getAnswerById(answers, Forms.joinCommunity.answers.memberFirstName)
+        const communityId = hidden[Forms.joinCommunity.hiddenFields.communityId]
 
         if (!communityId) {
             throw Error("Invalid argument")
         }
 
+        const community = await this.spicedDatabase.getCommunityById(communityId)
+
+        if (!community) {
+            throw Error("Invalid argument")
+        }
+
         const url = this.urlBuilder.getJoinCommunityConfirmationUrl(communityId, formResponseId)
-        const content = `<a href="${url}">Click me</a>`
-        this.log.debug(`Sending join confirmation link with ${formResponseId} to ${email} content is ${content}`)
+        const markup = `
+            <td> <!--[if mso]>
+                <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml"
+                             xmlns:w="urn:schemas-microsoft-com:office:word"
+                             href="${url}"
+                             style="height:66px;v-text-anchor:middle;mso-wrap-style:none;mso-position-horizontal:center;"
+                             arcsize="9%" stroke="f" fillcolor="#1f5bff">
+                    <w:anchorlock/>
+                    <center style="text-decoration: none; padding: 20px 42px; font-size: 19px; text-align: center; font-weight: bold; font-family:Helvetica Neue, Helvetica, Arial, sans-serif; width: 100%;color:#ffffff;">
+                        Verify email address
+                    </center>
+                </v:roundrect> <![endif]--> <!--[if !mso]--> <a
+                        style="display: table-cell; text-decoration: none; padding: 20px 42px; font-size: 19px; text-align: center; font-weight: bold; font-family:Helvetica Neue, Helvetica, Arial, sans-serif; width: 100%;color:#ffffff; border:0px solid ; background-color:#1f5bff; border-radius: 3px;"
+                        href="${url}"> Verify email address </a> <!--[endif]-->
+            </td>        
+        `
+        this.log.debug(`Sending join confirmation link with ${formResponseId} to ${email}`)
 
         const mailTemplate = MailChimp.Templates.joinCommunityConfirmation
 
@@ -61,10 +88,19 @@ export class CommunityComponent implements ICommunityComponent {
             "Wow! Follow the link to join!",
             MailChimp.from,
             mailTemplate.name,
-            [{
-                name: mailTemplate.fields.joinCommunityConfirmationUrl,
-                content
-            }])
+            [
+                {
+                    name: mailTemplate.fields.communityTitle,
+                    content: community.title
+                },
+                {
+                    name: mailTemplate.fields.userFirstName,
+                    content: utils.getText(firstName)
+                },
+                {
+                    name: mailTemplate.fields.joinCommunityConfirmationUrl,
+                    content: markup
+                }])
     }
 
     async sendCreateCommunityConfirmationEmail(formResponseId: string, email: string): Promise<void> {
@@ -73,9 +109,25 @@ export class CommunityComponent implements ICommunityComponent {
         }
 
         const url = this.urlBuilder.getCreateCommunityConfirmationUrl(formResponseId)
-        const content = `<a href="${url}">Click me</a>`
+        const markup = `
+            <td> <!--[if mso]>
+                <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml"
+                             xmlns:w="urn:schemas-microsoft-com:office:word"
+                             href="${url}"
+                             style="height:66px;v-text-anchor:middle;mso-wrap-style:none;mso-position-horizontal:center;"
+                             arcsize="9%" stroke="f" fillcolor="#1f5bff">
+                    <w:anchorlock/>
+                    <center style="text-decoration: none; padding: 20px 42px; font-size: 19px; text-align: center; font-weight: bold; font-family:Helvetica Neue, Helvetica, Arial, sans-serif; width: 100%;color:#ffffff;">
+                        Verify email address
+                    </center>
+                </v:roundrect> <![endif]--> <!--[if !mso]-->
+                <a
+                        style="display: table-cell; text-decoration: none; padding: 20px 42px; font-size: 19px; text-align: center; font-weight: bold; font-family:Helvetica Neue, Helvetica, Arial, sans-serif; width: 100%;color:#ffffff; border:0px solid ; background-color:#1f5bff; border-radius: 3px;"
+                        href="${url}"> Verify email address </a> <!--[endif]-->
+            </td>
+        `
 
-        this.log.debug(`Sending create community confirmation link with ${formResponseId} to ${email} content is ${content}`)
+        this.log.debug(`Sending create community confirmation link with ${formResponseId} to ${email}`)
 
         const mailTemplate = MailChimp.Templates.createCommunityConfirmation
 
@@ -84,10 +136,15 @@ export class CommunityComponent implements ICommunityComponent {
             "Community creation confirmation",
             MailChimp.from,
             mailTemplate.name,
-            [{
-                name: mailTemplate.fields.createCommunityConfirmationUrl,
-                content
-            }])
+            [
+                {
+                    name: mailTemplate.fields.userFirstName,
+                    content: "userFirstName"
+                },
+                {
+                    name: mailTemplate.fields.createCommunityConfirmationUrl,
+                    content: markup
+                }])
     }
 
     async findCommunityById(communityId: string): Promise<Community | null> {
@@ -95,10 +152,12 @@ export class CommunityComponent implements ICommunityComponent {
     }
 
     async createCommunity(formsResponseId: string): Promise<CreateCommunityResult> {
-        const answers = await this.formsApi.getAnswers(
+        const item = await this.formsApi.getAnswers(
             Forms.createCommunity.formId,
             formsResponseId
         )
+
+        const answers = item && item.answers ? item.answers : []
 
         this.log.debug("Form answers are", answers)
 
@@ -165,7 +224,8 @@ export class CommunityComponent implements ICommunityComponent {
             throw new Error("Invalid argument")
         }
 
-        const answers = await this.formsApi.getAnswers(Forms.joinCommunity.formId, formResponseId)
+        const item = await this.formsApi.getAnswers(Forms.joinCommunity.formId, formResponseId)
+        const answers = item && item.answers ? item.answers : []
 
         const utils = new FormsUtils()
 
@@ -181,8 +241,10 @@ export class CommunityComponent implements ICommunityComponent {
             throw new EntityAlreadyExists("User has already joined")
         }
 
+        const userFirstName = utils.getText(memberFirstName)
+
         const userId = await this.spicedDatabase.createUser({
-            firstName: utils.getText(memberFirstName),
+            firstName: userFirstName,
             lastName: utils.getText(memberLastName),
             phoneNumber: utils.getPhoneNumber(memberPhoneNumber),
             website: utils.getUrl(memberWebsite),
@@ -201,6 +263,10 @@ export class CommunityComponent implements ICommunityComponent {
             MailChimp.from,
             mailTemplate.name,
             [
+                {
+                    name: mailTemplate.fields.userFirstName,
+                    content: userFirstName
+                },
                 {
                     name: mailTemplate.fields.communityTitle,
                     content: community.title
@@ -230,7 +296,8 @@ export class CommunityComponent implements ICommunityComponent {
         }
 
         const usersIds = matches ? Object.keys(matches) : []
-        const mailTemplate = MailChimp.Templates.matched
+        const mailTemplateMatched = MailChimp.Templates.matched
+        const mailTemplateNoMatch = MailChimp.Templates.noMatch
 
         for (const userId of usersIds) {
             const match = matches[userId]
@@ -260,31 +327,30 @@ export class CommunityComponent implements ICommunityComponent {
                     user.emailAddress,
                     `Wow! You've matched in ${community.title}!`,
                     MailChimp.from,
-                    mailTemplate.name,
+                    mailTemplateMatched.name,
                     [
-                        templateField(mailTemplate.fields.userFirstName, user.firstName),
-                        templateField(mailTemplate.fields.matchedUserEmail, matchedUser.emailAddress),
-                        templateField(mailTemplate.fields.matchedUserPhone, matchedUser.phoneNumber),
-                        templateField(mailTemplate.fields.matchedUserFirstName, matchedUser.firstName),
-                        templateField(mailTemplate.fields.matchedUserLastName, matchedUser.lastName),
-                        templateField(mailTemplate.fields.matchedUserProfileUrl, matchedUser.website),
-                        templateField(mailTemplate.fields.communityTitle, community.title)
+                        templateField(mailTemplateMatched.fields.userFirstName, user.firstName),
+                        templateField(mailTemplateMatched.fields.matchedUserEmail, matchedUser.emailAddress),
+                        templateField(mailTemplateMatched.fields.matchedUserPhone, matchedUser.phoneNumber),
+                        templateField(mailTemplateMatched.fields.matchedUserFirstName, matchedUser.firstName),
+                        templateField(mailTemplateMatched.fields.matchedUserLastName, matchedUser.lastName),
+                        templateField(mailTemplateMatched.fields.matchedUserProfileUrl, matchedUser.website),
+                        templateField(mailTemplateMatched.fields.communityTitle, community.title)
                     ]
                 )
             } else {
+                const invitationLink = this.urlBuilder.getCommunityInvitationUrl(communityId)
+                const invitationLinkMarkup = `<a href="${invitationLink}">${invitationLink}</a>`
+
                 await this.mailComponent.sendTemplate(
                     user.emailAddress,
                     `Wow! You've matched in ${community.title}!`,
                     MailChimp.from,
-                    mailTemplate.name,
+                    mailTemplateNoMatch.name,
                     [
-                        templateField(mailTemplate.fields.userFirstName, user.firstName),
-                        templateField(mailTemplate.fields.matchedUserEmail, ""),
-                        templateField(mailTemplate.fields.matchedUserPhone, ""),
-                        templateField(mailTemplate.fields.matchedUserFirstName, "We cant find match for you =("),
-                        templateField(mailTemplate.fields.matchedUserLastName, ""),
-                        templateField(mailTemplate.fields.matchedUserProfileUrl, ""),
-                        templateField(mailTemplate.fields.communityTitle, community.title)
+                        templateField(mailTemplateNoMatch.fields.userFirstName, user.firstName),
+                        templateField(mailTemplateNoMatch.fields.communityInvitationLink, invitationLinkMarkup),
+                        templateField(mailTemplateNoMatch.fields.communityTitle, community.title)
                     ]
                 )
             }
@@ -345,6 +411,25 @@ export class CommunityComponent implements ICommunityComponent {
                 const yesUrl = this.urlBuilder.getOptInConfirmationUrl(communityId, timeSpanId, memberId, true)
                 const noUrl = this.urlBuilder.getOptInConfirmationUrl(communityId, timeSpanId, memberId, false)
 
+                const yesMarkup = `
+                    <td> <!--[if mso]>
+                    <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml"
+                                 xmlns:w="urn:schemas-microsoft-com:office:word"
+                                 href="${yesUrl}"
+                                 style="height:66px;v-text-anchor:middle;mso-wrap-style:none;mso-position-horizontal:center;"
+                                 arcsize="9%" stroke="f" fillcolor="#1f5bff">
+                        <w:anchorlock/>
+                        <center style="text-decoration: none; padding: 20px 42px; font-size: 19px; text-align: center; font-weight: bold; font-family:Helvetica Neue, Helvetica, Arial, sans-serif; width: 100%;color:#ffffff;">
+                            Yes, I'm in!
+                        </center>
+                    </v:roundrect> <![endif]--> <!--[if !mso]--> <a
+                            style="display: table-cell; text-decoration: none; padding: 20px 42px; font-size: 19px; text-align: center; font-weight: bold; font-family:Helvetica Neue, Helvetica, Arial, sans-serif; width: 100%;color:#ffffff; border:0px solid ; background-color:#1f5bff; border-radius: 3px;"
+                            href="${yesUrl}"> Yes, I'm in! </a> <!--[endif]--> </td>                
+                `
+                const noMarkup = `
+                <a href="${noUrl}" style="">Pause all notification for 1 week</a>
+                `
+
                 await this.mailComponent.sendTemplate(
                     user.emailAddress,
                     `Would you like to match next week in ${community.title}?`,
@@ -352,16 +437,20 @@ export class CommunityComponent implements ICommunityComponent {
                     mailTemplate.name,
                     [
                         {
+                            name: mailTemplate.fields.userFirstName,
+                            content: user.firstName
+                        },
+                        {
                             name: mailTemplate.fields.communityTitle,
                             content: community.title
                         },
                         {
                             name: mailTemplate.fields.yesUrl,
-                            content: yesUrl
+                            content: yesMarkup
                         },
                         {
                             name: mailTemplate.fields.noUrl,
-                            content: noUrl
+                            content: noMarkup
                         }
                     ]
                 )

@@ -59,18 +59,22 @@ export const MailChimp = {
         createCommunityConfirmation: {
             name: "createCommunityConfirmation",
             fields: {
+                userFirstName: "userFirstName",
                 createCommunityConfirmationUrl: "createCommunityConfirmationUrl"
             }
         },
         joinCommunityConfirmation: {
             name: "joinCommunityConfirmation",
             fields: {
+                communityTitle: "communityTitle",
+                userFirstName: "userFirstName",
                 joinCommunityConfirmationUrl: "joinCommunityConfirmationUrl"
             }
         },
         communityJoined: {
             name: "communityJoined",
             fields: {
+                userFirstName: "userFirstName",
                 communityTitle: "communityTitle"
             }
         },
@@ -78,6 +82,14 @@ export const MailChimp = {
             name: "communityCreated",
             fields: {
                 communityTitle: "communityTitle",
+                communityInvitationLink: "communityInvitationLink"
+            }
+        },
+        noMatch: {
+            name: "noMatch",
+            fields: {
+                communityTitle: "communityTitle",
+                userFirstName: "userFirstName",
                 communityInvitationLink: "communityInvitationLink"
             }
         },
@@ -99,6 +111,7 @@ export const MailChimp = {
         optIn: {
             name: "optIn",
             fields: {
+                userFirstName: "userFirstName",
                 communityTitle: "communityTitle",
                 yesUrl: "yesUrl",
                 noUrl: "noUrl"

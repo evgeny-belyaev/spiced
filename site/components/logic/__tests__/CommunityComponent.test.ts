@@ -4,119 +4,124 @@ import { givenFormsApi, givenMailComponent, givenMatcher, givenSpicedDatabase, g
 import { EntityAlreadyExists } from "../../database/entityAlreadyExists"
 import { templateField } from "../../mail"
 
-const answersJoin = [
-    {
-        "field": {
-            "id": "yTfniwfEZHmy",
-            "ref": "b78462b6-51a1-4971-ac3e-435f6d6bd2e6",
-            "type": "short_text"
+const answersJoin = {
+    answers: [
+        {
+            "field": {
+                "id": "yTfniwfEZHmy",
+                "ref": "b78462b6-51a1-4971-ac3e-435f6d6bd2e6",
+                "type": "short_text"
+            },
+            "type": "text",
+            "text": "asdf"
         },
-        "type": "text",
-        "text": "asdf"
-    },
-    {
-        "field": {
-            "id": "7pfMxKZlyBqe",
-            "ref": "9547e114-21ab-4727-9e98-283fe992303b",
-            "type": "short_text"
+        {
+            "field": {
+                "id": "7pfMxKZlyBqe",
+                "ref": "9547e114-21ab-4727-9e98-283fe992303b",
+                "type": "short_text"
+            },
+            "type": "text",
+            "text": "fdsa"
         },
-        "type": "text",
-        "text": "fdsa"
-    },
-    {
-        "field": {
-            "id": "fWuSaWrKCVbZ",
-            "ref": "a46913210c42aaf5",
-            "type": "email"
+        {
+            "field": {
+                "id": "fWuSaWrKCVbZ",
+                "ref": "a46913210c42aaf5",
+                "type": "email"
+            },
+            "type": "email",
+            "email": "a@b.c"
         },
-        "type": "email",
-        "email": "a@b.c"
-    },
-    {
-        "field": {
-            "id": "3kIm7gd9aPCl",
-            "ref": "b08d4ba443cad868",
-            "type": "phone_number"
+        {
+            "field": {
+                "id": "3kIm7gd9aPCl",
+                "ref": "b08d4ba443cad868",
+                "type": "phone_number"
+            },
+            "type": "phone_number",
+            "phone_number": "+79819861819"
         },
-        "type": "phone_number",
-        "phone_number": "+79819861819"
-    },
-    {
-        "field": {
-            "id": "bKxH0PJxunet",
-            "ref": "d9e7f7cb-084c-43bc-b04b-67c209c5d2f2",
-            "type": "website"
-        },
-        "type": "url",
-        "url": "https://asdf.com"
-    }
-]
+        {
+            "field": {
+                "id": "bKxH0PJxunet",
+                "ref": "d9e7f7cb-084c-43bc-b04b-67c209c5d2f2",
+                "type": "website"
+            },
+            "type": "url",
+            "url": "https://asdf.com"
+        }
+    ]
+}
 
-const answersCreate = [
-    {
-        "field": {
-            "id": "iRELkeOPH06I",
-            "ref": "b78462b6-51a1-4971-ac3e-435f6d6bd2e6",
-            "type": "short_text"
+
+const answersCreate = {
+    answers: [
+        {
+            "field": {
+                "id": "iRELkeOPH06I",
+                "ref": "b78462b6-51a1-4971-ac3e-435f6d6bd2e6",
+                "type": "short_text"
+            },
+            "type": "text",
+            "text": "firstName"
         },
-        "type": "text",
-        "text": "firstName"
-    },
-    {
-        "field": {
-            "id": "9IoVfWEsWEJm",
-            "ref": "9547e114-21ab-4727-9e98-283fe992303b",
-            "type": "short_text"
+        {
+            "field": {
+                "id": "9IoVfWEsWEJm",
+                "ref": "9547e114-21ab-4727-9e98-283fe992303b",
+                "type": "short_text"
+            },
+            "type": "text",
+            "text": "lastName"
         },
-        "type": "text",
-        "text": "lastName"
-    },
-    {
-        "field": {
-            "id": "hzQC3bQ87sQL",
-            "ref": "8f6d301d1719787f",
-            "type": "long_text"
+        {
+            "field": {
+                "id": "hzQC3bQ87sQL",
+                "ref": "8f6d301d1719787f",
+                "type": "long_text"
+            },
+            "type": "text",
+            "text": "community title"
         },
-        "type": "text",
-        "text": "community title"
-    },
-    {
-        "field": {
-            "id": "Uukms7hM8K5i",
-            "ref": "934209e4b4192144",
-            "type": "website"
+        {
+            "field": {
+                "id": "Uukms7hM8K5i",
+                "ref": "934209e4b4192144",
+                "type": "website"
+            },
+            "type": "url",
+            "url": "public link"
         },
-        "type": "url",
-        "url": "public link"
-    },
-    {
-        "field": {
-            "id": "B8IPm7Osl6R1",
-            "ref": "a46913210c42aaf5",
-            "type": "email"
+        {
+            "field": {
+                "id": "B8IPm7Osl6R1",
+                "ref": "a46913210c42aaf5",
+                "type": "email"
+            },
+            "type": "email",
+            "email": "a@b.com"
         },
-        "type": "email",
-        "email": "a@b.com"
-    },
-    {
-        "field": {
-            "id": "iSTnU99AXZ3z",
-            "ref": "b08d4ba443cad868",
-            "type": "phone_number"
+        {
+            "field": {
+                "id": "iSTnU99AXZ3z",
+                "ref": "b08d4ba443cad868",
+                "type": "phone_number"
+            },
+            "type": "phone_number",
+            "phone_number": "123"
         },
-        "type": "phone_number",
-        "phone_number": "123"
-    },
-    {
-        "field": {
-            "id": "QxmULEP1S82p",
-            "ref": "d9e7f7cb-084c-43bc-b04b-67c209c5d2f2",
-            "type": "website"
-        },
-        "type": "url",
-        "url": "com.com"
-    }
-]
+        {
+            "field": {
+                "id": "QxmULEP1S82p",
+                "ref": "d9e7f7cb-084c-43bc-b04b-67c209c5d2f2",
+                "type": "website"
+            },
+            "type": "url",
+            "url": "com.com"
+        }
+    ]
+}
 
 
 const response = {
@@ -257,14 +262,36 @@ export default describe("CommunityComponent", () => {
         // Arrange
         const { mock: urlBuilder, getJoinCommunityConfirmationUrl } = givenUrlBuilder()
         const { mock: mailComponentMock, sendTemplate } = givenMailComponent()
-        const { mock: spicedDatabaseMock } = givenSpicedDatabase()
-        const { mock: formsApiMock, getResponse } = givenFormsApi()
+        const { mock: spicedDatabaseMock, getCommunityById } = givenSpicedDatabase()
+        const { mock: formsApiMock, getAnswers } = givenFormsApi()
         const { mock: matcher } = givenMatcher()
 
         getJoinCommunityConfirmationUrl.mockImplementation(() => ("url"))
-        getResponse.mockImplementation(() => Promise.resolve(response))
+        getAnswers.mockImplementation(() => (Promise.resolve(response.items[0])))
+        getCommunityById.mockImplementation(() => ({
+            title: "communityTitle"
+        }))
 
         const communityComponent = new CommunityComponent(formsApiMock(), mailComponentMock(), spicedDatabaseMock(), urlBuilder(), matcher())
+
+        function markup(url: string) {
+            return `
+            <td> <!--[if mso]>
+                <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml"
+                             xmlns:w="urn:schemas-microsoft-com:office:word"
+                             href="${url}"
+                             style="height:66px;v-text-anchor:middle;mso-wrap-style:none;mso-position-horizontal:center;"
+                             arcsize="9%" stroke="f" fillcolor="#1f5bff">
+                    <w:anchorlock/>
+                    <center style="text-decoration: none; padding: 20px 42px; font-size: 19px; text-align: center; font-weight: bold; font-family:Helvetica Neue, Helvetica, Arial, sans-serif; width: 100%;color:#ffffff;">
+                        Verify email address
+                    </center>
+                </v:roundrect> <![endif]--> <!--[if !mso]--> <a
+                        style="display: table-cell; text-decoration: none; padding: 20px 42px; font-size: 19px; text-align: center; font-weight: bold; font-family:Helvetica Neue, Helvetica, Arial, sans-serif; width: 100%;color:#ffffff; border:0px solid ; background-color:#1f5bff; border-radius: 3px;"
+                        href="${url}"> Verify email address </a> <!--[endif]-->
+            </td>        
+        `
+        }
 
         // Act
         await communityComponent.sendJoinCommunityConfirmationEmail("formResponseId", "a@b.com")
@@ -276,10 +303,19 @@ export default describe("CommunityComponent", () => {
             "Wow! Follow the link to join!",
             MailChimp.from,
             MailChimp.Templates.joinCommunityConfirmation.name,
-            [{
-                name: MailChimp.Templates.joinCommunityConfirmation.fields.joinCommunityConfirmationUrl,
-                content: "<a href=\"url\">Click me</a>"
-            }]
+            [
+                {
+                    name: MailChimp.Templates.joinCommunityConfirmation.fields.communityTitle,
+                    content: "communityTitle"
+                },
+                {
+                    name: MailChimp.Templates.joinCommunityConfirmation.fields.userFirstName,
+                    content: "sdfsd"
+                },
+                {
+                    name: MailChimp.Templates.joinCommunityConfirmation.fields.joinCommunityConfirmationUrl,
+                    content: markup("url")
+                }]
         )
     })
 
@@ -287,7 +323,7 @@ export default describe("CommunityComponent", () => {
         // Arrange
         const { mock: urlBuilder } = givenUrlBuilder()
         const { mock: mailComponentMock } = givenMailComponent()
-        const { mock: spicedDatabaseMock } = givenSpicedDatabase()
+        const { mock: spicedDatabaseMock, getCommunityById } = givenSpicedDatabase()
         const { mock: formsApiMock, getResponse } = givenFormsApi()
         const { mock: matcher } = givenMatcher()
 
@@ -335,15 +371,39 @@ export default describe("CommunityComponent", () => {
         await communityComponent.sendCreateCommunityConfirmationEmail("id", "a@b.com")
 
         // Assert
+        const url = "url"
+        const markup = `
+            <td> <!--[if mso]>
+                <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml"
+                             xmlns:w="urn:schemas-microsoft-com:office:word"
+                             href="${url}"
+                             style="height:66px;v-text-anchor:middle;mso-wrap-style:none;mso-position-horizontal:center;"
+                             arcsize="9%" stroke="f" fillcolor="#1f5bff">
+                    <w:anchorlock/>
+                    <center style="text-decoration: none; padding: 20px 42px; font-size: 19px; text-align: center; font-weight: bold; font-family:Helvetica Neue, Helvetica, Arial, sans-serif; width: 100%;color:#ffffff;">
+                        Verify email address
+                    </center>
+                </v:roundrect> <![endif]--> <!--[if !mso]-->
+                <a
+                        style="display: table-cell; text-decoration: none; padding: 20px 42px; font-size: 19px; text-align: center; font-weight: bold; font-family:Helvetica Neue, Helvetica, Arial, sans-serif; width: 100%;color:#ffffff; border:0px solid ; background-color:#1f5bff; border-radius: 3px;"
+                        href="${url}"> Verify email address </a> <!--[endif]-->
+            </td>
+        `
+
         expect(sendTemplate).toBeCalledWith(
             "a@b.com",
             "Community creation confirmation",
             MailChimp.from,
             MailChimp.Templates.createCommunityConfirmation.name,
-            [{
-                name: MailChimp.Templates.createCommunityConfirmation.fields.createCommunityConfirmationUrl,
-                content: "<a href=\"url\">Click me</a>"
-            }]
+            [
+                {
+                    name: MailChimp.Templates.createCommunityConfirmation.fields.userFirstName,
+                    content: "userFirstName"
+                },
+                {
+                    name: MailChimp.Templates.createCommunityConfirmation.fields.createCommunityConfirmationUrl,
+                    content: markup
+                }]
         )
     })
 
@@ -491,6 +551,10 @@ export default describe("CommunityComponent", () => {
             MailChimp.Templates.communityJoined.name,
             [
                 {
+                    name: MailChimp.Templates.communityJoined.fields.userFirstName,
+                    content: "asdf"
+                },
+                {
                     name: MailChimp.Templates.communityJoined.fields.communityTitle,
                     content: "title"
                 }
@@ -588,7 +652,7 @@ export default describe("CommunityComponent", () => {
         } = givenSpicedDatabase()
         const { mock: mailComponentMock, sendTemplate } = givenMailComponent()
         const { mock: formsApiMock } = givenFormsApi()
-        const { mock: urlBuilder } = givenUrlBuilder()
+        const { mock: urlBuilder, getCommunityInvitationUrl } = givenUrlBuilder()
         const { mock: matcher, calculateMatch, saveMatches } = givenMatcher()
         const matchesGenerator = (communityId: string) => {
             switch (communityId) {
@@ -608,6 +672,7 @@ export default describe("CommunityComponent", () => {
             }
         }
 
+        getCommunityInvitationUrl.mockImplementation(() => "invitationUrl")
         getOptedInCommunities.mockImplementation(() => ({
             "communityId1": true,
             "communityId2": true
@@ -685,6 +750,8 @@ export default describe("CommunityComponent", () => {
         ])
 
         const mailTemplate = MailChimp.Templates.matched
+        const mailTemplate2 = MailChimp.Templates.noMatch
+
         const subject1 = "Wow! You've matched in titlecommunityId1!"
         const subject2 = "Wow! You've matched in titlecommunityId2!"
 
@@ -700,6 +767,19 @@ export default describe("CommunityComponent", () => {
             ]
         }
 
+        function givenNoMatchContent(firstName: string, invitationLink: string, communityTitle: string) {
+            return [
+                templateField(mailTemplate2.fields.userFirstName, firstName),
+                templateField(mailTemplate2.fields.communityInvitationLink, invitationLink),
+                templateField(mailTemplate2.fields.communityTitle, communityTitle)
+            ]
+        }
+
+        console.log(JSON.stringify(sendTemplate.mock.calls))
+
+        expect(sendTemplate).toHaveBeenCalledWith("userId5@b.c", subject2, MailChimp.from, mailTemplate2.name,
+            givenNoMatchContent("userId5f", "<a href=\"invitationUrl\">invitationUrl</a>", "titlecommunityId2"))
+
         expect(sendTemplate).toHaveBeenCalledWith("userId3@b.c", subject2, MailChimp.from, mailTemplate.name,
             givenContent("userId3f", "userId4f", "userId4l", "userId4@b.c",
                 "userId4p", "titlecommunityId2", "userId4w")
@@ -709,10 +789,6 @@ export default describe("CommunityComponent", () => {
             givenContent("userId4f", "userId3f", "userId3l", "userId3@b.c",
                 "userId3p", "titlecommunityId2", "userId3w")
         )
-
-        expect(sendTemplate).toHaveBeenCalledWith("userId5@b.c", subject2, MailChimp.from, mailTemplate.name,
-            givenContent("userId5f", "We cant find match for you =(", "", "",
-                "", "titlecommunityId2", ""))
 
         expect(sendTemplate).toHaveBeenCalledWith("userId1@b.c", subject1, MailChimp.from, mailTemplate.name,
             givenContent("userId1f", "userId2f", "userId2l", "userId2@b.c",
@@ -724,6 +800,7 @@ export default describe("CommunityComponent", () => {
         )
 
         expect(sendTemplate).toHaveBeenCalledTimes(5)
+
     })
 
     test("sendOptInRequest", async () => {
@@ -822,8 +899,12 @@ export default describe("CommunityComponent", () => {
             ["communityId2", "nextTimeSpanId", "userId5", false]
         ])
 
-        function givenContent(communityTitle: string, noUrl: string, yesUrl: string) {
+        function givenContent(userFirstName: string, communityTitle: string, noUrl: string, yesUrl: string) {
             return [
+                {
+                    name: mailTemplate.fields.userFirstName,
+                    content: userFirstName
+                },
                 {
                     name: mailTemplate.fields.communityTitle,
                     content: communityTitle
@@ -842,17 +923,41 @@ export default describe("CommunityComponent", () => {
         const subject1 = "Would you like to match next week in titlecommunityId1?"
         const subject2 = "Would you like to match next week in titlecommunityId2?"
 
+        function yesMarkup(url: string): string {
+            return `
+                    <td> <!--[if mso]>
+                    <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml"
+                                 xmlns:w="urn:schemas-microsoft-com:office:word"
+                                 href="${url}"
+                                 style="height:66px;v-text-anchor:middle;mso-wrap-style:none;mso-position-horizontal:center;"
+                                 arcsize="9%" stroke="f" fillcolor="#1f5bff">
+                        <w:anchorlock/>
+                        <center style="text-decoration: none; padding: 20px 42px; font-size: 19px; text-align: center; font-weight: bold; font-family:Helvetica Neue, Helvetica, Arial, sans-serif; width: 100%;color:#ffffff;">
+                            Yes, I'm in!
+                        </center>
+                    </v:roundrect> <![endif]--> <!--[if !mso]--> <a
+                            style="display: table-cell; text-decoration: none; padding: 20px 42px; font-size: 19px; text-align: center; font-weight: bold; font-family:Helvetica Neue, Helvetica, Arial, sans-serif; width: 100%;color:#ffffff; border:0px solid ; background-color:#1f5bff; border-radius: 3px;"
+                            href="${url}"> Yes, I'm in! </a> <!--[endif]--> </td>                
+                `
+        }
+
+        function noMarkup(url: string) {
+            return `
+                <a href="${url}" style="">Pause all notification for 1 week</a>
+                `
+        }
+
         expect(sendTemplate.mock.calls).toEqual([
                 ["userId1@b.c", subject1, MailChimp.from, mailTemplate.name,
-                    givenContent("titlecommunityId1", "communityId1nextTimeSpanIduserId1false", "communityId1nextTimeSpanIduserId1true")],
+                    givenContent("userId1f", "titlecommunityId1", noMarkup("communityId1nextTimeSpanIduserId1false"), yesMarkup("communityId1nextTimeSpanIduserId1true"))],
                 ["userId2@b.c", subject1, MailChimp.from, mailTemplate.name,
-                    givenContent("titlecommunityId1", "communityId1nextTimeSpanIduserId2false", "communityId1nextTimeSpanIduserId2true")],
+                    givenContent("userId2f", "titlecommunityId1", noMarkup("communityId1nextTimeSpanIduserId2false"), yesMarkup("communityId1nextTimeSpanIduserId2true"))],
                 ["userId3@b.c", subject2, MailChimp.from, mailTemplate.name,
-                    givenContent("titlecommunityId2", "communityId2nextTimeSpanIduserId3false", "communityId2nextTimeSpanIduserId3true")],
+                    givenContent("userId3f", "titlecommunityId2", noMarkup("communityId2nextTimeSpanIduserId3false"), yesMarkup("communityId2nextTimeSpanIduserId3true"))],
                 ["userId4@b.c", subject2, MailChimp.from, mailTemplate.name,
-                    givenContent("titlecommunityId2", "communityId2nextTimeSpanIduserId4false", "communityId2nextTimeSpanIduserId4true")],
+                    givenContent("userId4f", "titlecommunityId2", noMarkup("communityId2nextTimeSpanIduserId4false"), yesMarkup("communityId2nextTimeSpanIduserId4true"))],
                 ["userId5@b.c", subject2, MailChimp.from, mailTemplate.name,
-                    givenContent("titlecommunityId2", "communityId2nextTimeSpanIduserId5false", "communityId2nextTimeSpanIduserId5true")]
+                    givenContent("userId5f", "titlecommunityId2", noMarkup("communityId2nextTimeSpanIduserId5false"), yesMarkup("communityId2nextTimeSpanIduserId5true"))]
             ]
         )
     })

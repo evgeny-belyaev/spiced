@@ -132,7 +132,7 @@ export default describe("FormsApi", () => {
         )
     })
 
-    test("Should return empty array for wrong response", async () => {
+    test("Should return null for wrong response", async () => {
         // Arrange
         const formsApi = new FormsApi()
 
@@ -146,10 +146,10 @@ export default describe("FormsApi", () => {
         const r = await formsApi.getAnswers(Forms.createCommunity.formId, "123")
 
         // Assert
-        expect(r).toEqual([])
+        expect(r).toEqual(null)
     })
 
-    test("Should return empty array when more that 1 item", async () => {
+    test("Should return null when more that 1 item", async () => {
         // Arrange
         mockedAxios.get.mockImplementation(() => (Promise.resolve({
             data: {
@@ -163,11 +163,10 @@ export default describe("FormsApi", () => {
 
         const formsApi = new FormsApi()
 
-
         //Act
         const r = await formsApi.getAnswers(Forms.createCommunity.formId, "123")
 
         // Assert
-        expect(r).toEqual([])
+        expect(r).toEqual(null)
     })
 })

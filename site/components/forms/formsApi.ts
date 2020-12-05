@@ -1,6 +1,6 @@
 import { Forms } from "../constants"
 import { AxiosResponse, AxiosStatic } from "axios"
-import { FormAnswer, FormResponse } from "./types"
+import { FormResponse, FormResponseItem } from "./types"
 import { Logger } from "../logger"
 import { callGracefully } from "../../api/utils"
 
@@ -8,14 +8,13 @@ import { callGracefully } from "../../api/utils"
 const axios = require("axios") as AxiosStatic
 
 export interface IFormsApi {
-    getResponse (formId: string, responseId: string): Promise<FormResponse | null>
-    getAnswers (formId: string, responseId: string): Promise<FormAnswer[]>
+    getAnswers(formId: string, responseId: string): Promise<FormResponseItem | null>
 }
 
-export class FormsApi implements IFormsApi{
+export class FormsApi implements IFormsApi {
     log = new Logger("FormsApi")
 
-    private async get (url: string, bodyParams?: unknown): Promise<AxiosResponse> {
+    private async get(url: string, bodyParams?: unknown): Promise<AxiosResponse> {
         return await axios.get(url, {
             method: "GET",
             headers: {
@@ -24,7 +23,7 @@ export class FormsApi implements IFormsApi{
         })
     }
 
-    async getResponse (formId: string, responseId: string): Promise<FormResponse | null> {
+    private async getResponse(formId: string, responseId: string): Promise<FormResponse | null> {
         const responsesUrl = Forms.getResponsesUrl(formId, [responseId])
 
         try {
@@ -45,20 +44,18 @@ export class FormsApi implements IFormsApi{
         }
     }
 
-    async getAnswers (formId: string, responseId: string): Promise<FormAnswer[]> {
+    async getAnswers(formId: string, responseId: string): Promise<FormResponseItem | null> {
         const formResponse = await this.getResponse(formId, responseId)
 
         if (formResponse && formResponse.items) {
             if (formResponse.items.length > 1) {
                 this.log.error("formResponse.items.length > 1")
-                return []
+                return null
             } else {
-                const firstItem = formResponse.items[0]
-
-                return firstItem.answers
+                return formResponse.items[0]
             }
         } else {
-            return []
+            return null
         }
     }
 }

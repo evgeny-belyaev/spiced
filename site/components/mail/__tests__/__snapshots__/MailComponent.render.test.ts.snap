@@ -1,188 +1,1195 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`MailComponent renderTemplate: communityCreated 1`] = `
-"<div>
-          Wow! You've created community: <span>communityTitle</span>
-      </div>    
-      <div>
-      Here is invitation link: <span><a href=\\"https://a.b.com/\\">https://a.b.com/</a></span>
-    </div>"
+"<!DOCTYPE html>
+<html>
+<head>
+    <meta charset=\\"utf-8\\">
+    <meta http-equiv=\\"Content-Type\\" content=\\"text/html; charset=utf-8\\">
+    <meta name=\\"viewport\\" content=\\"width=400\\">
+    <title>3. Community creation invitation link EMAIL - Here is your community invitation link</title><!-- og:meta -->
+    <meta property=\\"og:url\\" content=\\"page15663269.html\\">
+    <meta property=\\"og:title\\" content=\\"3. Community creation invitation link EMAIL - Here is your community invitation link\\">
+    <meta property=\\"og:description\\" content=\\"\\"><!-- /og:meta -->
+    <link rel=\\"shortcut icon\\" href=\\"images/tildafavicon.ico\\">
+    <style type=\\"text/css\\">    .ExternalClass {
+        width: 100%;
+    }
+
+    img {
+        border: 0 none;
+        height: auto;
+        line-height: 100%;
+        outline: none;
+        text-decoration: none;
+        -ms-interpolation-mode: bicubic;
+    }
+
+    a img {
+        border: 0 none;
+    }
+
+    #outlook a {
+        padding: 0;
+    }
+
+    #allrecords {
+        height: 100% !important;
+        margin: 0;
+        padding: 0;
+        width: 100% !important;
+        -webkit-font-smoothing: antialiased;
+        line-height: 1.45;
+    }
+
+    #allrecords td {
+        margin: 0;
+        padding: 0;
+    }
+
+    #allrecords ul {
+        -webkit-padding-start: 30px;
+    }
+
+    @media only screen and (max-width: 600px) {
+        .r {
+            width: 100% !important;
+            min-width: 400px !important;
+        }
+    }
+
+    @media only screen and (max-width: 480px) {
+        .t-emailBlock {
+            display: block !important;
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+            width: 100% !important;
+        }
+
+        .t-emailBlockPadding {
+            padding-top: 15px !important;
+        }
+
+        .t-emailBlockPadding30 {
+            padding-top: 30px !important;
+        }
+
+        .t-emailAlignLeft {
+            text-align: left !important;
+            margin-left: 0 !important;
+        }
+
+        .t-emailAlignCenter {
+            text-align: center !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
+        }
+    }</style>
+</head>
+<body cellpadding=\\"0\\" cellspacing=\\"0\\" style=\\"padding: 0; margin: 0; border: 0; width:100%; -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; background-color: #efefef;\\">
+<!--allrecords-->
+<table id=\\"allrecords\\" data-tilda-email=\\"yes\\" data-tilda-project-id=\\"3341502\\" data-tilda-page-id=\\"15663269\\" data-tilda-page-alias=\\"\\" cellpadding=\\"0\\" cellspacing=\\"0\\" style=\\"width:100%; border-collapse:collapse; border-spacing:0; padding:0; margin:0; border:0;\\">
+    <tr>
+        <td style=\\"background-color: #efefef; \\"><!--record_mail-->
+            <table id=\\"rec256494808\\" style=\\"width:100%; border-collapse:collapse; border-spacing:0; margin:0; border:0;\\" cellpadding=\\"0\\" cellspacing=\\"0\\" data-record-type=\\"619\\">
+                <tr>
+                    <td style=\\"padding-left:15px; padding-right:15px; \\">
+                        <table id=\\"recin256494808\\" class=\\"r\\" style=\\"margin: 0 auto;border-spacing: 0;width:600px;\\" align=\\"center\\">
+                            <tr>
+                                <td style=\\"padding-top:0px;padding-bottom:0px;padding-left:0;padding-right:0;\\">
+                                    <table valign=\\"top\\" border=\\"0\\" cellpadding=\\"0\\" cellspacing=\\"0\\" width=\\"100%\\">
+                                        <tr>
+                                            <td style=\\"height:30px;\\" height=\\"30px\\"></td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table><!--/record--><!--record_mail-->
+            <table id=\\"rec256494809\\" style=\\"width:100%; border-collapse:collapse; border-spacing:0; margin:0; border:0;\\" cellpadding=\\"0\\" cellspacing=\\"0\\" data-record-type=\\"622\\">
+                <tr>
+                    <td style=\\"padding-left:15px; padding-right:15px; background-color:#f7c304;\\">
+                        <table id=\\"recin256494809\\" class=\\"r\\" style=\\"margin: 0 auto;background-color:#f7c304;border-spacing: 0;width:600px;\\" align=\\"center\\">
+                            <tr>
+                                <td style=\\"padding-top:45px;padding-bottom:45px;padding-left:0;padding-right:0;\\">
+                                    <table border=\\"0\\" cellpadding=\\"0\\" cellspacing=\\"0\\" width=\\"100%\\">
+                                        <tr>
+                                            <td class=\\"t-emailBlock\\" valign=\\"middle\\" style=\\"text-align: left; padding-right: 10px; width: 50%;\\"><a style=\\"text-decoration: none; font-weight: normal; font-family: Helvetica Neue, Helvetica, Arial, sans-serif; color:#000000;font-size:30px;\\" href=\\"https://tmixed.com/\\">tmixed</a></td>
+                                            <td class=\\"t-emailBlock t-emailBlockPadding t-emailAlignLeft\\" valign=\\"middle\\" style=\\"text-align: right; padding-left: 10px; width: 50%;\\">
+                                                <div style=\\" font-family: Helvetica Neue, Helvetica, Arial, sans-serif; color:#000000;font-size:16px;\\">
+                                                    <strong>a brand new networking</strong></div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table><!--/record--><!--record_mail-->
+            <table id=\\"rec256494810\\" style=\\"width:100%; border-collapse:collapse; border-spacing:0; margin:0; border:0;\\" cellpadding=\\"0\\" cellspacing=\\"0\\" data-record-type=\\"323\\">
+                <tr>
+                    <td style=\\"padding-left:15px; padding-right:15px; \\">
+                        <table id=\\"recin256494810\\" class=\\"r\\" style=\\"margin: 0 auto;background-color:#ffffff;border-spacing: 0;width:600px;\\" align=\\"center\\">
+                            <tr>
+                                <td style=\\"padding-top:30px;padding-bottom:15px;padding-left:30px;padding-right:30px;\\">
+                                    <table valign=\\"top\\" border=\\"0\\" cellpadding=\\"0\\" cellspacing=\\"0\\" width=\\"100%\\" style=\\"width: 100%;\\">
+                                        <tr>
+                                            <td style=\\"text-align: left; padding: 0 0 0;\\">
+                                                <div style=\\"margin-right: auto; font-family: Helvetica Neue, Helvetica, Arial, sans-serif; color:#222222;font-size:28px;font-weight:bold;\\">
+                                                    Here is your <span>communityTitle</span>
+                                                    invitation link
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table><!--/record--><!--record_mail-->
+            <table id=\\"rec256494811\\" style=\\"width:100%; border-collapse:collapse; border-spacing:0; margin:0; border:0;\\" cellpadding=\\"0\\" cellspacing=\\"0\\" data-record-type=\\"329\\">
+                <tr>
+                    <td style=\\"padding-left:15px; padding-right:15px; \\">
+                        <table id=\\"recin256494811\\" class=\\"r\\" style=\\"margin: 0 auto;background-color:#ffffff;border-spacing: 0;width:600px;\\" align=\\"center\\">
+                            <tr>
+                                <td style=\\"padding-top:15px;padding-bottom:15px;padding-left:30px;padding-right:30px;\\">
+                                    <table border=\\"0\\" cellpadding=\\"0\\" cellspacing=\\"0\\" width=\\"100%\\" style=\\"width: 100%;\\">
+                                        <tr>
+                                            <td style=\\"text-align: left; padding: 0 0 0;\\">
+                                                <div style=\\"margin-right: auto; font-family: Helvetica Neue, Helvetica, Arial, sans-serif; color:#444444;font-size:20px;line-height:1.45;\\">
+                                                    Hi, <span>userFirstName</span>, this is
+                                                    tmixed.<br><br>Prepare to launch
+                                                    tmixed in your community!<br>Here is a link: <span><a href=\\"https://a.b.com/\\">https://a.b.com/</a></span><br>Just
+                                                    publish
+                                                    a post with the link and you are all set up!<br></div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table><!--/record--><!--record_mail-->
+    </td></tr>
+</table><!--/allrecords--></body>
+</html>"
 `;
 
 exports[`MailComponent renderTemplate: communityJoined 1`] = `
-"<div>
-          Wow! You've joined to: <span>communityTitle</span>
-      </div>"
+"<!DOCTYPE html>
+<html>
+<head>
+    <meta charset=\\"utf-8\\">
+    <meta http-equiv=\\"Content-Type\\" content=\\"text/html; charset=utf-8\\">
+    <meta name=\\"viewport\\" content=\\"width=400\\">
+    <title>7. Successful join community EMAIL - You have successfully joined $COMMUNITY!</title><!-- og:meta -->
+    <meta property=\\"og:url\\" content=\\"page15663448.html\\">
+    <meta property=\\"og:title\\" content=\\"7. Successful join community EMAIL - You have successfully joined $COMMUNITY!\\">
+    <meta property=\\"og:description\\" content=\\"\\"><!-- /og:meta -->
+    <link rel=\\"shortcut icon\\" href=\\"images/tildafavicon.ico\\">
+    <style type=\\"text/css\\">    .ExternalClass {
+        width: 100%;
+    }
+
+    img {
+        border: 0 none;
+        height: auto;
+        line-height: 100%;
+        outline: none;
+        text-decoration: none;
+        -ms-interpolation-mode: bicubic;
+    }
+
+    a img {
+        border: 0 none;
+    }
+
+    #outlook a {
+        padding: 0;
+    }
+
+    #allrecords {
+        height: 100% !important;
+        margin: 0;
+        padding: 0;
+        width: 100% !important;
+        -webkit-font-smoothing: antialiased;
+        line-height: 1.45;
+    }
+
+    #allrecords td {
+        margin: 0;
+        padding: 0;
+    }
+
+    #allrecords ul {
+        -webkit-padding-start: 30px;
+    }
+
+    @media only screen and (max-width: 600px) {
+        .r {
+            width: 100% !important;
+            min-width: 400px !important;
+        }
+    }
+
+    @media only screen and (max-width: 480px) {
+        .t-emailBlock {
+            display: block !important;
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+            width: 100% !important;
+        }
+
+        .t-emailBlockPadding {
+            padding-top: 15px !important;
+        }
+
+        .t-emailBlockPadding30 {
+            padding-top: 30px !important;
+        }
+
+        .t-emailAlignLeft {
+            text-align: left !important;
+            margin-left: 0 !important;
+        }
+
+        .t-emailAlignCenter {
+            text-align: center !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
+        }
+    }</style>
+</head>
+<body cellpadding=\\"0\\" cellspacing=\\"0\\" style=\\"padding: 0; margin: 0; border: 0; width:100%; -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; background-color: #efefef;\\">
+<!--allrecords-->
+<table id=\\"allrecords\\" data-tilda-email=\\"yes\\" data-tilda-project-id=\\"3341502\\" data-tilda-page-id=\\"15663448\\" data-tilda-page-alias=\\"\\" cellpadding=\\"0\\" cellspacing=\\"0\\" style=\\"width:100%; border-collapse:collapse; border-spacing:0; padding:0; margin:0; border:0;\\">
+    <tr>
+        <td style=\\"background-color: #efefef; \\"><!--record_mail-->
+            <table id=\\"rec256497648\\" style=\\"width:100%; border-collapse:collapse; border-spacing:0; margin:0; border:0;\\" cellpadding=\\"0\\" cellspacing=\\"0\\" data-record-type=\\"619\\">
+                <tr>
+                    <td style=\\"padding-left:15px; padding-right:15px; \\">
+                        <table id=\\"recin256497648\\" class=\\"r\\" style=\\"margin: 0 auto;border-spacing: 0;width:600px;\\" align=\\"center\\">
+                            <tr>
+                                <td style=\\"padding-top:0px;padding-bottom:0px;padding-left:0;padding-right:0;\\">
+                                    <table valign=\\"top\\" border=\\"0\\" cellpadding=\\"0\\" cellspacing=\\"0\\" width=\\"100%\\">
+                                        <tr>
+                                            <td style=\\"height:30px;\\" height=\\"30px\\"></td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table><!--/record--><!--record_mail-->
+            <table id=\\"rec256497649\\" style=\\"width:100%; border-collapse:collapse; border-spacing:0; margin:0; border:0;\\" cellpadding=\\"0\\" cellspacing=\\"0\\" data-record-type=\\"622\\">
+                <tr>
+                    <td style=\\"padding-left:15px; padding-right:15px; background-color:#f7c304;\\">
+                        <table id=\\"recin256497649\\" class=\\"r\\" style=\\"margin: 0 auto;background-color:#f7c304;border-spacing: 0;width:600px;\\" align=\\"center\\">
+                            <tr>
+                                <td style=\\"padding-top:45px;padding-bottom:45px;padding-left:0;padding-right:0;\\">
+                                    <table border=\\"0\\" cellpadding=\\"0\\" cellspacing=\\"0\\" width=\\"100%\\">
+                                        <tr>
+                                            <td class=\\"t-emailBlock\\" valign=\\"middle\\" style=\\"text-align: left; padding-right: 10px; width: 50%;\\"><a style=\\"text-decoration: none; font-weight: normal; font-family: Helvetica Neue, Helvetica, Arial, sans-serif; color:#000000;font-size:30px;\\" href=\\"https://tmixed.com/\\">tmixed</a></td>
+                                            <td class=\\"t-emailBlock t-emailBlockPadding t-emailAlignLeft\\" valign=\\"middle\\" style=\\"text-align: right; padding-left: 10px; width: 50%;\\">
+                                                <div style=\\" font-family: Helvetica Neue, Helvetica, Arial, sans-serif; color:#000000;font-size:16px;\\">
+                                                    <strong>a brand new networking</strong></div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table><!--/record--><!--record_mail-->
+            <table id=\\"rec256497650\\" style=\\"width:100%; border-collapse:collapse; border-spacing:0; margin:0; border:0;\\" cellpadding=\\"0\\" cellspacing=\\"0\\" data-record-type=\\"323\\">
+                <tr>
+                    <td style=\\"padding-left:15px; padding-right:15px; \\">
+                        <table id=\\"recin256497650\\" class=\\"r\\" style=\\"margin: 0 auto;background-color:#ffffff;border-spacing: 0;width:600px;\\" align=\\"center\\">
+                            <tr>
+                                <td style=\\"padding-top:30px;padding-bottom:15px;padding-left:30px;padding-right:30px;\\">
+                                    <table valign=\\"top\\" border=\\"0\\" cellpadding=\\"0\\" cellspacing=\\"0\\" width=\\"100%\\" style=\\"width: 100%;\\">
+                                        <tr>
+                                            <td style=\\"text-align: left; padding: 0 0 0;\\">
+                                                <div style=\\"margin-right: auto; font-family: Helvetica Neue, Helvetica, Arial, sans-serif; color:#222222;font-size:28px;font-weight:bold;\\">
+                                                    You have successfully joined <span>communityTitle</span>!
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table><!--/record--><!--record_mail-->
+            <table id=\\"rec256497651\\" style=\\"width:100%; border-collapse:collapse; border-spacing:0; margin:0; border:0;\\" cellpadding=\\"0\\" cellspacing=\\"0\\" data-record-type=\\"329\\">
+                <tr>
+                    <td style=\\"padding-left:15px; padding-right:15px; \\">
+                        <table id=\\"recin256497651\\" class=\\"r\\" style=\\"margin: 0 auto;background-color:#ffffff;border-spacing: 0;width:600px;\\" align=\\"center\\">
+                            <tr>
+                                <td style=\\"padding-top:15px;padding-bottom:15px;padding-left:30px;padding-right:30px;\\">
+                                    <table border=\\"0\\" cellpadding=\\"0\\" cellspacing=\\"0\\" width=\\"100%\\" style=\\"width: 100%;\\">
+                                        <tr>
+                                            <td style=\\"text-align: left; padding: 0 0 0;\\">
+                                                <div style=\\"margin-right: auto; font-family: Helvetica Neue, Helvetica, Arial, sans-serif; color:#444444;font-size:20px;line-height:1.45;\\">
+                                                    Hi,  <span>userFirstName</span>, this is tmixed.<br><br>Congrats, you have
+                                                    joined <span>communityTitle</span>! <br><br> Get ready to meet your first tmixed
+                                                    match!<br>I am looking forward to sending it to you on Monday.
+                                                    <br></div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table><!--/record--><!--record_mail-->
+    </td></tr>
+</table><!--/allrecords--></body>
+</html>"
 `;
 
 exports[`MailComponent renderTemplate: createCommunityConfirmation 1`] = `
-"<div>Here is community confirmation url: <span><a href=\\"https://a.b.com/\\">https://a.b.com/</a></span>
-    </div>"
+"<!DOCTYPE html>
+<html>
+<head>
+    <meta charset=\\"utf-8\\">
+    <meta http-equiv=\\"Content-Type\\" content=\\"text/html; charset=utf-8\\">
+    <meta name=\\"viewport\\" content=\\"width=400\\">
+    <title>1. Community creation confirmation EMAIL - Your tmixed community is almost there</title><!-- og:meta -->
+    <meta property=\\"og:url\\" content=\\"page15663062.html\\">
+    <meta property=\\"og:title\\" content=\\"1. Community creation confirmation EMAIL - Your tmixed community is almost there\\">
+    <meta property=\\"og:description\\" content=\\"\\"><!-- /og:meta -->
+    <link rel=\\"shortcut icon\\" href=\\"images/tildafavicon.ico\\">
+    <style type=\\"text/css\\">    .ExternalClass {
+        width: 100%;
+    }
+
+    img {
+        border: 0 none;
+        height: auto;
+        line-height: 100%;
+        outline: none;
+        text-decoration: none;
+        -ms-interpolation-mode: bicubic;
+    }
+
+    a img {
+        border: 0 none;
+    }
+
+    #outlook a {
+        padding: 0;
+    }
+
+    #allrecords {
+        height: 100% !important;
+        margin: 0;
+        padding: 0;
+        width: 100% !important;
+        -webkit-font-smoothing: antialiased;
+        line-height: 1.45;
+    }
+
+    #allrecords td {
+        margin: 0;
+        padding: 0;
+    }
+
+    #allrecords ul {
+        -webkit-padding-start: 30px;
+    }
+
+    @media only screen and (max-width: 600px) {
+        .r {
+            width: 100% !important;
+            min-width: 400px !important;
+        }
+    }
+
+    @media only screen and (max-width: 480px) {
+        .t-emailBlock {
+            display: block !important;
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+            width: 100% !important;
+        }
+
+        .t-emailBlockPadding {
+            padding-top: 15px !important;
+        }
+
+        .t-emailBlockPadding30 {
+            padding-top: 30px !important;
+        }
+
+        .t-emailAlignLeft {
+            text-align: left !important;
+            margin-left: 0 !important;
+        }
+
+        .t-emailAlignCenter {
+            text-align: center !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
+        }
+    }</style>
+</head>
+<body cellpadding=\\"0\\" cellspacing=\\"0\\" style=\\"padding: 0; margin: 0; border: 0; width:100%; -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; background-color: #efefef;\\">
+<!--allrecords-->
+<table id=\\"allrecords\\" data-tilda-email=\\"yes\\" data-tilda-project-id=\\"3341502\\" data-tilda-page-id=\\"15663062\\" data-tilda-page-alias=\\"\\" cellpadding=\\"0\\" cellspacing=\\"0\\" style=\\"width:100%; border-collapse:collapse; border-spacing:0; padding:0; margin:0; border:0;\\">
+    <tr>
+        <td style=\\"background-color: #efefef; \\"><!--record_mail-->
+            <table id=\\"rec256491733\\" style=\\"width:100%; border-collapse:collapse; border-spacing:0; margin:0; border:0;\\" cellpadding=\\"0\\" cellspacing=\\"0\\" data-record-type=\\"619\\">
+                <tr>
+                    <td style=\\"padding-left:15px; padding-right:15px; \\">
+                        <table id=\\"recin256491733\\" class=\\"r\\" style=\\"margin: 0 auto;border-spacing: 0;width:600px;\\" align=\\"center\\">
+                            <tr>
+                                <td style=\\"padding-top:0px;padding-bottom:0px;padding-left:0;padding-right:0;\\">
+                                    <table valign=\\"top\\" border=\\"0\\" cellpadding=\\"0\\" cellspacing=\\"0\\" width=\\"100%\\">
+                                        <tr>
+                                            <td style=\\"height:30px;\\" height=\\"30px\\"></td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table><!--/record--><!--record_mail-->
+            <table id=\\"rec256491734\\" style=\\"width:100%; border-collapse:collapse; border-spacing:0; margin:0; border:0;\\" cellpadding=\\"0\\" cellspacing=\\"0\\" data-record-type=\\"622\\">
+                <tr>
+                    <td style=\\"padding-left:15px; padding-right:15px; background-color:#f7c304;\\">
+                        <table id=\\"recin256491734\\" class=\\"r\\" style=\\"margin: 0 auto;background-color:#f7c304;border-spacing: 0;width:600px;\\" align=\\"center\\">
+                            <tr>
+                                <td style=\\"padding-top:45px;padding-bottom:45px;padding-left:0;padding-right:0;\\">
+                                    <table border=\\"0\\" cellpadding=\\"0\\" cellspacing=\\"0\\" width=\\"100%\\">
+                                        <tr>
+                                            <td class=\\"t-emailBlock\\" valign=\\"middle\\" style=\\"text-align: left; padding-right: 10px; width: 50%;\\"><a style=\\"text-decoration: none; font-weight: normal; font-family: Helvetica Neue, Helvetica, Arial, sans-serif; color:#000000;font-size:30px;\\" href=\\"https://tmixed.com/\\">tmixed</a></td>
+                                            <td class=\\"t-emailBlock t-emailBlockPadding t-emailAlignLeft\\" valign=\\"middle\\" style=\\"text-align: right; padding-left: 10px; width: 50%;\\">
+                                                <div style=\\" font-family: Helvetica Neue, Helvetica, Arial, sans-serif; color:#000000;font-size:16px;\\">
+                                                    <strong>a brand new networking</strong></div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table><!--/record--><!--record_mail-->
+            <table id=\\"rec256491735\\" style=\\"width:100%; border-collapse:collapse; border-spacing:0; margin:0; border:0;\\" cellpadding=\\"0\\" cellspacing=\\"0\\" data-record-type=\\"323\\">
+                <tr>
+                    <td style=\\"padding-left:15px; padding-right:15px; \\">
+                        <table id=\\"recin256491735\\" class=\\"r\\" style=\\"margin: 0 auto;background-color:#ffffff;border-spacing: 0;width:600px;\\" align=\\"center\\">
+                            <tr>
+                                <td style=\\"padding-top:30px;padding-bottom:15px;padding-left:30px;padding-right:30px;\\">
+                                    <table valign=\\"top\\" border=\\"0\\" cellpadding=\\"0\\" cellspacing=\\"0\\" width=\\"100%\\" style=\\"width: 100%;\\">
+                                        <tr>
+                                            <td style=\\"text-align: left; padding: 0 0 0;\\">
+                                                <div style=\\"margin-right: auto; font-family: Helvetica Neue, Helvetica, Arial, sans-serif; color:#222222;font-size:28px;font-weight:bold;\\">
+                                                    Your tmixed community is almost there
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table><!--/record--><!--record_mail-->
+            <table id=\\"rec256491736\\" style=\\"width:100%; border-collapse:collapse; border-spacing:0; margin:0; border:0;\\" cellpadding=\\"0\\" cellspacing=\\"0\\" data-record-type=\\"329\\">
+                <tr>
+                    <td style=\\"padding-left:15px; padding-right:15px; \\">
+                        <table id=\\"recin256491736\\" class=\\"r\\" style=\\"margin: 0 auto;background-color:#ffffff;border-spacing: 0;width:600px;\\" align=\\"center\\">
+                            <tr>
+                                <td style=\\"padding-top:15px;padding-bottom:15px;padding-left:30px;padding-right:30px;\\">
+                                    <table border=\\"0\\" cellpadding=\\"0\\" cellspacing=\\"0\\" width=\\"100%\\" style=\\"width: 100%;\\">
+                                        <tr>
+                                            <td style=\\"text-align: left; padding: 0 0 0;\\">
+                                                <div style=\\"margin-right: auto; font-family: Helvetica Neue, Helvetica, Arial, sans-serif; color:#444444;font-size:20px;line-height:1.45;\\">
+                                                    Hi, <span>userFirstName</span>, this is
+                                                    tmixed.<br>Simply click the big blue
+                                                    button below to verify your email address.<br></div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table><!--/record--><!--record_mail-->
+            <table id=\\"rec256491737\\" style=\\"width:100%; border-collapse:collapse; border-spacing:0; margin:0; border:0;\\" cellpadding=\\"0\\" cellspacing=\\"0\\" data-record-type=\\"618\\">
+                <tr>
+                    <td style=\\"padding-left:15px; padding-right:15px; \\">
+                        <table id=\\"recin256491737\\" class=\\"r\\" style=\\"margin: 0 auto;background-color:#ffffff;border-spacing: 0;width:600px;\\" align=\\"center\\">
+                            <tr>
+                                <td style=\\"padding-top:30px;padding-bottom:45px;padding-left:30px;padding-right:30px;\\">
+                                    <!-- Workaround: Calculate border radius for Outlook-->
+                                    <table border=\\"0\\" cellpadding=\\"0\\" cellspacing=\\"0\\" width=\\"100%\\" style=\\"width:100%;\\">
+                                        <tr>
+                                            <td>
+                                                <table border=\\"0\\" cellpadding=\\"0\\" cellspacing=\\"0\\" style=\\"margin: 0 auto;\\" align=\\"center\\">
+                                                    <tr>
+                                                        <td><a href=\\"https://a.b.com/\\">https://a.b.com/</a></td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table><!--/record--><!--record_mail-->
+    </td></tr>
+</table><!--/allrecords--></body>
+</html>"
 `;
 
 exports[`MailComponent renderTemplate: joinCommunityConfirmation 1`] = `
-"<div>
-    To join the community please follow this link : <span><a href=\\"https://a.b.com/\\">https://a.b.com/</a></span></div>"
+"<!DOCTYPE html>
+<html>
+<head>
+    <meta charset=\\"utf-8\\">
+    <meta http-equiv=\\"Content-Type\\" content=\\"text/html; charset=utf-8\\">
+    <meta name=\\"viewport\\" content=\\"width=400\\">
+    <title>5. Join community confirmation EMAIL - You are about to join community</title><!-- og:meta -->
+    <meta property=\\"og:url\\" content=\\"page15663160.html\\">
+    <meta property=\\"og:title\\" content=\\"5. Join community confirmation EMAIL - You are about to join community\\">
+    <meta property=\\"og:description\\" content=\\"\\"><!-- /og:meta -->
+    <link rel=\\"shortcut icon\\" href=\\"images/tildafavicon.ico\\">
+    <style type=\\"text/css\\">    .ExternalClass {
+        width: 100%;
+    }
+
+    img {
+        border: 0 none;
+        height: auto;
+        line-height: 100%;
+        outline: none;
+        text-decoration: none;
+        -ms-interpolation-mode: bicubic;
+    }
+
+    a img {
+        border: 0 none;
+    }
+
+    #outlook a {
+        padding: 0;
+    }
+
+    #allrecords {
+        height: 100% !important;
+        margin: 0;
+        padding: 0;
+        width: 100% !important;
+        -webkit-font-smoothing: antialiased;
+        line-height: 1.45;
+    }
+
+    #allrecords td {
+        margin: 0;
+        padding: 0;
+    }
+
+    #allrecords ul {
+        -webkit-padding-start: 30px;
+    }
+
+    @media only screen and (max-width: 600px) {
+        .r {
+            width: 100% !important;
+            min-width: 400px !important;
+        }
+    }
+
+    @media only screen and (max-width: 480px) {
+        .t-emailBlock {
+            display: block !important;
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+            width: 100% !important;
+        }
+
+        .t-emailBlockPadding {
+            padding-top: 15px !important;
+        }
+
+        .t-emailBlockPadding30 {
+            padding-top: 30px !important;
+        }
+
+        .t-emailAlignLeft {
+            text-align: left !important;
+            margin-left: 0 !important;
+        }
+
+        .t-emailAlignCenter {
+            text-align: center !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
+        }
+    }</style>
+</head>
+<body cellpadding=\\"0\\" cellspacing=\\"0\\" style=\\"padding: 0; margin: 0; border: 0; width:100%; -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; background-color: #efefef;\\">
+<!--allrecords-->
+<table id=\\"allrecords\\" data-tilda-email=\\"yes\\" data-tilda-project-id=\\"3341502\\" data-tilda-page-id=\\"15663160\\" data-tilda-page-alias=\\"\\" cellpadding=\\"0\\" cellspacing=\\"0\\" style=\\"width:100%; border-collapse:collapse; border-spacing:0; padding:0; margin:0; border:0;\\">
+    <tr>
+        <td style=\\"background-color: #efefef; \\"><!--record_mail-->
+            <table id=\\"rec256493328\\" style=\\"width:100%; border-collapse:collapse; border-spacing:0; margin:0; border:0;\\" cellpadding=\\"0\\" cellspacing=\\"0\\" data-record-type=\\"619\\">
+                <tr>
+                    <td style=\\"padding-left:15px; padding-right:15px; \\">
+                        <table id=\\"recin256493328\\" class=\\"r\\" style=\\"margin: 0 auto;border-spacing: 0;width:600px;\\" align=\\"center\\">
+                            <tr>
+                                <td style=\\"padding-top:0px;padding-bottom:0px;padding-left:0;padding-right:0;\\">
+                                    <table valign=\\"top\\" border=\\"0\\" cellpadding=\\"0\\" cellspacing=\\"0\\" width=\\"100%\\">
+                                        <tr>
+                                            <td style=\\"height:30px;\\" height=\\"30px\\"></td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table><!--/record--><!--record_mail-->
+            <table id=\\"rec256493329\\" style=\\"width:100%; border-collapse:collapse; border-spacing:0; margin:0; border:0;\\" cellpadding=\\"0\\" cellspacing=\\"0\\" data-record-type=\\"622\\">
+                <tr>
+                    <td style=\\"padding-left:15px; padding-right:15px; background-color:#f7c304;\\">
+                        <table id=\\"recin256493329\\" class=\\"r\\" style=\\"margin: 0 auto;background-color:#f7c304;border-spacing: 0;width:600px;\\" align=\\"center\\">
+                            <tr>
+                                <td style=\\"padding-top:45px;padding-bottom:45px;padding-left:0;padding-right:0;\\">
+                                    <table border=\\"0\\" cellpadding=\\"0\\" cellspacing=\\"0\\" width=\\"100%\\">
+                                        <tr>
+                                            <td class=\\"t-emailBlock\\" valign=\\"middle\\" style=\\"text-align: left; padding-right: 10px; width: 50%;\\"><a style=\\"text-decoration: none; font-weight: normal; font-family: Helvetica Neue, Helvetica, Arial, sans-serif; color:#000000;font-size:30px;\\" href=\\"https://tmixed.com/\\">tmixed</a></td>
+                                            <td class=\\"t-emailBlock t-emailBlockPadding t-emailAlignLeft\\" valign=\\"middle\\" style=\\"text-align: right; padding-left: 10px; width: 50%;\\">
+                                                <div style=\\" font-family: Helvetica Neue, Helvetica, Arial, sans-serif; color:#000000;font-size:16px;\\">
+                                                    <strong>a brand new networking</strong></div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table><!--/record--><!--record_mail-->
+            <table id=\\"rec256493330\\" style=\\"width:100%; border-collapse:collapse; border-spacing:0; margin:0; border:0;\\" cellpadding=\\"0\\" cellspacing=\\"0\\" data-record-type=\\"323\\">
+                <tr>
+                    <td style=\\"padding-left:15px; padding-right:15px; \\">
+                        <table id=\\"recin256493330\\" class=\\"r\\" style=\\"margin: 0 auto;background-color:#ffffff;border-spacing: 0;width:600px;\\" align=\\"center\\">
+                            <tr>
+                                <td style=\\"padding-top:30px;padding-bottom:15px;padding-left:30px;padding-right:30px;\\">
+                                    <table valign=\\"top\\" border=\\"0\\" cellpadding=\\"0\\" cellspacing=\\"0\\" width=\\"100%\\" style=\\"width: 100%;\\">
+                                        <tr>
+                                            <td style=\\"text-align: left; padding: 0 0 0;\\">
+                                                <div style=\\"margin-right: auto; font-family: Helvetica Neue, Helvetica, Arial, sans-serif; color:#222222;font-size:28px;font-weight:bold;\\">
+                                                    You are about to join <span>communityTitle</span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table><!--/record--><!--record_mail-->
+            <table id=\\"rec256493331\\" style=\\"width:100%; border-collapse:collapse; border-spacing:0; margin:0; border:0;\\" cellpadding=\\"0\\" cellspacing=\\"0\\" data-record-type=\\"329\\">
+                <tr>
+                    <td style=\\"padding-left:15px; padding-right:15px; \\">
+                        <table id=\\"recin256493331\\" class=\\"r\\" style=\\"margin: 0 auto;background-color:#ffffff;border-spacing: 0;width:600px;\\" align=\\"center\\">
+                            <tr>
+                                <td style=\\"padding-top:15px;padding-bottom:15px;padding-left:30px;padding-right:30px;\\">
+                                    <table border=\\"0\\" cellpadding=\\"0\\" cellspacing=\\"0\\" width=\\"100%\\" style=\\"width: 100%;\\">
+                                        <tr>
+                                            <td style=\\"text-align: left; padding: 0 0 0;\\">
+                                                <div style=\\"margin-right: auto; font-family: Helvetica Neue, Helvetica, Arial, sans-serif; color:#444444;font-size:20px;line-height:1.45;\\">
+                                                    Hi, <span>userFirstName</span>, this is
+                                                    tmixed.<br><br>Simply click the big
+                                                    blue button below to verify your email address.<br></div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table><!--/record--><!--record_mail-->
+            <table id=\\"rec256493332\\" style=\\"width:100%; border-collapse:collapse; border-spacing:0; margin:0; border:0;\\" cellpadding=\\"0\\" cellspacing=\\"0\\" data-record-type=\\"618\\">
+                <tr>
+                    <td style=\\"padding-left:15px; padding-right:15px; \\">
+                        <table id=\\"recin256493332\\" class=\\"r\\" style=\\"margin: 0 auto;background-color:#ffffff;border-spacing: 0;width:600px;\\" align=\\"center\\">
+                            <tr>
+                                <td style=\\"padding-top:30px;padding-bottom:45px;padding-left:30px;padding-right:30px;\\">
+                                    <!-- Workaround: Calculate border radius for Outlook-->
+                                    <table border=\\"0\\" cellpadding=\\"0\\" cellspacing=\\"0\\" width=\\"100%\\" style=\\"width:100%;\\">
+                                        <tr>
+                                            <td>
+                                                <table border=\\"0\\" cellpadding=\\"0\\" cellspacing=\\"0\\" style=\\"margin: 0 auto;\\" align=\\"center\\">
+                                                    <tr>
+                                                        <td><a href=\\"https://a.b.com/\\">https://a.b.com/</a></td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table><!--/record--><!--record_mail-->
+    </td></tr>
+</table><!--/allrecords--></body>
+</html>"
 `;
 
 exports[`MailComponent renderTemplate: matched 1`] = `
 "<!DOCTYPE html>
 <html>
-   <head>
-      <meta charset=\\"utf-8\\">
-      <meta http-equiv=\\"Content-Type\\" content=\\"text/html; charset=utf-8\\">
-      <meta name=\\"viewport\\" content=\\"width=400\\">
-      <title>XXX match for this week from $COMMUNITY</title>
-      <!-- og:meta -->
-      <meta property=\\"og:url\\" content=\\"page15662397.html\\">
-      <meta property=\\"og:title\\" content=\\"XXX match for this week from $COMMUNITY\\">
-      <meta property=\\"og:description\\" content=\\"\\">
-      <!-- /og:meta -->
-      <link rel=\\"shortcut icon\\" href=\\"images/tildafavicon.ico\\">
-      <style type=\\"text/css\\">	.ExternalClass {width:100%;}	img{ border:0 none; height:auto; line-height:100%; outline:none; text-decoration:none; -ms-interpolation-mode: bicubic;	}	a img{ border:0 none;	}	#outlook a {padding:0;}	#allrecords{ height:100% !important; margin:0; padding:0; width:100% !important; -webkit-font-smoothing: antialiased; line-height: 1.45;	}	#allrecords td{ margin:0; padding:0;	}	#allrecords ul{-webkit-padding-start:30px;}	@media only screen and (max-width: 600px) { .r{	width:100% !important;	min-width:400px !important; }	}	@media only screen and (max-width: 480px) { .t-emailBlock { display: block !important; padding-left: 0 !important; padding-right: 0 !important; width: 100% !important; } .t-emailBlockPadding { padding-top: 15px !important; } .t-emailBlockPadding30 { padding-top: 30px !important; } .t-emailAlignLeft { text-align: left !important; margin-left: 0 !important; } .t-emailAlignCenter { text-align: center !important; margin-left: auto !important; margin-right: auto !important; }	}</style>
-   </head>
-   <body cellpadding=\\"0\\" cellspacing=\\"0\\" style=\\"padding: 0; margin: 0; border: 0; width:100%; -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; background-color: #efefef;\\">
-      <!--allrecords-->
-      <table id=\\"allrecords\\" data-tilda-email=\\"yes\\" data-tilda-project-id=\\"3341502\\" data-tilda-page-id=\\"15662397\\" data-tilda-page-alias=\\"\\" cellpadding=\\"0\\" cellspacing=\\"0\\" style=\\"width:100%; border-collapse:collapse; border-spacing:0; padding:0; margin:0; border:0;\\">
-         <tr>
-            <td style=\\"background-color: #efefef; \\">
-               <!--record_mail-->
-               <table id=\\"rec256481650\\" style=\\"width:100%; border-collapse:collapse; border-spacing:0; margin:0; border:0;\\" cellpadding=\\"0\\" cellspacing=\\"0\\" data-record-type=\\"619\\">
-                  <tr>
-                     <td style=\\"padding-left:15px; padding-right:15px; \\">
+<head>
+    <meta charset=\\"utf-8\\">
+    <meta http-equiv=\\"Content-Type\\" content=\\"text/html; charset=utf-8\\">
+    <meta name=\\"viewport\\" content=\\"width=400\\">
+    <title>9. Monday match EMAIL - Your tmixed match for this week from $COMMUNITY</title><!-- og:meta -->
+    <meta property=\\"og:url\\" content=\\"page15662397.html\\">
+    <meta property=\\"og:title\\" content=\\"9. Monday match EMAIL - Your tmixed match for this week from $COMMUNITY\\">
+    <meta property=\\"og:description\\" content=\\"\\"><!-- /og:meta -->
+    <link rel=\\"shortcut icon\\" href=\\"images/tildafavicon.ico\\">
+    <style type=\\"text/css\\">    .ExternalClass {
+        width: 100%;
+    }
+
+    img {
+        border: 0 none;
+        height: auto;
+        line-height: 100%;
+        outline: none;
+        text-decoration: none;
+        -ms-interpolation-mode: bicubic;
+    }
+
+    a img {
+        border: 0 none;
+    }
+
+    #outlook a {
+        padding: 0;
+    }
+
+    #allrecords {
+        height: 100% !important;
+        margin: 0;
+        padding: 0;
+        width: 100% !important;
+        -webkit-font-smoothing: antialiased;
+        line-height: 1.45;
+    }
+
+    #allrecords td {
+        margin: 0;
+        padding: 0;
+    }
+
+    #allrecords ul {
+        -webkit-padding-start: 30px;
+    }
+
+    @media only screen and (max-width: 600px) {
+        .r {
+            width: 100% !important;
+            min-width: 400px !important;
+        }
+    }
+
+    @media only screen and (max-width: 480px) {
+        .t-emailBlock {
+            display: block !important;
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+            width: 100% !important;
+        }
+
+        .t-emailBlockPadding {
+            padding-top: 15px !important;
+        }
+
+        .t-emailBlockPadding30 {
+            padding-top: 30px !important;
+        }
+
+        .t-emailAlignLeft {
+            text-align: left !important;
+            margin-left: 0 !important;
+        }
+
+        .t-emailAlignCenter {
+            text-align: center !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
+        }
+    }</style>
+</head>
+<body cellpadding=\\"0\\" cellspacing=\\"0\\" style=\\"padding: 0; margin: 0; border: 0; width:100%; -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; background-color: #efefef;\\">
+<!--allrecords-->
+<table id=\\"allrecords\\" data-tilda-email=\\"yes\\" data-tilda-project-id=\\"3341502\\" data-tilda-page-id=\\"15662397\\" data-tilda-page-alias=\\"\\" cellpadding=\\"0\\" cellspacing=\\"0\\" style=\\"width:100%; border-collapse:collapse; border-spacing:0; padding:0; margin:0; border:0;\\">
+    <tr>
+        <td style=\\"background-color: #efefef; \\"><!--record_mail-->
+            <table id=\\"rec256481650\\" style=\\"width:100%; border-collapse:collapse; border-spacing:0; margin:0; border:0;\\" cellpadding=\\"0\\" cellspacing=\\"0\\" data-record-type=\\"619\\">
+                <tr>
+                    <td style=\\"padding-left:15px; padding-right:15px; \\">
                         <table id=\\"recin256481650\\" class=\\"r\\" style=\\"margin: 0 auto;border-spacing: 0;width:600px;\\" align=\\"center\\">
-                           <tr>
-                              <td style=\\"padding-top:0px;padding-bottom:0px;padding-left:0;padding-right:0;\\">
-                                 <table valign=\\"top\\" border=\\"0\\" cellpadding=\\"0\\" cellspacing=\\"0\\" width=\\"100%\\">
-                                    <tr>
-                                       <td style=\\"height:30px;\\" height=\\"30px\\"></td>
-                                    </tr>
-                                 </table>
-                              </td>
-                           </tr>
+                            <tr>
+                                <td style=\\"padding-top:0px;padding-bottom:0px;padding-left:0;padding-right:0;\\">
+                                    <table valign=\\"top\\" border=\\"0\\" cellpadding=\\"0\\" cellspacing=\\"0\\" width=\\"100%\\">
+                                        <tr>
+                                            <td style=\\"height:30px;\\" height=\\"30px\\"></td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
                         </table>
-                     </td>
-                  </tr>
-               </table>
-               <!--/record--><!--record_mail-->
-               <table id=\\"rec256481651\\" style=\\"width:100%; border-collapse:collapse; border-spacing:0; margin:0; border:0;\\" cellpadding=\\"0\\" cellspacing=\\"0\\" data-record-type=\\"622\\">
-                  <tr>
-                     <td style=\\"padding-left:15px; padding-right:15px; background-color:#f7c304;\\">
+                    </td>
+                </tr>
+            </table><!--/record--><!--record_mail-->
+            <table id=\\"rec256481651\\" style=\\"width:100%; border-collapse:collapse; border-spacing:0; margin:0; border:0;\\" cellpadding=\\"0\\" cellspacing=\\"0\\" data-record-type=\\"622\\">
+                <tr>
+                    <td style=\\"padding-left:15px; padding-right:15px; background-color:#f7c304;\\">
                         <table id=\\"recin256481651\\" class=\\"r\\" style=\\"margin: 0 auto;background-color:#f7c304;border-spacing: 0;width:600px;\\" align=\\"center\\">
-                           <tr>
-                              <td style=\\"padding-top:45px;padding-bottom:45px;padding-left:0;padding-right:0;\\">
-                                 <table border=\\"0\\" cellpadding=\\"0\\" cellspacing=\\"0\\" width=\\"100%\\">
-                                    <tr>
-                                       <td class=\\"t-emailBlock\\" valign=\\"middle\\" style=\\"text-align: left; padding-right: 10px; width: 50%;\\"> <a style=\\"text-decoration: none; font-weight: normal; font-family: Helvetica Neue, Helvetica, Arial, sans-serif; color:#000000;font-size:30px;\\" href=\\"https://tilda.cc/\\"><strong>XXX</strong><br></a> </td>
-                                       <td class=\\"t-emailBlock t-emailBlockPadding t-emailAlignLeft\\" valign=\\"middle\\" style=\\"text-align: right; padding-left: 10px; width: 50%;\\">
-                                          <div style=\\" font-family: Helvetica Neue, Helvetica, Arial, sans-serif; color:#000000;font-size:16px;\\"><strong>a brand new networking</strong></div>
-                                       </td>
-                                    </tr>
-                                 </table>
-                              </td>
-                           </tr>
+                            <tr>
+                                <td style=\\"padding-top:45px;padding-bottom:45px;padding-left:0;padding-right:0;\\">
+                                    <table border=\\"0\\" cellpadding=\\"0\\" cellspacing=\\"0\\" width=\\"100%\\">
+                                        <tr>
+                                            <td class=\\"t-emailBlock\\" valign=\\"middle\\" style=\\"text-align: left; padding-right: 10px; width: 50%;\\"><a style=\\"text-decoration: none; font-weight: normal; font-family: Helvetica Neue, Helvetica, Arial, sans-serif; color:#000000;font-size:30px;\\" href=\\"https://tmixed.com/\\">tmixed</a></td>
+                                            <td class=\\"t-emailBlock t-emailBlockPadding t-emailAlignLeft\\" valign=\\"middle\\" style=\\"text-align: right; padding-left: 10px; width: 50%;\\">
+                                                <div style=\\" font-family: Helvetica Neue, Helvetica, Arial, sans-serif; color:#000000;font-size:16px;\\">
+                                                    <strong>a brand new networking</strong></div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
                         </table>
-                     </td>
-                  </tr>
-               </table>
-               <!--/record--><!--record_mail-->
-               <table id=\\"rec256481652\\" style=\\"width:100%; border-collapse:collapse; border-spacing:0; margin:0; border:0;\\" cellpadding=\\"0\\" cellspacing=\\"0\\" data-record-type=\\"323\\">
-                  <tr>
-                     <td style=\\"padding-left:15px; padding-right:15px; \\">
+                    </td>
+                </tr>
+            </table><!--/record--><!--record_mail-->
+            <table id=\\"rec256481652\\" style=\\"width:100%; border-collapse:collapse; border-spacing:0; margin:0; border:0;\\" cellpadding=\\"0\\" cellspacing=\\"0\\" data-record-type=\\"323\\">
+                <tr>
+                    <td style=\\"padding-left:15px; padding-right:15px; \\">
                         <table id=\\"recin256481652\\" class=\\"r\\" style=\\"margin: 0 auto;background-color:#ffffff;border-spacing: 0;width:600px;\\" align=\\"center\\">
-                           <tr>
-                              <td style=\\"padding-top:30px;padding-bottom:15px;padding-left:30px;padding-right:30px;\\">
-                                 <table valign=\\"top\\" border=\\"0\\" cellpadding=\\"0\\" cellspacing=\\"0\\" width=\\"100%\\" style=\\"width: 100%;\\">
-                                    <tr>
-                                       <td style=\\"text-align: left; padding: 0 0 0;\\">
-                                          <div style=\\"margin-right: auto; font-family: Helvetica Neue, Helvetica, Arial, sans-serif; color:#222222;font-size:28px;font-weight:bold;\\">This is your match for this week from 
-                                            
-                                            <span>communityTitle</span>
-                                            
-                                            <em></em></div>
-                                       </td>
-                                    </tr>
-                                 </table>
-                              </td>
-                           </tr>
+                            <tr>
+                                <td style=\\"padding-top:30px;padding-bottom:15px;padding-left:30px;padding-right:30px;\\">
+                                    <table valign=\\"top\\" border=\\"0\\" cellpadding=\\"0\\" cellspacing=\\"0\\" width=\\"100%\\" style=\\"width: 100%;\\">
+                                        <tr>
+                                            <td style=\\"text-align: left; padding: 0 0 0;\\">
+                                                <div style=\\"margin-right: auto; font-family: Helvetica Neue, Helvetica, Arial, sans-serif; color:#222222;font-size:28px;font-weight:bold;\\">
+                                                    This is your tmixed match for this week from <span>communityTitle</span><em></em>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
                         </table>
-                     </td>
-                  </tr>
-               </table>
-               <!--/record--><!--record_mail-->
-               <table id=\\"rec256481653\\" style=\\"width:100%; border-collapse:collapse; border-spacing:0; margin:0; border:0;\\" cellpadding=\\"0\\" cellspacing=\\"0\\" data-record-type=\\"329\\">
-                  <tr>
-                     <td style=\\"padding-left:15px; padding-right:15px; \\">
+                    </td>
+                </tr>
+            </table><!--/record--><!--record_mail-->
+            <table id=\\"rec256481653\\" style=\\"width:100%; border-collapse:collapse; border-spacing:0; margin:0; border:0;\\" cellpadding=\\"0\\" cellspacing=\\"0\\" data-record-type=\\"329\\">
+                <tr>
+                    <td style=\\"padding-left:15px; padding-right:15px; \\">
                         <table id=\\"recin256481653\\" class=\\"r\\" style=\\"margin: 0 auto;background-color:#ffffff;border-spacing: 0;width:600px;\\" align=\\"center\\">
-                           <tr>
-                              <td style=\\"padding-top:15px;padding-bottom:15px;padding-left:30px;padding-right:30px;\\">
-                                 <table border=\\"0\\" cellpadding=\\"0\\" cellspacing=\\"0\\" width=\\"100%\\" style=\\"width: 100%;\\">
-                                    <tr>
-                                       <td style=\\"text-align: left; padding: 0 0 0;\\">
-                                           <div style=\\"margin-right: auto; font-family: Helvetica Neue, Helvetica, Arial, sans-serif; color:#444444;font-size:20px;line-height:1.45;\\">Hi, <span>userFirstName</span>, this is XXX.<br>Here is a contact of your XXX partner for this week: <br> <br>
-                                             
-                                             <span>matchedUserName</span>
-                                             <span>matchedUserLastName</span>
-                                             
-                                             <br>
-                                             
-                                             <span>matchedUserProfileUrl</span>
-                                             
-                                             <br>
-                                             
-                                             <span>matchedUserPhone</span>
-                                             
-                                             <br>
-                                             
-                                             <span>matchedUserEmail</span>
-                                             
-                                             <br><br> Don't put it off for too long, get in contact today!<br>We recommend you guys to have a video call, enjoy it!<br></div>
-                                       </td>
-                                    </tr>
-                                 </table>
-                              </td>
-                           </tr>
+                            <tr>
+                                <td style=\\"padding-top:15px;padding-bottom:15px;padding-left:30px;padding-right:30px;\\">
+                                    <table border=\\"0\\" cellpadding=\\"0\\" cellspacing=\\"0\\" width=\\"100%\\" style=\\"width: 100%;\\">
+                                        <tr>
+                                            <td style=\\"text-align: left; padding: 0 0 0;\\">
+                                                <div style=\\"margin-right: auto; font-family: Helvetica Neue, Helvetica, Arial, sans-serif; color:#444444;font-size:20px;line-height:1.45;\\">
+                                                    Hi, <span>userFirstName</span>, this is tmixed.<br>Here is a contact of your
+                                                    tmixed partner for this week: <br><br>
+
+                                                    <span>matchedUserName</span>
+                                                    <span>matchedUserLastName</span>
+
+                                                    <br>
+                                                    <span>matchedUserProfileUrl</span>
+                                                    <br>
+                                                    <span>matchedUserPhone</span>
+
+                                                    <br>
+                                                    <span>matchedUserEmail</span>
+                                                    <br><br> Don't put it off for too long, get in
+                                                    contact today!<br></div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
                         </table>
-                     </td>
-                  </tr>
-               </table>
-               <!--/record--><!--record_mail-->
-               <table id=\\"rec256481656\\" style=\\"width:100%; border-collapse:collapse; border-spacing:0; margin:0; border:0;\\" cellpadding=\\"0\\" cellspacing=\\"0\\" data-record-type=\\"627\\">
-                  <tr>
-                     <td style=\\"padding-left:15px; padding-right:15px; \\">
-                        <table id=\\"recin256481656\\" class=\\"r\\" style=\\"margin: 0 auto;border-spacing: 0;width:600px;\\" align=\\"center\\">
-                           <tr>
-                              <td style=\\"padding-top:30px;padding-bottom:30px;padding-left:30px;padding-right:30px;\\">
-                                 <table border=\\"0\\" cellpadding=\\"0\\" cellspacing=\\"0\\" width=\\"100%\\">
-                                    <tr>
-                                       <td style=\\"text-align: center; padding-top: 25px;\\">
-                                          <div style=\\"margin: 0 auto; font-weight: normal; font-family: Helvetica Neue, Helvetica, Arial, sans-serif; color:#a1a1a1;font-size:14px;\\">You can unsubscribe from this letter anytime <a href=\\"[unsubscribe]\\" style=\\"color:#327dd0 !important;\\" rel=\\"color:#327dd0 !important;\\">here</a></div>
-                                       </td>
-                                    </tr>
-                                 </table>
-                              </td>
-                           </tr>
-                        </table>
-                     </td>
-                  </tr>
-               </table>
-               <!--/record--> 
-            </td>
-         </tr>
-      </table>
-      <!--/allrecords-->
-   </body>
+                    </td>
+                </tr>
+            </table><!--/record--><!--record_mail-->
+    </td></tr>
+</table><!--/allrecords--></body>
 </html>"
 `;
 
 exports[`MailComponent renderTemplate: optIn 1`] = `
-"<h2>communityTitle</h2>
-<div>
-    Would you like to match in <span>communityTitle</span></div>
-    
-<div>
-    Click here to answer yes: <span><a href=\\"https://a.b.com/yes\\">https://a.b.com/yes</a></span></div>
-    
-<div>
-    Click here to answer no: <span><a href=\\"https://a.b.com/no\\">https://a.b.com/no</a></span></div>"
+"<!DOCTYPE html>
+<html>
+<head>
+    <meta charset=\\"utf-8\\">
+    <meta http-equiv=\\"Content-Type\\" content=\\"text/html; charset=utf-8\\">
+    <meta name=\\"viewport\\" content=\\"width=400\\">
+    <title>8. Friday opt in EMAIL - Are you participating in calls next week?</title><!-- og:meta -->
+    <meta property=\\"og:url\\" content=\\"page15662874.html\\">
+    <meta property=\\"og:title\\" content=\\"8. Friday opt in EMAIL - Are you participating in calls next week?\\">
+    <meta property=\\"og:description\\" content=\\"\\"><!-- /og:meta -->
+    <link rel=\\"shortcut icon\\" href=\\"images/tildafavicon.ico\\">
+    <style type=\\"text/css\\">    .ExternalClass {
+        width: 100%;
+    }
+
+    img {
+        border: 0 none;
+        height: auto;
+        line-height: 100%;
+        outline: none;
+        text-decoration: none;
+        -ms-interpolation-mode: bicubic;
+    }
+
+    a img {
+        border: 0 none;
+    }
+
+    #outlook a {
+        padding: 0;
+    }
+
+    #allrecords {
+        height: 100% !important;
+        margin: 0;
+        padding: 0;
+        width: 100% !important;
+        -webkit-font-smoothing: antialiased;
+        line-height: 1.45;
+    }
+
+    #allrecords td {
+        margin: 0;
+        padding: 0;
+    }
+
+    #allrecords ul {
+        -webkit-padding-start: 30px;
+    }
+
+    @media only screen and (max-width: 600px) {
+        .r {
+            width: 100% !important;
+            min-width: 400px !important;
+        }
+    }
+
+    @media only screen and (max-width: 480px) {
+        .t-emailBlock {
+            display: block !important;
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+            width: 100% !important;
+        }
+
+        .t-emailBlockPadding {
+            padding-top: 15px !important;
+        }
+
+        .t-emailBlockPadding30 {
+            padding-top: 30px !important;
+        }
+
+        .t-emailAlignLeft {
+            text-align: left !important;
+            margin-left: 0 !important;
+        }
+
+        .t-emailAlignCenter {
+            text-align: center !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
+        }
+    }</style>
+</head>
+<body cellpadding=\\"0\\" cellspacing=\\"0\\" style=\\"padding: 0; margin: 0; border: 0; width:100%; -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; background-color: #efefef;\\">
+<!--allrecords-->
+<table id=\\"allrecords\\" data-tilda-email=\\"yes\\" data-tilda-project-id=\\"3341502\\" data-tilda-page-id=\\"15662874\\" data-tilda-page-alias=\\"\\" cellpadding=\\"0\\" cellspacing=\\"0\\" style=\\"width:100%; border-collapse:collapse; border-spacing:0; padding:0; margin:0; border:0;\\">
+    <tr>
+        <td style=\\"background-color: #efefef; \\"><!--record_mail-->
+            <table id=\\"rec256489023\\" style=\\"width:100%; border-collapse:collapse; border-spacing:0; margin:0; border:0;\\" cellpadding=\\"0\\" cellspacing=\\"0\\" data-record-type=\\"619\\">
+                <tr>
+                    <td style=\\"padding-left:15px; padding-right:15px; \\">
+                        <table id=\\"recin256489023\\" class=\\"r\\" style=\\"margin: 0 auto;border-spacing: 0;width:600px;\\" align=\\"center\\">
+                            <tr>
+                                <td style=\\"padding-top:0px;padding-bottom:0px;padding-left:0;padding-right:0;\\">
+                                    <table valign=\\"top\\" border=\\"0\\" cellpadding=\\"0\\" cellspacing=\\"0\\" width=\\"100%\\">
+                                        <tr>
+                                            <td style=\\"height:30px;\\" height=\\"30px\\"></td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table><!--/record--><!--record_mail-->
+            <table id=\\"rec256489024\\" style=\\"width:100%; border-collapse:collapse; border-spacing:0; margin:0; border:0;\\" cellpadding=\\"0\\" cellspacing=\\"0\\" data-record-type=\\"622\\">
+                <tr>
+                    <td style=\\"padding-left:15px; padding-right:15px; background-color:#f7c304;\\">
+                        <table id=\\"recin256489024\\" class=\\"r\\" style=\\"margin: 0 auto;background-color:#f7c304;border-spacing: 0;width:600px;\\" align=\\"center\\">
+                            <tr>
+                                <td style=\\"padding-top:45px;padding-bottom:45px;padding-left:0;padding-right:0;\\">
+                                    <table border=\\"0\\" cellpadding=\\"0\\" cellspacing=\\"0\\" width=\\"100%\\">
+                                        <tr>
+                                            <td class=\\"t-emailBlock\\" valign=\\"middle\\" style=\\"text-align: left; padding-right: 10px; width: 50%;\\"><a style=\\"text-decoration: none; font-weight: normal; font-family: Helvetica Neue, Helvetica, Arial, sans-serif; color:#000000;font-size:30px;\\" href=\\"https://tmixed.com/\\">tmixed</a></td>
+                                            <td class=\\"t-emailBlock t-emailBlockPadding t-emailAlignLeft\\" valign=\\"middle\\" style=\\"text-align: right; padding-left: 10px; width: 50%;\\">
+                                                <div style=\\" font-family: Helvetica Neue, Helvetica, Arial, sans-serif; color:#000000;font-size:16px;\\">
+                                                    <strong>a brand new networking</strong></div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table><!--/record--><!--record_mail-->
+            <table id=\\"rec256489025\\" style=\\"width:100%; border-collapse:collapse; border-spacing:0; margin:0; border:0;\\" cellpadding=\\"0\\" cellspacing=\\"0\\" data-record-type=\\"323\\">
+                <tr>
+                    <td style=\\"padding-left:15px; padding-right:15px; \\">
+                        <table id=\\"recin256489025\\" class=\\"r\\" style=\\"margin: 0 auto;background-color:#ffffff;border-spacing: 0;width:600px;\\" align=\\"center\\">
+                            <tr>
+                                <td style=\\"padding-top:30px;padding-bottom:15px;padding-left:30px;padding-right:30px;\\">
+                                    <table valign=\\"top\\" border=\\"0\\" cellpadding=\\"0\\" cellspacing=\\"0\\" width=\\"100%\\" style=\\"width: 100%;\\">
+                                        <tr>
+                                            <td style=\\"text-align: left; padding: 0 0 0;\\">
+                                                <div style=\\"margin-right: auto; font-family: Helvetica Neue, Helvetica, Arial, sans-serif; color:#222222;font-size:28px;font-weight:bold;\\">
+                                                    Are you participating in calls next week?
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table><!--/record--><!--record_mail-->
+            <table id=\\"rec256489026\\" style=\\"width:100%; border-collapse:collapse; border-spacing:0; margin:0; border:0;\\" cellpadding=\\"0\\" cellspacing=\\"0\\" data-record-type=\\"329\\">
+                <tr>
+                    <td style=\\"padding-left:15px; padding-right:15px; \\">
+                        <table id=\\"recin256489026\\" class=\\"r\\" style=\\"margin: 0 auto;background-color:#ffffff;border-spacing: 0;width:600px;\\" align=\\"center\\">
+                            <tr>
+                                <td style=\\"padding-top:15px;padding-bottom:15px;padding-left:30px;padding-right:30px;\\">
+                                    <table border=\\"0\\" cellpadding=\\"0\\" cellspacing=\\"0\\" width=\\"100%\\" style=\\"width: 100%;\\">
+                                        <tr>
+                                            <td style=\\"text-align: left; padding: 0 0 0;\\">
+                                                <div style=\\"margin-right: auto; font-family: Helvetica Neue, Helvetica, Arial, sans-serif; color:#444444;font-size:20px;line-height:1.45;\\">
+                                                    Hi, <span>userFirstName</span>, this is
+                                                    tmixed.<br><br>We are trying to
+                                                    organize things ahead of time.<br>So we just wanted to confirm if
+                                                    you are up for you next thrilling acquaintance?<br></div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table><!--/record--><!--record_mail-->
+            <table id=\\"rec256489027\\" style=\\"width:100%; border-collapse:collapse; border-spacing:0; margin:0; border:0;\\" cellpadding=\\"0\\" cellspacing=\\"0\\" data-record-type=\\"618\\">
+                <tr>
+                    <td style=\\"padding-left:15px; padding-right:15px; \\">
+                        <table id=\\"recin256489027\\" class=\\"r\\" style=\\"margin: 0 auto;background-color:#ffffff;border-spacing: 0;width:600px;\\" align=\\"center\\">
+                            <tr>
+                                <td style=\\"padding-top:30px;padding-bottom:45px;padding-left:30px;padding-right:30px;\\">
+                                    <!-- Workaround: Calculate border radius for Outlook-->
+                                    <table border=\\"0\\" cellpadding=\\"0\\" cellspacing=\\"0\\" width=\\"100%\\" style=\\"width:100%;\\">
+                                        <tr>
+                                            <td>
+                                                <table border=\\"0\\" cellpadding=\\"0\\" cellspacing=\\"0\\" style=\\"margin: 0 auto;\\" align=\\"center\\">
+                                                    <tr>
+                                                        <td><a href=\\"https://a.b.com/yes\\">https://a.b.com/yes</a></td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table><!--/record--><!--record_mail-->
+            <table id=\\"rec256489028\\" style=\\"width:100%; border-collapse:collapse; border-spacing:0; margin:0; border:0;\\" cellpadding=\\"0\\" cellspacing=\\"0\\" data-record-type=\\"644\\">
+                <tr>
+                    <td style=\\"padding-left:15px; padding-right:15px; \\">
+                        <table id=\\"recin256489028\\" class=\\"r\\" style=\\"margin: 0 auto;background-color:#ffffff;border-spacing: 0;width:600px;\\" align=\\"center\\">
+                            <tr>
+                                <td style=\\"padding-top:15px;padding-bottom:30px;padding-left:30px;padding-right:30px;\\">
+                                    <table border=\\"0\\" cellpadding=\\"0\\" cellspacing=\\"0\\" width=\\"100%\\" style=\\"width: 100%;\\">
+                                        <tr>
+                                            <td style=\\" text-align: center; padding-top: 0; padding-bottom: 0; padding-left: 0; padding-right: 0; \\">
+                                                <div style=\\"margin: 0 auto; font-family: Helvetica Neue, Helvetica, Arial, sans-serif; color:#8c8c8c;font-size:18px;line-height:1.4;max-width:350px;\\">
+                                                    Busy this week? <br>
+                                                    <span><a href=\\"https://a.b.com/no\\">https://a.b.com/no</a></span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table><!--/record--><!--record_mail-->
+            <table id=\\"rec256489029\\" style=\\"width:100%; border-collapse:collapse; border-spacing:0; margin:0; border:0;\\" cellpadding=\\"0\\" cellspacing=\\"0\\" data-record-type=\\"627\\">
+                <tr>
+                    <td style=\\"padding-left:15px; padding-right:15px; \\">
+                        <table id=\\"recin256489029\\" class=\\"r\\" style=\\"margin: 0 auto;border-spacing: 0;width:600px;\\" align=\\"center\\">
+                            <tr>
+                                <td style=\\"padding-top:30px;padding-bottom:30px;padding-left:30px;padding-right:30px;\\">
+                                    <table border=\\"0\\" cellpadding=\\"0\\" cellspacing=\\"0\\" width=\\"100%\\">
+                                        <tr>
+                                            <td style=\\"text-align: center; padding-top: 25px;\\">
+                                                <div style=\\"margin: 0 auto; font-weight: normal; font-family: Helvetica Neue, Helvetica, Arial, sans-serif; color:#a1a1a1;font-size:14px;\\">
+                                                    You can unsubscribe from this letter anytime <a href=\\"[unsubscribe]\\" style=\\"color:#327dd0 !important;\\" rel=\\"color:#327dd0 !important;\\">here</a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table><!--/record--> </td>
+    </tr>
+</table><!--/allrecords--></body>
+</html>"
 `;

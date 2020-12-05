@@ -28,7 +28,7 @@ export type FormAnswer = {
     boolean?: boolean,
     date?: string
 }
-type Item = {
+export type FormResponseItem = {
     landing_id: string,
     token: string,
     response_id: string,
@@ -51,7 +51,7 @@ export type FormResponse = {
     //     metrics: string,
     //     reports: string
     // },
-    items: Item[]
+    items: FormResponseItem[]
 }
 
 export type WebHookParams = {

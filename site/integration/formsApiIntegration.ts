@@ -1,10 +1,10 @@
 import { IFormsApi } from "../components/forms/formsApi"
-import { FormAnswer, FormResponse } from "../components/forms/types"
+import { FormResponse, FormResponseItem } from "../components/forms/types"
 import { Forms } from "../components/constants"
 
 let idx = 0
 
-function creteJoinFormResponse(responseId: string) : FormResponse {
+function creteJoinFormResponse(responseId: string): FormResponse {
     idx++
 
     return {
@@ -83,7 +83,7 @@ function creteJoinFormResponse(responseId: string) : FormResponse {
     }
 }
 
-function creteCreateFormResponse(responseId: string) : FormResponse {
+function creteCreateFormResponse(responseId: string): FormResponse {
     return {
         "total_items": 1,
         "page_count": 1,
@@ -177,16 +177,16 @@ function creteCreateFormResponse(responseId: string) : FormResponse {
 
 export class FormsApiIntegration implements IFormsApi {
 
-    async getAnswers(formId: string, responseId: string): Promise<FormAnswer[]> {
+    async getAnswers(formId: string, responseId: string): Promise<FormResponseItem | null> {
         const response = await this.getResponse(formId, responseId)
         if (response && response.items) {
-            return response.items[0]?.answers
+            return response.items[0]
         } else {
-            return []
+            return null
         }
     }
 
-    async getResponse(formId: string, responseId: string): Promise<FormResponse | null> {
+    private async getResponse(formId: string, responseId: string): Promise<FormResponse | null> {
         switch (formId) {
             case Forms.createCommunity.formId: {
                 return creteCreateFormResponse(responseId)
