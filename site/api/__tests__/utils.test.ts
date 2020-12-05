@@ -1,4 +1,4 @@
-import { callGracefully } from "../utils"
+import { callGracefully, paginate } from "../utils"
 
 export default describe("utils", () => {
     test("callGracefully positive", async () => {
@@ -49,5 +49,45 @@ export default describe("utils", () => {
         expect(isSuccess).toHaveBeenCalledTimes(11)
         expect(what).toHaveBeenCalledTimes(11)
         expect(sl).toHaveBeenCalledTimes(10)
+    })
+
+    test("paginate", () => {
+        // Arrange
+        const a = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10]
+
+        // Act
+        const result = paginate(a, 3)
+
+        // Assert
+        expect(result).toEqual([
+            [1, 2, 3],
+            [4, 5, 6],
+            [7, 8, 9],
+            [10, 10]
+        ])
+    })
+
+    test("paginate short", () => {
+        // Arrange
+        const a = [1, 2]
+
+        // Act
+        const result = paginate(a, 3)
+
+        // Assert
+        expect(result).toEqual([
+            [1, 2]
+        ])
+    })
+
+    test("paginate empty", () => {
+        // Arrange
+        const a: number[] = []
+
+        // Act
+        const result = paginate(a, 3)
+
+        // Assert
+        expect(result).toEqual([])
     })
 })

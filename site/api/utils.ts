@@ -1,29 +1,40 @@
 import { Logger } from "../components/logger"
 
 
-export function isServer (): boolean {
+export function isServer(): boolean {
     return typeof window === "undefined" || typeof jest !== "undefined"
 }
 
-export function isDevelopment (): boolean {
+export function isDevelopment(): boolean {
     return process.env["NODE_ENV"] === "development"
 }
 
-export function isTest (): boolean {
+export function isTest(): boolean {
     return process.env["NODE_ENV"] === "test"
 }
 
-export function isIntegration (): boolean {
+export function isIntegration(): boolean {
     return process.env["SPICED_INTEGRATION"] === "integration"
 }
 
-export function sleep (ms: number): Promise<void> {
+export function sleep(ms: number): Promise<void> {
     return new Promise((resolve) => {
         setTimeout(resolve, ms)
     })
 }
 
-async function gracefulSleep (n: number) {
+export function paginate<T>(arr: T[], size: number) {
+    return arr.reduce((acc:T[][], val: T, i) => {
+        const idx = Math.floor(i / size)
+        const page = acc[idx] || (acc[idx] = [])
+
+        page.push(val)
+
+        return acc
+    }, [])
+}
+
+async function gracefulSleep(n: number) {
     if (isTest()) {
         return
     } else {
@@ -32,7 +43,7 @@ async function gracefulSleep (n: number) {
     }
 }
 
-export function shuffleArray<T> (arr: T[]): T[] {
+export function shuffleArray<T>(arr: T[]): T[] {
     if (isTest()) {
         return arr
     }
@@ -51,7 +62,7 @@ export function shuffleArray<T> (arr: T[]): T[] {
     return arr
 }
 
-export async function callGracefully<T> (
+export async function callGracefully<T>(
     what: () => Promise<T>,
     isSuccess: (result: T) => boolean,
     sleep: (n: number) => Promise<void> = gracefulSleep

@@ -700,30 +700,30 @@ export default describe("CommunityComponent", () => {
             ]
         }
 
-        expect(sendTemplate.mock.calls).toEqual([
-                ["userId1@b.c", subject1, MailChimp.from, mailTemplate.name,
-                    givenContent("userId1f", "userId2f", "userId2l", "userId2@b.c",
-                        "userId2p", "titlecommunityId1", "userId2w")
-
-                ],
-                ["userId2@b.c", subject1, MailChimp.from, mailTemplate.name,
-                    givenContent("userId2f", "userId1f", "userId1l", "userId1@b.c",
-                        "userId1p", "titlecommunityId1", "userId1w")
-                ],
-                ["userId3@b.c", subject2, MailChimp.from, mailTemplate.name,
-                    givenContent("userId3f", "userId4f", "userId4l", "userId4@b.c",
-                        "userId4p", "titlecommunityId2", "userId4w")
-                ],
-                ["userId4@b.c", subject2, MailChimp.from, mailTemplate.name,
-                    givenContent("userId4f", "userId3f", "userId3l", "userId3@b.c",
-                        "userId3p", "titlecommunityId2", "userId3w")
-                ],
-                ["userId5@b.c", subject2, MailChimp.from, mailTemplate.name,
-                    givenContent("userId5f", "We cant find match for you =(", "", "",
-                        "", "titlecommunityId2", "")
-                ]
-            ]
+        expect(sendTemplate).toHaveBeenCalledWith("userId3@b.c", subject2, MailChimp.from, mailTemplate.name,
+            givenContent("userId3f", "userId4f", "userId4l", "userId4@b.c",
+                "userId4p", "titlecommunityId2", "userId4w")
         )
+
+        expect(sendTemplate).toHaveBeenCalledWith("userId4@b.c", subject2, MailChimp.from, mailTemplate.name,
+            givenContent("userId4f", "userId3f", "userId3l", "userId3@b.c",
+                "userId3p", "titlecommunityId2", "userId3w")
+        )
+
+        expect(sendTemplate).toHaveBeenCalledWith("userId5@b.c", subject2, MailChimp.from, mailTemplate.name,
+            givenContent("userId5f", "We cant find match for you =(", "", "",
+                "", "titlecommunityId2", ""))
+
+        expect(sendTemplate).toHaveBeenCalledWith("userId1@b.c", subject1, MailChimp.from, mailTemplate.name,
+            givenContent("userId1f", "userId2f", "userId2l", "userId2@b.c",
+                "userId2p", "titlecommunityId1", "userId2w"))
+
+        expect(sendTemplate).toHaveBeenCalledWith("userId2@b.c", subject1, MailChimp.from, mailTemplate.name,
+            givenContent("userId2f", "userId1f", "userId1l", "userId1@b.c",
+                "userId1p", "titlecommunityId1", "userId1w")
+        )
+
+        expect(sendTemplate).toHaveBeenCalledTimes(5)
     })
 
     test("sendOptInRequest", async () => {
