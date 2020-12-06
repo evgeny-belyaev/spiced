@@ -9,12 +9,14 @@ import {
     PreviousMatches,
     StatEntry,
     StatType,
+    TransactionResult,
     User,
     UsersIds
 } from "./types"
 import * as crypto from "crypto"
 import { SpicedDatabasePathHelper } from "./spicedDatabasePathHelper"
 import { EntityAlreadyExists } from "./entityAlreadyExists"
+import { encodeCommunityIndex } from "../../api/utils"
 
 const log = new Logger("database")
 
@@ -43,15 +45,34 @@ export class SpicedDatabase {
             throw new EntityAlreadyExists(`Community with ${community.typeFormResponseId} already exists`)
         }
 
-        const ref = await this.ref(this.path.communitiesById())
-        const newCommunityRef = await ref.push(community)
+        const index = await this.getNextCommunityIdx()
+        const communityId = encodeCommunityIndex(index)
 
-        const communityId = newCommunityRef.key!
-
+        await this.set(this.path.communityById(communityId), community)
         await this.set(this.path.communityIdByTypeFormResponseId(community.typeFormResponseId), communityId)
         await this.set(this.path.communityId(communityId), true)
 
         return communityId
+    }
+
+
+    async getNextCommunityIdx(): Promise<number> {
+        const defaultUpdate = (previousId: number | null) => ((previousId === null ? 0 : previousId) + Math.floor(Math.random() * 100))
+        const ref = await this.ref(this.path.communityLastIdSync())
+        const result = await ref.transaction(
+            defaultUpdate,
+            undefined,
+            false) as TransactionResult<number>
+
+        if (result.error) {
+            throw result.error
+        } else if (!result.committed) {
+            throw new Error("Transaction aborted!")
+        } else {
+            return result.snapshot?.val() as number
+        }
+
+        throw new Error("Transaction assertion failed!")
     }
 
     async getCommunityById(communityId: string): Promise<Community | null> {

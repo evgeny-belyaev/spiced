@@ -418,4 +418,21 @@ export default describe("SpicedDatabase", () => {
 
         // Assert
     })
+
+    test("communityId", async () => {
+        // Arrange
+        const db = new SpicedDatabase()
+        const numberOfThreads = 200
+        const nextId1 = await db.getNextCommunityIdx()
+
+        await Promise.all(
+            Array.from(Array(numberOfThreads).keys()).map(async () => {
+                await db.getNextCommunityIdx()
+            })
+        )
+
+        const nextId2 = await db.getNextCommunityIdx()
+
+        expect(nextId2 - nextId1).toBeGreaterThan(numberOfThreads + 1)
+    }, 600 * 1000)
 })

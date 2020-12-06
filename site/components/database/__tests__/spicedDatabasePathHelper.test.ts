@@ -17,6 +17,8 @@ export default describe("SpicedDatabasePathHelper", () => {
         expect(pathHelper.communitiesById()).toEqual("test/communities/byId")
         expect(pathHelper.communitiesIdByTypeFormResponseId()).toEqual("test/communities/byTypeFormResponseId")
 
+        expect(pathHelper.communityLastIdSync()).toEqual("test/communities/lastId")
+
         expect(pathHelper.communityById("COMMUNITYID")).toEqual("test/communities/byId/COMMUNITYID")
         expect(pathHelper.communityIdByTypeFormResponseId("RESPONSEID")).toEqual("test/communities/byTypeFormResponseId/RESPONSEID")
 

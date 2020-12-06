@@ -6,8 +6,8 @@ import { SpicedDatabase } from "./database/spicedDatabase"
 import { ParsedUrlQuery } from "querystring"
 import { IncomingMessage, ServerResponse } from "http"
 import { UrlBuilder } from "./urlBuilder"
-import crypto from "crypto"
 import { Matcher } from "./logic/matcher"
+import * as crypto from "crypto"
 
 export const givenUrlBuilder = () => {
     const getCreateCommunityConfirmationUrl = jest.fn()
@@ -70,7 +70,7 @@ export const givenCommunityComponent = () => {
 }
 
 
-export function givenTokenEncryptor () {
+export function givenTokenEncryptor() {
     const decrypt = jest.fn(() => ("decrypted"))
     const encrypt = jest.fn(() => ("encrypted"))
 
@@ -84,7 +84,7 @@ export function givenTokenEncryptor () {
     }
 }
 
-export function givenMailComponent () {
+export function givenMailComponent() {
     const getAnswers = jest.fn()
     const sendTemplate = jest.fn()
 
@@ -97,7 +97,7 @@ export function givenMailComponent () {
     }
 }
 
-export function givenFormsApi () {
+export function givenFormsApi() {
     const getAnswers = jest.fn()
     const getResponse = jest.fn()
 
@@ -111,7 +111,7 @@ export function givenFormsApi () {
     }
 }
 
-export function givenSpicedDatabase () {
+export function givenSpicedDatabase() {
     const createCommunity = jest.fn()
     const getCommunityById = jest.fn()
     const createUser = jest.fn()

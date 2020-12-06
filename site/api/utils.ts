@@ -1,4 +1,5 @@
 import { Logger } from "../components/logger"
+import { givenRandomString } from "../components/testUtils"
 
 
 export function isServer(): boolean {
@@ -61,6 +62,23 @@ export function shuffleArray<T>(arr: T[]): T[] {
 
     return arr
 }
+
+export function encodeCommunityIndex(n: number): string {
+    const chars = "uDJq-CPLlr4t3KIV2RYUdZ1Nh79XQzoxW_MwS6ceH5j0OykBiTasb8fvpFEgGnAm"
+    const len = chars.length
+    const result = []
+
+    n += len + 1
+
+    do {
+        result.push(chars.charAt(n % len))
+    } while (0 !== (n = Math.floor(n / len)))
+
+    return givenRandomString(2) +
+        result.join("") +
+        givenRandomString(2)
+}
+
 
 export async function callGracefully<T>(
     what: () => Promise<T>,

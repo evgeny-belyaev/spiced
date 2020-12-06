@@ -1,7 +1,5 @@
 import { givenCommunityComponent, givenGetServerSidePropsContext, givenUrlBuilder } from "../../../testUtils"
 import { getServerSidePropsImpl } from "../"
-import { InvitationToken } from "../../../urlBuilder"
-
 
 export default describe("getServerSidePropsImpl", () => {
     test("should return props", async () => {
@@ -10,7 +8,7 @@ export default describe("getServerSidePropsImpl", () => {
         const { mock: urlBuilder, getInvitationToken } = givenUrlBuilder()
         const context = givenGetServerSidePropsContext()
 
-        getInvitationToken.mockImplementation(() => (new InvitationToken("communityKey")))
+        getInvitationToken.mockImplementation(() => ("communityId"))
         findCommunityById.mockImplementation(() => ({
             title: "title"
         }))
@@ -23,11 +21,11 @@ export default describe("getServerSidePropsImpl", () => {
         )
 
         // Assert
-        expect(findCommunityById).toBeCalledWith("communityKey")
+        expect(findCommunityById).toBeCalledWith("communityId")
         expect(props).toEqual({
             props: {
                 communityTitle: "title",
-                communityId: "communityKey"
+                communityId: "communityId"
             }
         })
     })
@@ -38,9 +36,8 @@ export default describe("getServerSidePropsImpl", () => {
         const { mock: urlBuilder, getInvitationToken } = givenUrlBuilder()
         const context = givenGetServerSidePropsContext()
 
-        getInvitationToken.mockImplementation(() => (new InvitationToken("communityKey")))
+        getInvitationToken.mockImplementation(() => ("communityId"))
         findCommunityById.mockImplementation(() => null)
-
 
         // Act
         const props = await getServerSidePropsImpl(
@@ -50,7 +47,7 @@ export default describe("getServerSidePropsImpl", () => {
         )
 
         // Assert
-        expect(findCommunityById).toBeCalledWith("communityKey")
+        expect(findCommunityById).toBeCalledWith("communityId")
         expect(props).toEqual({
             props: {
                 error: "Cant' find community"

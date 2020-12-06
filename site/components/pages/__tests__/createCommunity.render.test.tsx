@@ -1,6 +1,6 @@
 import renderer = require("react-test-renderer")
 import React from "react"
-import Page from "../../../../site/pages/createCommunity/[CreateCommunityConfirmationToken]"
+import Page from "../../../pages/create/[CreateCommunityConfirmationToken]"
 
 export default describe("createCommunity render test", () => {
     test("[CreateCommunityConfirmationToken].tsx", () => {

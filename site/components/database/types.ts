@@ -1,3 +1,10 @@
+import firebase from "firebase"
+
+export type TransactionResult<T> = {
+    committed: boolean,
+    snapshot: firebase.database.DataSnapshot | null,
+    error: Error
+}
 export type User = {
     firstName: string,
     lastName: string,

@@ -13,6 +13,8 @@ export class SpicedDatabasePathHelper {
 
     userByEmail = (email: string) => `${this.root}/users/byEmail/${email}`
 
+    communityLastIdSync = () => `${this.root}/communities/lastId`
+
     communitiesIds = () => `${this.root}/communities/ids`
     communityId = (communityId: string) => `${this.root}/communities/ids/${communityId}`
 

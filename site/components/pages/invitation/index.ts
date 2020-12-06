@@ -2,7 +2,6 @@ import { GetServerSidePropsContext, GetServerSidePropsResult } from "next"
 import { Logger } from "../../logger"
 import { TokenEncryptor } from "../../TokenEncryptor"
 import { UrlBuilder } from "../../urlBuilder"
-import { EntityAlreadyExists } from "../../database/entityAlreadyExists"
 import { ICommunityComponent } from "../../logic/ICommunityComponent"
 import { createCommunityComponent } from "../../logic/CreateCommunityComponent"
 
@@ -20,8 +19,8 @@ export const getServerSidePropsImpl = async (
     urlBuilder: UrlBuilder
 ): Promise<GetServerSidePropsResult<Props>> => {
     try {
-        const token = urlBuilder.getInvitationToken(context)
-        const community = await communityComponent.findCommunityById(token.communityKey)
+        const communityId = urlBuilder.getInvitationToken(context)
+        const community = await communityComponent.findCommunityById(communityId)
 
         if (community == null) {
             return {
@@ -33,7 +32,7 @@ export const getServerSidePropsImpl = async (
             return {
                 props: {
                     communityTitle: community.title,
-                    communityId: token.communityKey // TODO: Encrypt?
+                    communityId: communityId // TODO: Encrypt?
                 }
             }
         }

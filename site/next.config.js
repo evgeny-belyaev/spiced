@@ -1,3 +1,12 @@
 module.exports = {
-  distDir: '../build/site',
+    distDir: "../build/site",
+    async redirects() {
+        return [
+            {
+                source: "/",
+                destination: "https://tmixed.com",
+                permanent: true,
+            }
+        ]
+    }
 }

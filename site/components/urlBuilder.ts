@@ -12,15 +12,6 @@ export class CreateCommunityConfirmationToken {
     }
 }
 
-export class InvitationToken {
-    constructor(public communityKey: string) {
-    }
-
-    static fromString(s: string): InvitationToken {
-        return JSON.parse(s) as InvitationToken
-    }
-}
-
 export class JoinConfirmationToken {
     constructor(public communityId: string, public formResponseId: string) {
     }
@@ -67,16 +58,18 @@ export class UrlBuilder {
     }
 
     private getTokenByKey(context: GetServerSidePropsContext, key: string) {
-        const encryptedToken = String(context.params ? context.params[key] : "")
-        const decrypted = this.tokenEncryptor.decrypt(encryptedToken)
+        const encryptedToken = this.getQueryParameter(context, key)
+        return this.tokenEncryptor.decrypt(encryptedToken)
+    }
 
-        return decrypted
+    private getQueryParameter(context: GetServerSidePropsContext, key: string) {
+        return String(context.params ? context.params[key] : "")
     }
 
 
     getCreateCommunityConfirmationUrl(formResponseId: string) {
         const token = new CreateCommunityConfirmationToken(formResponseId)
-        return Url.getBaseUrl() + "/createCommunity/" + this.encrypt(token)
+        return Url.getBaseUrl() + "/create/" + this.encrypt(token)
     }
 
     getCreateCommunityConfirmationToken(context: GetServerSidePropsContext): CreateCommunityConfirmationToken {
@@ -86,13 +79,11 @@ export class UrlBuilder {
 
 
     getCommunityInvitationUrl(communityKey: string): string {
-        const token = new InvitationToken(communityKey)
-        return Url.getBaseUrl() + "/invitation/" + this.encrypt(token)
+        return Url.getBaseUrl() + "/invitation/" + communityKey
     }
 
-    getInvitationToken(context: GetServerSidePropsContext): InvitationToken {
-        const decrypted = this.getTokenByKey(context, "InvitationToken")
-        return InvitationToken.fromString(decrypted)
+    getInvitationToken(context: GetServerSidePropsContext): string {
+        return this.getQueryParameter(context, "InvitationToken")
     }
 
 
