@@ -2,6 +2,7 @@ import { givenCommunityComponent } from "../../components/testUtils"
 import { CommunityComponent } from "../../components/logic/CommunityComponent"
 import { JoinCommunityWebHookApi } from "../joinCommunityWebHook"
 import { createMocks } from "node-mocks-http"
+import { Forms } from "../../components/constants"
 
 const responseData = {
     "event_id": "01EPYS7P4P6ZJAYPG1DQ3F23J0",
@@ -16,7 +17,7 @@ const responseData = {
             "title": "Community creation",
             "fields": [
                 {
-                    "id": "fWuSaWrKCVbZ",
+                    "id": Forms.joinCommunity.answers.memberEmailAddress,
                     "title": "\\nEnter your email, please",
                     "type": "email",
                     "ref": "a46913210c42aaf5",
@@ -29,7 +30,7 @@ const responseData = {
                 "type": "email",
                 "email": "evgeny.belyaev@gmail.com",
                 "field": {
-                    "id": "fWuSaWrKCVbZ",
+                    "id": Forms.joinCommunity.answers.memberEmailAddress,
                     "type": "email",
                     "ref": "a46913210c42aaf5"
                 }

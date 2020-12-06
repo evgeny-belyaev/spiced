@@ -2,6 +2,7 @@ import { createMocks } from "node-mocks-http"
 import { CommunityComponent } from "../../components/logic/CommunityComponent"
 import { CreateCommunityWebHookApi } from "../createCommunityWebHook"
 import { givenCommunityComponent } from "../../components/testUtils"
+import { Forms } from "../../components/constants"
 
 const responseData = {
     "event_id": "01EPYS7P4P6ZJAYPG1DQ3F23J0",
@@ -16,7 +17,7 @@ const responseData = {
             "title": "Community creation",
             "fields": [
                 {
-                    "id": "B8IPm7Osl6R1",
+                    "id": Forms.createCommunity.answers.creatorEmailAddress,
                     "title": "\\nEnter your email, please",
                     "type": "email",
                     "ref": "a46913210c42aaf5",
@@ -29,7 +30,7 @@ const responseData = {
                 "type": "email",
                 "email": "evgeny.belyaev@gmail.com",
                 "field": {
-                    "id": "B8IPm7Osl6R1",
+                    "id": Forms.createCommunity.answers.creatorEmailAddress,
                     "type": "email",
                     "ref": "a46913210c42aaf5"
                 }
@@ -51,7 +52,7 @@ const responseData_noEmail = {
             "title": "Community creation",
             "fields": [
                 {
-                    "id": "B8IPm7Osl6R1__WRONG",
+                    "id": "WRONG",
                     "title": "\\nEnter your email, please",
                     "type": "email",
                     "ref": "a46913210c42aaf5",
@@ -64,7 +65,7 @@ const responseData_noEmail = {
                 "type": "email",
                 "email": "evgeny.belyaev@gmail.com",
                 "field": {
-                    "id": "B8IPm7Osl6R1__WRONG",
+                    "id": "WRONG",
                     "type": "email",
                     "ref": "a46913210c42aaf5"
                 }

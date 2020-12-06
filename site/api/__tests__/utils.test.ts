@@ -1,6 +1,12 @@
 import { callGracefully, paginate } from "../utils"
+import { getCurrentEnvironment } from "../../components/constants"
 
 export default describe("utils", () => {
+    test("environment", () => {
+        // Assert
+        expect(getCurrentEnvironment()).toEqual("localTest")
+    })
+
     test("callGracefully positive", async () => {
         // Arrange
         const what = jest.fn()

@@ -1,13 +1,13 @@
 import { Logger } from "../components/logger"
 import { givenRandomString } from "../components/testUtils"
-
+import * as os from "os"
 
 export function isServer(): boolean {
     return typeof window === "undefined" || typeof jest !== "undefined"
 }
 
 export function isDevelopment(): boolean {
-    return process.env["NODE_ENV"] === "development"
+    return os.platform() === "darwin" || os.platform() === "win32"
 }
 
 export function isTest(): boolean {

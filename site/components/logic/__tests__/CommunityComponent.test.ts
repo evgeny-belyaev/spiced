@@ -7,7 +7,7 @@ const answersJoin = {
     answers: [
         {
             "field": {
-                "id": "yTfniwfEZHmy",
+                "id": Forms.joinCommunity.answers.memberFirstName,
                 "ref": "b78462b6-51a1-4971-ac3e-435f6d6bd2e6",
                 "type": "short_text"
             },
@@ -16,7 +16,7 @@ const answersJoin = {
         },
         {
             "field": {
-                "id": "7pfMxKZlyBqe",
+                "id": Forms.joinCommunity.answers.memberLastName,
                 "ref": "9547e114-21ab-4727-9e98-283fe992303b",
                 "type": "short_text"
             },
@@ -25,7 +25,7 @@ const answersJoin = {
         },
         {
             "field": {
-                "id": "fWuSaWrKCVbZ",
+                "id": Forms.joinCommunity.answers.memberEmailAddress,
                 "ref": "a46913210c42aaf5",
                 "type": "email"
             },
@@ -34,7 +34,7 @@ const answersJoin = {
         },
         {
             "field": {
-                "id": "3kIm7gd9aPCl",
+                "id": Forms.joinCommunity.answers.memberPhoneNumber,
                 "ref": "b08d4ba443cad868",
                 "type": "phone_number"
             },
@@ -43,7 +43,7 @@ const answersJoin = {
         },
         {
             "field": {
-                "id": "bKxH0PJxunet",
+                "id": Forms.joinCommunity.answers.memberWebsite,
                 "ref": "d9e7f7cb-084c-43bc-b04b-67c209c5d2f2",
                 "type": "website"
             },
@@ -58,7 +58,7 @@ const answersCreate = {
     answers: [
         {
             "field": {
-                "id": "iRELkeOPH06I",
+                "id": Forms.createCommunity.answers.creatorFirstName,
                 "ref": "b78462b6-51a1-4971-ac3e-435f6d6bd2e6",
                 "type": "short_text"
             },
@@ -67,7 +67,7 @@ const answersCreate = {
         },
         {
             "field": {
-                "id": "9IoVfWEsWEJm",
+                "id": Forms.createCommunity.answers.creatorLastName,
                 "ref": "9547e114-21ab-4727-9e98-283fe992303b",
                 "type": "short_text"
             },
@@ -76,7 +76,7 @@ const answersCreate = {
         },
         {
             "field": {
-                "id": "hzQC3bQ87sQL",
+                "id": Forms.createCommunity.answers.communityTitle,
                 "ref": "8f6d301d1719787f",
                 "type": "long_text"
             },
@@ -85,7 +85,7 @@ const answersCreate = {
         },
         {
             "field": {
-                "id": "Uukms7hM8K5i",
+                "id": Forms.createCommunity.answers.communityPublicLink,
                 "ref": "934209e4b4192144",
                 "type": "website"
             },
@@ -94,7 +94,7 @@ const answersCreate = {
         },
         {
             "field": {
-                "id": "B8IPm7Osl6R1",
+                "id": Forms.createCommunity.answers.creatorEmailAddress,
                 "ref": "a46913210c42aaf5",
                 "type": "email"
             },
@@ -103,7 +103,7 @@ const answersCreate = {
         },
         {
             "field": {
-                "id": "iSTnU99AXZ3z",
+                "id": Forms.createCommunity.answers.creatorPhoneNumber,
                 "ref": "b08d4ba443cad868",
                 "type": "phone_number"
             },
@@ -112,7 +112,7 @@ const answersCreate = {
         },
         {
             "field": {
-                "id": "QxmULEP1S82p",
+                "id": Forms.createCommunity.answers.creatorWebsite,
                 "ref": "d9e7f7cb-084c-43bc-b04b-67c209c5d2f2",
                 "type": "website"
             },
@@ -150,7 +150,7 @@ const response = {
             "answers": [
                 {
                     "field": {
-                        "id": "yTfniwfEZHmy",
+                        "id": Forms.joinCommunity.answers.memberFirstName,
                         "ref": "b78462b6-51a1-4971-ac3e-435f6d6bd2e6",
                         "type": "short_text"
                     },
@@ -159,7 +159,7 @@ const response = {
                 },
                 {
                     "field": {
-                        "id": "7pfMxKZlyBqe",
+                        "id": Forms.joinCommunity.answers.memberLastName,
                         "ref": "9547e114-21ab-4727-9e98-283fe992303b",
                         "type": "short_text"
                     },
@@ -168,7 +168,7 @@ const response = {
                 },
                 {
                     "field": {
-                        "id": "fWuSaWrKCVbZ",
+                        "id": Forms.joinCommunity.answers.memberEmailAddress,
                         "ref": "a46913210c42aaf5",
                         "type": "email"
                     },
@@ -177,7 +177,7 @@ const response = {
                 },
                 {
                     "field": {
-                        "id": "3kIm7gd9aPCl",
+                        "id": Forms.joinCommunity.answers.memberPhoneNumber,
                         "ref": "b08d4ba443cad868",
                         "type": "phone_number"
                     },
