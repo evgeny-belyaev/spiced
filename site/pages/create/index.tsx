@@ -16,3 +16,6 @@ const Index: React.FC<unknown> = () => {
 }
 
 export default Index
+export const getServerSideProps = () => {
+    return {}
+}
