@@ -960,8 +960,8 @@ export default describe("CommunityComponent", () => {
             ]
         }
 
-        const subject1 = "Are you participating in calls next week?"
-        const subject2 = "Are you participating in calls next week?"
+        const subject1 = "Are you participating in titlecommunityId1 calls next week?"
+        const subject2 = "Are you participating in titlecommunityId2 calls next week?"
 
         function yesMarkup(url: string): string {
             return `

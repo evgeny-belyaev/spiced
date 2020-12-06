@@ -116,7 +116,7 @@ export const MailChimp = {
         },
         optIn: {
             name: "optIn",
-            subject: () => "Are you participating in calls next week?",
+            subject: (communityTitle: string) => `Are you participating in ${communityTitle} calls next week?`,
             fields: {
                 userFirstName: "userFirstName",
                 communityTitle: "communityTitle",

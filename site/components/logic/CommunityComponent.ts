@@ -468,7 +468,7 @@ export class CommunityComponent implements ICommunityComponent {
 
                 await this.mailComponent.sendTemplate(
                     user.emailAddress,
-                    mailTemplate.subject(),
+                    mailTemplate.subject(community.title),
                     MailChimp.from,
                     mailTemplate.name,
                     [
