@@ -89,7 +89,7 @@ export class CommunityComponent implements ICommunityComponent {
 
         await this.mailComponent.sendTemplate(
             email,
-            "Here is your community invitation link",
+            mailTemplate.subject(),
             MailChimp.from,
             mailTemplate.name,
             [
@@ -146,7 +146,7 @@ export class CommunityComponent implements ICommunityComponent {
 
         await this.mailComponent.sendTemplate(
             email,
-            "Community creation confirmation",
+            mailTemplate.subject(),
             MailChimp.from,
             mailTemplate.name,
             [
@@ -226,7 +226,7 @@ export class CommunityComponent implements ICommunityComponent {
 
             await this.mailComponent.sendTemplate(
                 emailAddress,
-                "Community created",
+                mailTemplate.subject(),
                 MailChimp.from,
                 mailTemplate.name,
                 [
@@ -292,7 +292,7 @@ export class CommunityComponent implements ICommunityComponent {
             const mailTemplate = MailChimp.Templates.communityJoined
             await this.mailComponent.sendTemplate(
                 emailAddress,
-                "You've successfully joined",
+                mailTemplate.subject(community.title),
                 MailChimp.from,
                 mailTemplate.name,
                 [
@@ -361,7 +361,7 @@ export class CommunityComponent implements ICommunityComponent {
 
                 await this.mailComponent.sendTemplate(
                     user.emailAddress,
-                    `Wow! You've matched in ${community.title}!`,
+                    mailTemplateMatched.subject(community.title),
                     MailChimp.from,
                     mailTemplateMatched.name,
                     [
@@ -380,7 +380,7 @@ export class CommunityComponent implements ICommunityComponent {
 
                 await this.mailComponent.sendTemplate(
                     user.emailAddress,
-                    `Wow! You've matched in ${community.title}!`,
+                    mailTemplateNoMatch.subject(community.title),
                     MailChimp.from,
                     mailTemplateNoMatch.name,
                     [
@@ -468,7 +468,7 @@ export class CommunityComponent implements ICommunityComponent {
 
                 await this.mailComponent.sendTemplate(
                     user.emailAddress,
-                    `Would you like to match next week in ${community.title}?`,
+                    mailTemplate.subject(),
                     MailChimp.from,
                     mailTemplate.name,
                     [

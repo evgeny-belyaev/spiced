@@ -58,6 +58,7 @@ export const MailChimp = {
     Templates: {
         createCommunityConfirmation: {
             name: "createCommunityConfirmation",
+            subject: () => "Community creation confirmation",
             fields: {
                 userFirstName: "userFirstName",
                 createCommunityConfirmationUrl: "createCommunityConfirmationUrl"
@@ -65,6 +66,7 @@ export const MailChimp = {
         },
         joinCommunityConfirmation: {
             name: "joinCommunityConfirmation",
+            subject: () => "You are about to join community",
             fields: {
                 communityTitle: "communityTitle",
                 userFirstName: "userFirstName",
@@ -73,6 +75,7 @@ export const MailChimp = {
         },
         communityJoined: {
             name: "communityJoined",
+            subject: (communityTitle: string) => `You have successfully joined ${communityTitle}!`,
             fields: {
                 userFirstName: "userFirstName",
                 communityTitle: "communityTitle"
@@ -80,6 +83,7 @@ export const MailChimp = {
         },
         communityCreated: {
             name: "communityCreated",
+            subject: () => "Community created",
             fields: {
                 communityTitle: "communityTitle",
                 communityInvitationLink: "communityInvitationLink"
@@ -87,6 +91,7 @@ export const MailChimp = {
         },
         noMatch: {
             name: "noMatch",
+            subject: (communityTitle: string) => `Your tmixed match for this week from ${communityTitle}`,
             fields: {
                 communityTitle: "communityTitle",
                 userFirstName: "userFirstName",
@@ -95,6 +100,7 @@ export const MailChimp = {
         },
         matched: {
             name: "matched",
+            subject: (communityTitle: string) => `Your tmixed match for this week from ${communityTitle}`,
             fields: {
                 userFirstName: "userFirstName",
 
@@ -110,6 +116,7 @@ export const MailChimp = {
         },
         optIn: {
             name: "optIn",
+            subject: () => "Are you participating in calls next week?",
             fields: {
                 userFirstName: "userFirstName",
                 communityTitle: "communityTitle",

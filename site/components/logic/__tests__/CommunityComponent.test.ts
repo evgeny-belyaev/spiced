@@ -299,7 +299,7 @@ export default describe("CommunityComponent", () => {
         expect(getJoinCommunityConfirmationUrl).toBeCalledWith("communityKey", "formResponseId")
         expect(sendTemplate).toBeCalledWith(
             "a@b.com",
-            "Wow! Follow the link to join!",
+            "You are about to join community",
             MailChimp.from,
             MailChimp.Templates.joinCommunityConfirmation.name,
             [
@@ -582,7 +582,7 @@ export default describe("CommunityComponent", () => {
         expect(createMember).toBeCalledWith(communityId, "userIdHash")
         expect(sendTemplate).toBeCalledWith(
             "a@b.c",
-            "You've successfully joined",
+            "You have successfully joined title!",
             MailChimp.from,
             MailChimp.Templates.communityJoined.name,
             [
@@ -792,8 +792,8 @@ export default describe("CommunityComponent", () => {
         const mailTemplate = MailChimp.Templates.matched
         const mailTemplate2 = MailChimp.Templates.noMatch
 
-        const subject1 = "Wow! You've matched in titlecommunityId1!"
-        const subject2 = "Wow! You've matched in titlecommunityId2!"
+        const subject1 = "Your tmixed match for this week from titlecommunityId1"
+        const subject2 = "Your tmixed match for this week from titlecommunityId2"
 
         function givenContent(firstName: string, matchedFirstName: string, matchedLastName: string, email: string, phoneNumber: string, communityTitle: string, website: string) {
             return [
@@ -960,8 +960,8 @@ export default describe("CommunityComponent", () => {
             ]
         }
 
-        const subject1 = "Would you like to match next week in titlecommunityId1?"
-        const subject2 = "Would you like to match next week in titlecommunityId2?"
+        const subject1 = "Are you participating in calls next week?"
+        const subject2 = "Are you participating in calls next week?"
 
         function yesMarkup(url: string): string {
             return `
