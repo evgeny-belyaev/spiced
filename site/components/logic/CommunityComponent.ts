@@ -89,7 +89,7 @@ export class CommunityComponent implements ICommunityComponent {
 
         await this.mailComponent.sendTemplate(
             email,
-            "Wow! Follow the link to join!",
+            "Here is your community invitation link",
             MailChimp.from,
             mailTemplate.name,
             [
