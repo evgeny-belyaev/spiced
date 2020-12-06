@@ -1,9 +1,7 @@
 import { CommunityComponent } from "../CommunityComponent"
 import { Forms, MailChimp } from "../../constants"
 import { givenFormsApi, givenMailComponent, givenMatcher, givenSpicedDatabase, givenUrlBuilder } from "../../testUtils"
-import { EntityAlreadyExists } from "../../database/entityAlreadyExists"
 import { templateField } from "../../mail"
-import exp from "constants"
 
 const answersJoin = {
     answers: [
@@ -361,10 +359,11 @@ export default describe("CommunityComponent", () => {
         const { mock: urlBuilder, getCreateCommunityConfirmationUrl } = givenUrlBuilder()
         const { mock: mailComponentMock, sendTemplate } = givenMailComponent()
         const { mock: spicedDatabaseMock } = givenSpicedDatabase()
-        const { mock: formsApiMock } = givenFormsApi()
+        const { mock: formsApiMock, getAnswers } = givenFormsApi()
         const { mock: matcher } = givenMatcher()
 
         getCreateCommunityConfirmationUrl.mockImplementation(() => ("url"))
+        getAnswers.mockImplementation(() => answersCreate)
 
         const communityComponent = new CommunityComponent(formsApiMock(), mailComponentMock(), spicedDatabaseMock(), urlBuilder(), matcher())
 
@@ -399,7 +398,7 @@ export default describe("CommunityComponent", () => {
             [
                 {
                     name: MailChimp.Templates.createCommunityConfirmation.fields.userFirstName,
-                    content: "userFirstName"
+                    content: "firstName"
                 },
                 {
                     name: MailChimp.Templates.createCommunityConfirmation.fields.createCommunityConfirmationUrl,

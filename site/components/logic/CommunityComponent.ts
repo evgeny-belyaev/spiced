@@ -112,6 +112,15 @@ export class CommunityComponent implements ICommunityComponent {
             throw Error("Invalid argument")
         }
 
+        const item = await this.formsApi.getAnswers(
+            Forms.createCommunity.formId,
+            formResponseId
+        )
+        const answers = item && item.answers ? item.answers : []
+
+        const utils = new FormsUtils()
+        const firstName = utils.getAnswerById(answers, Forms.createCommunity.answers.creatorFirstName)
+
         const url = this.urlBuilder.getCreateCommunityConfirmationUrl(formResponseId)
         const markup = `
             <td> <!--[if mso]>
@@ -143,7 +152,7 @@ export class CommunityComponent implements ICommunityComponent {
             [
                 {
                     name: mailTemplate.fields.userFirstName,
-                    content: "userFirstName"
+                    content: utils.getText(firstName)
                 },
                 {
                     name: mailTemplate.fields.createCommunityConfirmationUrl,
