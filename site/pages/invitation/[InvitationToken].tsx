@@ -2,16 +2,13 @@ import React from "react"
 import { TypeForm } from "../../components/forms/TypeForm"
 import { Forms } from "../../components/constants"
 import serverEntryPoint, { Props } from "../../components/pages/invitation"
-import { Alert } from "react-bootstrap"
 import { SpicedPage } from "../../components/SpicedPage"
 
 export default (props: Props) => {
     if (props.error) {
         return (
-            <SpicedPage>
-                <Alert variant="warning">
-                    {props.error}
-                </Alert>
+            <SpicedPage title="Server error">
+                Server error
             </SpicedPage>
         )
     } else {
@@ -26,7 +23,7 @@ export default (props: Props) => {
             }
         ]
 
-        return <SpicedPage>
+        return <SpicedPage title="Here is your community invitation link">
             <TypeForm
                 typeformId={Forms.joinCommunity.formId}
                 elementId="join_community_form"

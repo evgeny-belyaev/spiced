@@ -62,7 +62,7 @@ const noMarkup = `
 export default (props: Props) => {
     if (props.error) {
         return (
-            <SpicedPage>
+            <SpicedPage title="Server error">
                 Server error
             </SpicedPage>
         )
@@ -71,8 +71,10 @@ export default (props: Props) => {
             props.optIn ? yesMarkup : noMarkup
         )
 
+        const title = props.optIn ? "You are participating in tmixed next week!" : "Thanks for letting us know!"
+
         return (
-            <SpicedPage>
+            <SpicedPage title={title}>
                 <div dangerouslySetInnerHTML={{ __html: markup }}></div>
             </SpicedPage>
         )

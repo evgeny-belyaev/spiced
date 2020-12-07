@@ -112,7 +112,7 @@ const content = `
 
 export default (props: Props) => {
     if (props.error) {
-        return <SpicedPage>
+        return <SpicedPage title="Server error">
             Server error
         </SpicedPage>
     } else {
@@ -125,7 +125,7 @@ export default (props: Props) => {
         )
 
         return (
-            <SpicedPage>
+            <SpicedPage title="Your tmixed community is almost there">
                 <div dangerouslySetInnerHTML={{ __html: markup }}></div>
             </SpicedPage>
         )

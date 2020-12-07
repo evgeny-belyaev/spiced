@@ -4,6 +4,7 @@ import Head from "next/head"
 import "bootstrap/dist/css/bootstrap.min.css"
 
 type Props = {
+    title: string,
     children: React.ReactNode
 }
 
@@ -17,15 +18,15 @@ const ga = {
 }
 
 
-export const SpicedPage: React.FC<Props> = ({ children }: Props) => (
+export const SpicedPage: React.FC<Props> = ({ children, title }: Props) => (
     <>
         <Head>
             <meta charSet="utf-8"/>
             <meta httpEquiv="Content-Type" content="text/html; charset=utf-8"/>
             <meta name="viewport" content="width=400"/>
-            <title>2. Community confirmation PAGE</title>
+            <title>{title}</title>
             <meta property="og:url" content="page15719596.html"/>
-            <meta property="og:title" content="2. Community confirmation PAGE"/>
+            <meta property="og:title" content={title}/>
             <meta property="og:description" content=""/>
 
             <link rel="shortcut icon" href="favicon.ico"/>

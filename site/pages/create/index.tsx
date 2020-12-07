@@ -5,7 +5,7 @@ import { SpicedPage } from "../../components/SpicedPage"
 
 const Index: React.FC<unknown> = () => {
 
-    return <SpicedPage>
+    return <SpicedPage title="Create community">
         <TypeForm
             typeformId={Forms.createCommunity.formId}
             elementId="create_community_form"
