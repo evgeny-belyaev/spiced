@@ -2,7 +2,7 @@ import { SpicedDatabase } from "../database/spicedDatabase"
 import { Logger } from "../logger"
 import { Matches } from "../database/types"
 import { IMatcher } from "./IMatcher"
-import { TestTimeSpanComponent } from "./testTimeSpanComponent"
+import { WeekTimeSpanComponent } from "./weekTimeSpanComponent"
 
 
 export class Matcher implements IMatcher {
@@ -10,7 +10,7 @@ export class Matcher implements IMatcher {
     }
 
     private log = new Logger("Matcher")
-    private timeSpanComponent = new TestTimeSpanComponent()
+    private timeSpanComponent = new WeekTimeSpanComponent()
 
     getTimeSpanId(utc: number): number {
         return this.timeSpanComponent.getTimeSpanId(utc)
