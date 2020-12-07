@@ -203,8 +203,9 @@ export class CommunityComponent implements ICommunityComponent {
             const emailAddress = utils.getEmail(creatorEmailAddress)
             const title = utils.getText(communityTitle)
 
+            const creatorFirstName = utils.getText(firstName)
             const userId = await this.spicedDatabase.createUser({
-                firstName: utils.getText(firstName),
+                firstName: creatorFirstName,
                 lastName: utils.getText(lastName),
                 emailAddress: emailAddress,
                 phoneNumber: utils.getPhoneNumber(creatorPhoneNumber),
@@ -230,6 +231,10 @@ export class CommunityComponent implements ICommunityComponent {
                 MailChimp.from,
                 mailTemplate.name,
                 [
+                    {
+                        name: mailTemplate.fields.userFirstName,
+                        content: creatorFirstName
+                    },
                     {
                         name: mailTemplate.fields.communityTitle,
                         content: title

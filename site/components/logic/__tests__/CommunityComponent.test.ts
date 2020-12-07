@@ -458,13 +458,20 @@ export default describe("CommunityComponent", () => {
             "Here is your community invitation link",
             MailChimp.from,
             MailChimp.Templates.communityCreated.name,
-            [{
-                name: MailChimp.Templates.communityCreated.fields.communityTitle,
-                content: "community title"
-            }, {
-                name: MailChimp.Templates.communityCreated.fields.communityInvitationLink,
-                content: "<a href=\"url\">url</a>"
-            }]
+            [
+                {
+                    name: MailChimp.Templates.communityCreated.fields.userFirstName,
+                    content: "firstName"
+                },
+                {
+                    name: MailChimp.Templates.communityCreated.fields.communityTitle,
+                    content: "community title"
+                },
+                {
+                    name: MailChimp.Templates.communityCreated.fields.communityInvitationLink,
+                    content: "<a href=\"url\">url</a>"
+                }
+            ]
         )
 
         expect(result).toEqual({
@@ -763,7 +770,7 @@ export default describe("CommunityComponent", () => {
         const now = new Date(2020, 10, 25, 16, 59, 10)
 
         // Act Assert
-        await expect(communityComponent.monday("timeSpanId" )).resolves.toEqual({
+        await expect(communityComponent.monday("timeSpanId")).resolves.toEqual({
             "communityId1": {
                 "userId1": { "matchedUserId": "userId2" },
                 "userId2": { "matchedUserId": "userId1" }
@@ -927,7 +934,7 @@ export default describe("CommunityComponent", () => {
         const now = new Date(2020, 10, 25, 16, 59, 10)
 
         // Act Assert
-        await expect(communityComponent.monday("timeSpanId" , "communityId1" )).resolves.toEqual({
+        await expect(communityComponent.monday("timeSpanId", "communityId1")).resolves.toEqual({
             "communityId1": {
                 "userId1": { "matchedUserId": "userId2" },
                 "userId2": { "matchedUserId": "userId1" }
@@ -936,13 +943,13 @@ export default describe("CommunityComponent", () => {
 
         // Assert
         expect(getOptedInUsers.mock.calls).toEqual([
-            ["timeSpanId", "communityId1"],
+            ["timeSpanId", "communityId1"]
         ])
         expect(calculateMatch.mock.calls).toEqual([
-            ["communityId1", "timeSpanId", ["userId1", "userId2"]],
+            ["communityId1", "timeSpanId", ["userId1", "userId2"]]
         ])
         expect(saveMatches.mock.calls).toEqual([
-            [matchesGenerator("communityId1"), "communityId1", "timeSpanId"],
+            [matchesGenerator("communityId1"), "communityId1", "timeSpanId"]
         ])
 
         const mailTemplate = MailChimp.Templates.matched
@@ -1210,14 +1217,14 @@ export default describe("CommunityComponent", () => {
 
         // Assert
         expect(getCommunityById.mock.calls).toEqual([
-            ["communityId1"],
+            ["communityId1"]
         ])
         expect(getMembers.mock.calls).toEqual([
-            ["communityId1"],
+            ["communityId1"]
         ])
         expect(getUserById.mock.calls).toEqual([
             ["userId1"],
-            ["userId2"],
+            ["userId2"]
         ])
 
         expect(getOptInConfirmationUrl.mock.calls).toEqual([
@@ -1225,7 +1232,7 @@ export default describe("CommunityComponent", () => {
             ["communityId1", "nextTimeSpanId", "userId1", false],
 
             ["communityId1", "nextTimeSpanId", "userId2", true],
-            ["communityId1", "nextTimeSpanId", "userId2", false],
+            ["communityId1", "nextTimeSpanId", "userId2", false]
         ])
 
         function givenContent(userFirstName: string, communityTitle: string, noUrl: string, yesUrl: string) {
@@ -1279,7 +1286,7 @@ export default describe("CommunityComponent", () => {
                 ["userId1@b.c", subject1, MailChimp.from, mailTemplate.name,
                     givenContent("userId1f", "titlecommunityId1", noMarkup("communityId1nextTimeSpanIduserId1false"), yesMarkup("communityId1nextTimeSpanIduserId1true"))],
                 ["userId2@b.c", subject1, MailChimp.from, mailTemplate.name,
-                    givenContent("userId2f", "titlecommunityId1", noMarkup("communityId1nextTimeSpanIduserId2false"), yesMarkup("communityId1nextTimeSpanIduserId2true"))],
+                    givenContent("userId2f", "titlecommunityId1", noMarkup("communityId1nextTimeSpanIduserId2false"), yesMarkup("communityId1nextTimeSpanIduserId2true"))]
             ]
         )
     })

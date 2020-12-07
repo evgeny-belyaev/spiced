@@ -153,6 +153,7 @@ export const MailChimp = {
             name: "communityCreated",
             subject: () => "Here is your community invitation link",
             fields: {
+                userFirstName: "userFirstName",
                 communityTitle: "communityTitle",
                 communityInvitationLink: "communityInvitationLink"
             }
