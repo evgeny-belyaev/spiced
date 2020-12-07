@@ -392,7 +392,7 @@ export default describe("CommunityComponent", () => {
 
         expect(sendTemplate).toBeCalledWith(
             "a@b.com",
-            "Community creation confirmation",
+            "Your tmixed community is almost there",
             MailChimp.from,
             MailChimp.Templates.createCommunityConfirmation.name,
             [
@@ -455,7 +455,7 @@ export default describe("CommunityComponent", () => {
 
         expect(sendTemplate).toBeCalledWith(
             "a@b.com",
-            "Community created",
+            "Here is your community invitation link",
             MailChimp.from,
             MailChimp.Templates.communityCreated.name,
             [{

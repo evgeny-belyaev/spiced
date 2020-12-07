@@ -126,7 +126,7 @@ export const MailChimp = {
     Templates: {
         createCommunityConfirmation: {
             name: "createCommunityConfirmation",
-            subject: () => "Community creation confirmation",
+            subject: () => "Your tmixed community is almost there",
             fields: {
                 userFirstName: "userFirstName",
                 createCommunityConfirmationUrl: "createCommunityConfirmationUrl"
@@ -151,7 +151,7 @@ export const MailChimp = {
         },
         communityCreated: {
             name: "communityCreated",
-            subject: () => "Community created",
+            subject: () => "Here is your community invitation link",
             fields: {
                 communityTitle: "communityTitle",
                 communityInvitationLink: "communityInvitationLink"
