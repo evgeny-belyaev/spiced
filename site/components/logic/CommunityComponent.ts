@@ -447,6 +447,8 @@ export class CommunityComponent implements ICommunityComponent {
                 throw new Error("Invalid argument")
             }
 
+            this.log.debug(`Sending optin request for ${communityId}`)
+
             const members = await this.spicedDatabase.getMembers(communityId)
             const membersIds = members ? Object.keys(members) : []
 
@@ -478,6 +480,8 @@ export class CommunityComponent implements ICommunityComponent {
                 const noMarkup = `
                 <a href="${noUrl}" style="">Pause all notification for 1 week</a>
                 `
+
+                this.log.debug(`Sending optin request for ${communityId} to ${user.emailAddress}`)
 
                 await this.mailComponent.sendTemplate(
                     user.emailAddress,
