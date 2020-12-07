@@ -12,9 +12,9 @@ export interface ICommunityComponent {
 
     joinCommunity(communityId: string, formResponseId: string, utc: number): Promise<JoinCommunityResult>
 
-    monday(timeSpanId: string): Promise<NodeJS.Dict<Matches>>
+    monday(timeSpanId: string, singleCommunityId: string): Promise<NodeJS.Dict<Matches>>
 
-    sendOptInRequest(timeSpanId: string): Promise<string>
+    sendOptInRequest(timeSpanId: string, singleCommunityId: string): Promise<string>
 
     optIn(timeSpanId: string, communityId: string, userId: string, optIn: boolean): Promise<void>
 }

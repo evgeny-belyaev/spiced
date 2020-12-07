@@ -49,6 +49,8 @@ export const givenCommunityComponent = () => {
     const sendCreateCommunityConfirmationEmail = jest.fn()
     const joinCommunityByEncryptedToken = jest.fn()
     const optIn = jest.fn()
+    const monday = jest.fn()
+    const sendOptInRequest = jest.fn()
 
     return {
         mock: jest.fn<CommunityComponent>(() => ({
@@ -57,7 +59,9 @@ export const givenCommunityComponent = () => {
             sendJoinCommunityConfirmationEmail,
             sendCreateCommunityConfirmationEmail,
             joinCommunity: joinCommunityByEncryptedToken,
-            optIn
+            optIn,
+            monday,
+            sendOptInRequest
         })),
 
         createCommunity,
@@ -65,7 +69,9 @@ export const givenCommunityComponent = () => {
         sendJoinCommunityConfirmationEmail,
         sendCreateCommunityConfirmationEmail,
         joinCommunityByEncryptedToken,
-        optIn
+        optIn,
+        monday,
+        sendOptInRequest
     }
 }
 

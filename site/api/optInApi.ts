@@ -26,9 +26,17 @@ export class OptInApi extends ApiEndpoint<OptInApiParams, OptInApiResponse> {
     async handler(request: express.Request, response: express.Response): Promise<void> {
         const utc = new Date().getTime()
         const timeSpanId = this.matcher.getNextTimeSpanId(utc).toString()
+        const communityId = request.query["communityId"] as string
 
-        await this.communityComponent.sendOptInRequest(timeSpanId)
+        if (!communityId) {
+            response.status(500)
+        } else {
+            await this.communityComponent.sendOptInRequest(
+                timeSpanId,
+                communityId === "all" ? "" : communityId
+            )
 
-        response.status(200)
+            response.status(200)
+        }
     }
 }

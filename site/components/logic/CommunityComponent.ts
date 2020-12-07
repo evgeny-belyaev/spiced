@@ -393,7 +393,7 @@ export class CommunityComponent implements ICommunityComponent {
         }
     }
 
-    async monday(timeSpanId: string): Promise<NodeJS.Dict<Matches>> {
+    async monday(timeSpanId: string, singleCommunityId = ""): Promise<NodeJS.Dict<Matches>> {
         const optedInCommunitiesIds = await this.spicedDatabase.getOptedInCommunities(timeSpanId)
         const ids = optedInCommunitiesIds ? Object.keys(optedInCommunitiesIds) : []
         const result: NodeJS.Dict<Matches> = {}
@@ -401,6 +401,10 @@ export class CommunityComponent implements ICommunityComponent {
         this.log.debug(optedInCommunitiesIds)
 
         for (const communityId of ids) {
+            if (singleCommunityId && singleCommunityId !== communityId) {
+                continue
+            }
+
             const optedInAnswers = await this.spicedDatabase.getOptedInUsers(timeSpanId, communityId)
             if (!optedInAnswers) {
                 continue
@@ -423,12 +427,16 @@ export class CommunityComponent implements ICommunityComponent {
         return result
     }
 
-    async sendOptInRequest(timeSpanId: string): Promise<string> {
+    async sendOptInRequest(timeSpanId: string, singleCommunityId = ""): Promise<string> {
         const allCommunitiesIds = await this.spicedDatabase.getCommunitiesIds()
         const ids = allCommunitiesIds ? Object.keys(allCommunitiesIds) : []
         const mailTemplate = MailChimp.Templates.optIn
 
         for (const communityId of ids) {
+            if (singleCommunityId && singleCommunityId !== communityId) {
+                continue
+            }
+
             const community = await this.spicedDatabase.getCommunityById(communityId)
             if (!community) {
                 throw new Error("Invalid argument")

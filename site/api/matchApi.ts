@@ -29,8 +29,17 @@ export class MatchApi extends ApiEndpoint<MatchApiParams, MatchApiResponse> {
         const utc = new Date().getTime()
         const timeSpanId = this.matcher.getTimeSpanId(utc).toString()
 
-        const result = await this.communityComponent.monday(timeSpanId)
+        const communityId = request.query["communityId"] as string
 
-        response.status(200).json(result)
+        if (!communityId) {
+            response.status(500)
+        } else {
+            const result = await this.communityComponent.monday(
+                timeSpanId,
+                communityId === "all" ? "" : communityId
+            )
+
+            response.status(200).json(result)
+        }
     }
 }
