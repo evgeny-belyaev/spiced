@@ -57,7 +57,7 @@ export class SpicedDatabase {
 
 
     async getNextCommunityIdx(): Promise<number> {
-        const defaultUpdate = (previousId: number | null) => ((previousId === null ? 0 : previousId) + Math.floor(Math.random() * 100))
+        const defaultUpdate = (previousId: number | null) => ((previousId === null ? 0 : previousId) + 1 + Math.floor(Math.random() * 100))
         const ref = await this.ref(this.path.communityLastIdSync())
         const result = await ref.transaction(
             defaultUpdate,
