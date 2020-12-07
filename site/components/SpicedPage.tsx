@@ -29,7 +29,7 @@ export const SpicedPage: React.FC<Props> = ({ children, title }: Props) => (
             <meta property="og:title" content={title}/>
             <meta property="og:description" content=""/>
 
-            <link rel="shortcut icon" href="favicon.ico"/>
+            <link rel="shortcut icon" href="/favicon.ico"/>
 
             <script async src="https://www.googletagmanager.com/gtag/js?id=G-735VEPNL7N"></script>
             <script dangerouslySetInnerHTML={ga}>
