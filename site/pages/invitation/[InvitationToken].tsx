@@ -32,8 +32,7 @@ const content = `
                                     </div>
                                     <div class="t183__title t-title t-title_xl" style="color:#000000;font-size:100px;"
                                          field="title">
-                                        <div style="font-size:32px;" data-customstyle="yes">Someone invited you to
-                                            "__COMMUNITY__" community.<br/>
+                                        <div style="font-size:32px;" data-customstyle="yes">Someone invited you to take part in "__COMMUNITY__".<br/>
                                             </div>
                                     </div>
                                     <div class="t183__buttons"><a
@@ -44,7 +43,7 @@ const content = `
                                             style="color:#ffffff;background-color:#000000;border-radius:30px; -moz-border-radius:30px; -webkit-border-radius:30px;">
                                         <table style="width:100%; height:100%;">
                                             <tr>
-                                                <td>Join community</td>
+                                                <td>Join</td>
                                             </tr>
                                         </table>
                                     </a></div>
