@@ -53,7 +53,7 @@ const content = `
                                          field="title">
                                         <div style="font-size:32px;" data-customstyle="yes">
                                             <span style="font-size:22px;">
-                                            First time here? <a style="color: black;" href="https://tmixed.com" target="_blank"><u>Learn more.</u></a>
+                                            First time here? <a style="color: black;" href="https://tmixed.com/?utm_source=organic&utm_medium=invite-link&utm_campaign=top-link" target="_blank"><u>Learn more.</u></a>
                                             </span>
                                         </div>
                                     </div>
