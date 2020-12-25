@@ -15,7 +15,8 @@
     "parserOptions": {
         "project": [
             "site/tsconfig.json",
-            "functions/tsconfig.json"
+            "functions/tsconfig.json",
+            "scripts/tsconfig.json"
         ]
     },
     "plugins": [

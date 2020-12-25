@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "noEmit": true,
+    "sourceMap": false,
+    "strict": false,
+    "target": "es2018",
+    "esModuleInterop": true
+  },
+  "compileOnSave": true,
+  "exclude": [
+    "__tests__"
+  ]
+}
